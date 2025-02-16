@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer Contraseña</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        input {
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #fafafa;
+        }
+
+        input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #error-message {
+            color: #d9534f;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+
+        p a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Restablecer Contraseña</h2>
+        <form id="reset-password-form">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" placeholder="Ingresa tu correo electrónico" required>
+
+            <button type="submit">Enviar Correo para Restablecer</button>
+        </form>
+        <p id="error-message"></p>
+        <p>¿no tienes cuenta activa? <a href="regis.html">crea una aquí</a></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Configura Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+            authDomain: "anime-offis.firebaseapp.com",
+            projectId: "anime-offis",
+            storageBucket: "anime-offis.appspot.com",
+            messagingSenderId: "377121993034",
+            appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        const form = document.getElementById("reset-password-form");
+        const errorMessage = document.getElementById("error-message");
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+
+            if (email === "") {
+                errorMessage.textContent = "Por favor, ingresa tu correo electrónico.";
+                return;
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert("Se ha enviado un correo para restablecer tu contraseña.");
+                    form.reset();
+                })
+                .catch((error) => {
+                    errorMessage.textContent = error.message;
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <style>
+        /* Estilo del encabezado */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+        header img {
+            height: 40px;
+        }
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .menu li {
+            margin: 0 10px;
+        }
+        .menu li a {
+            color: white;
+            text-decoration: none;
+        }
+        #profile-photo-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: inline-block;
+        }
+        #profile-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+        .frame {
+            position: absolute;
+            top: -10px;
+            left: -6px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            border-radius: 50%;
+            pointer-events: none;
+            display: none;
+            transform: scale(1.1); /* Marco pequeño */
+        }
+        #verified-badge {
+            margin-left: 10px;
+            width: 25px;
+            height: 25px;
+        }
+        .ko-fi-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff5f5f;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .ko-fi-button:hover {
+            background-color: #e04848;
+        }
+        #photo-frames {
+            display: flex;
+            gap: 10px;
+        }
+        .photo-frame {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .photo-frame:hover {
+            transform: scale(1.1);
+        }
+        #photo-frames-container {
+            display: none;
+        }
+
+        /* Estilos para los fondos */
+        #background-options {
+            display: flex;
+            gap: 10px;
+        }
+        .background-option {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            background-size: cover;
+            border: 2px solid #ccc;
+            transition: transform 0.3s;
+        }
+        .background-option:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
+    <ul class="menu">
+        <li><a href="juegos.html">Minijuegos</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+        <li><a href="#" id="logout-link">Cerrar Sesión</a></li>
+    </ul>
+</header>
+
+<h2>Perfil</h2>
+<div id="profile-photo-container">
+    <img src="https://via.placeholder.com/120" alt="Foto de Usuario" id="profile-photo">
+    <img src="frame1.png" alt="Marco 1" class="frame" id="frame1">
+    <img src="frame2.png" alt="Marco 2" class="frame" id="frame2">
+    <img src="frame3.png" alt="Marco 3" class="frame" id="frame3">
+    <img src="frame4.png" alt="Marco 4" class="frame" id="frame4">
+</div>
+
+<!-- Elementos de usuario -->
+<p>
+    <strong>Nombre:</strong> <span id="user-name">Cargando...</span>
+    <img src="verif.png" id="verified-badge" style="display: none;" alt="Verificado">
+</p>
+
+<a href="verificación.html" target="_blank" class="ko-fi-button" id="verify-button">
+    Verifica tu cuenta con una insignia
+</a>
+
+<p id="verified-badge-text">Verificando...</p>
+
+<input type="text" id="new-name" placeholder="Nuevo nombre">
+<button id="update-name" disabled>Actualizar Nombre</button>
+
+<p><strong>Correo Electrónico:</strong> <span id="user-email">Cargando...</span></p>
+<input type="email" id="new-email" placeholder="Nuevo correo">
+<button id="update-email" disabled>Actualizar Correo</button>
+
+<p><strong>Fecha de Creación:</strong> <span id="user-registration-date">Cargando...</span></p>
+
+<input type="password" id="new-password" placeholder="Nueva contraseña">
+<button id="update-password" disabled>Actualizar Contraseña</button>
+
+<button id="delete-account" disabled>Eliminar Cuenta</button>
+<button id="logout-btn">Cerrar Sesión</button>
+
+<li><a href="dashboard.html">Regresar al dashboard</a></li>
+
+<!-- Sección para elegir marcos de perfil -->
+<h3>Elige un marco para tu foto de perfil:</h3>
+<div id="photo-frames-container">
+    <div id="photo-frames">
+        <img src="frame1.png" alt="Marco 1" class="photo-frame" data-frame="frame1">
+        <img src="frame2.png" alt="Marco 2" class="photo-frame" data-frame="frame2">
+        <img src="frame3.png" alt="Marco 3" class="photo-frame" data-frame="frame3">
+        <img src="frame4.png" alt="Marco 4" class="photo-frame" data-frame="frame4">
+    </div>
+   
+
+<!-- Sección para elegir el fondo -->
+<h3>Elige un fondo:</h3>
+<div id="background-options">
+    <div class="background-option" style="background-image: url('fondo1.jpg');" data-background="fondo1.jpg"></div>
+    <div class="background-option" style="background-image: url('fondo2.jpg');" data-background="fondo2.jpg"></div>
+    <div class="background-option" style="background-image: url('fondo3.jpg');" data-background="fondo3.jpg"></div>
+    <div class="background-option" style="background-image: url('fondo4.jpg');" data-background="fondo4.jpg"></div>
+    <div class="background-option" style="background-image: url('fondo5.jpg');" data-background="fondo5.jpg"></div>
+     <div class="background-option" style="background-image: url('fondo6.jpg');" data-background="fondo6.jpg"></div>
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+        authDomain: "anime-offis.firebaseapp.com",
+        projectId: "anime-offis",
+        storageBucket: "anime-offis.appspot.com",
+        messagingSenderId: "377121993034",
+        appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userIdFromUrl = urlParams.get('usuario');
+
+            let userIdToFetch = userIdFromUrl ? userIdFromUrl : user.uid;
+
+            const userRef = db.collection('users').doc(userIdToFetch);
+            userRef.get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    document.getElementById('user-name').textContent = userData.username;
+                    document.getElementById('user-email').textContent = userData.email;
+                    document.getElementById('user-registration-date').textContent = new Date(userData.registrationDate).toLocaleDateString();
+                    document.getElementById('profile-photo').src = userData.profilePhoto;
+
+                    const verifiedBadge = document.getElementById('verified-badge');
+                    const verifyButton = document.getElementById('verify-button');
+                    const badgeTextElement = document.getElementById('verified-badge-text');
+
+                    let badgeSrc = "";
+                    let badgeText = "";
+                    let hasBadge = false;
+
+                    // Revisar si el usuario tiene una insignia
+                    if (userData.verified) {
+                        switch (userData.verified) {
+                            case "creador":
+                                badgeSrc = "crea.png";
+                                badgeText = "Verificado (tarjeta de diamante de creador ❄️)";
+                                break;
+                            case "dora":
+                                badgeSrc = "verif.png";
+                                badgeText = "✅ Verificado (premium)";
+                                break;
+                            case "azul":
+                                badgeSrc = "azul.png";
+                                badgeText = "✅ Verificado (fan Anime Offis)";
+                                break;
+                            case "verde":
+                                badgeSrc = "verde.png";
+                                badgeText = "✅ Verificado (fan básico)";
+                                break;
+                            default:
+                                badgeSrc = "verde.png";
+                                badgeText = "✅ Verificado";
+                        }
+                        verifiedBadge.src = badgeSrc;
+                        verifiedBadge.style.display = "inline";
+                        badgeTextElement.textContent = badgeText;
+                        hasBadge = true;
+                    }
+
+                    if (!hasBadge) {
+                        badgeTextElement.textContent = "❌ No Verificado";
+                    }
+
+                    // Si el usuario ya tiene una insignia, oculta el botón de verificación
+                    if (hasBadge) {
+                        verifyButton.style.display = "none";
+                        // Mostrar la opción de elegir marcos solo si está verificado
+                        document.getElementById('photo-frames-container').style.display = 'block';
+                    } else {
+                        verifyButton.style.display = "inline-block";
+                        verifyButton.textContent = "Verifica tu cuenta con una insignia";
+                        document.getElementById('photo-frames-container').style.display = 'none';
+                    }
+
+                    // Mostrar el marco seleccionado al cargar la página
+                    const selectedFrame = userData.profileFrame;
+                    if (selectedFrame) {
+                        document.getElementById(selectedFrame).style.display = 'block';
+                    }
+
+                } else {
+                    document.getElementById('user-name').textContent = "Usuario no encontrado";
+                    document.getElementById('user-email').textContent = "";
+                    document.getElementById('user-registration-date').textContent = "";
+                    document.getElementById('profile-photo').src = "";
+                }
+            }).catch(error => {
+                console.error("Error al obtener datos del usuario:", error);
+                document.getElementById('user-name').textContent = "Error al cargar el perfil";
+            });
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+   // Lógica para aplicar el marco a la foto de perfil
+document.querySelectorAll('.photo-frame').forEach(frame => {
+    frame.addEventListener('click', function() {
+        const selectedFrame = this.getAttribute('data-frame');
+        const profilePhotoContainer = document.getElementById('profile-photo-container');
+        const frames = document.querySelectorAll('.frame');
+        
+        // Ocultar todos los marcos
+        frames.forEach(f => f.style.display = 'none');
+        
+        // Mostrar el marco correspondiente
+        document.getElementById(selectedFrame).style.display = 'block';
+
+        // Guardar la selección del marco en Firestore
+        const user = firebase.auth().currentUser;
+        if (user) {
+            const userRef = db.collection('users').doc(user.uid);
+            userRef.update({
+                profileFrame: selectedFrame // Guardar el marco seleccionado en Firestore
+            }).then(() => {
+                console.log('Marco actualizado correctamente');
+            }).catch(error => {
+                console.error("Error al guardar el marco:", error);
+            });
+        }
+    });
+});
+auth.onAuthStateChanged(user => {
+    if (user) {
+        const userRef = db.collection('users').doc(user.uid);
+
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+
+                // Aplicar el fondo guardado desde Firestore
+                if (userData.profileBackground) {
+                    document.body.style.backgroundImage = `url('${userData.profileBackground}')`;
+                }
+            }
+        }).catch(error => {
+            console.error("Error al obtener datos del usuario:", error);
+        });
+    }
+});
+
+// Lógica para cambiar el fondo y guardarlo en Firestore
+document.querySelectorAll('.background-option').forEach(background => {
+    background.addEventListener('click', function() {
+        const selectedBackground = this.getAttribute('data-background');
+        document.body.style.backgroundImage = `url('${selectedBackground}')`;
+
+        // Guardar en Firestore
+        const user = firebase.auth().currentUser;
+        if (user) {
+            const userRef = db.collection('users').doc(user.uid);
+            userRef.update({
+                profileBackground: selectedBackground
+            }).then(() => {
+                console.log('Fondo actualizado correctamente');
+            }).catch(error => {
+                console.error("Error al guardar el fondo:", error);
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>

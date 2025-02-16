@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rompecabezas</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+        }
+        .menu, .configuracion, .historia, .juego, .historial {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .btn {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #puzzle {
+            display: grid;
+            margin: auto;
+            gap: 2px;
+        }
+        .pieza {
+            cursor: pointer;
+            border: 1px solid white;
+        }
+        .historial img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+    <audio id="clickSound" src="https://www.fesliyanstudios.com/play-mp3/456" preload="auto"></audio>
+    <audio id="swapSound" src="https://www.fesliyanstudios.com/play-mp3/457" preload="auto"></audio>
+
+    <div id="menu" class="menu active">
+        <h1>Rompecabezas</h1>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('juego')">Iniciar Juego</button>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('configuracion')">Configuración</button>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('historial')">Historial</button>
+         <a href="juegos.html" class="btn">menu de juegos</a>
+    </div>
+
+    <div id="configuracion" class="configuracion">
+        <h2>Configuración</h2>
+        <label>Piezas por fila: <input type="number" id="filas" value="3" min="2" max="6"></label>
+        <br>
+        <label>Piezas por columna: <input type="number" id="columnas" value="3" min="2" max="6"></label>
+        <br>
+        <label>Subir imagen: <input type="file" id="imagenInput"></label>
+        <br>
+        <button class="btn" onclick="sonidoClick(); guardarConfiguracion()">Guardar</button>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('menu')">Volver</button>
+    </div>
+
+    <div id="historia" class="historia">
+        <h2>Historia</h2>
+        <p>En un mundo donde los rompecabezas guardan secretos antiguos, cada pieza tiene un significado...</p>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('menu')">Volver</button>
+    </div>
+
+    <div id="historial" class="historial">
+        <h2>Historial de Rompecabezas</h2>
+        <div id="listaHistorial"></div>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('menu')">Volver</button>
+    </div>
+
+    <div id="juego" class="juego">
+        <h2>Rompecabezas</h2>
+        <div id="puzzle"></div>
+        <br>
+        <button class="btn" onclick="sonidoClick(); mostrarSeccion('menu')">Volver al Menú</button>
+    </div>
+
+    <script>
+        let filas = 3, columnas = 3;
+        let imagenSrc = "https://qu.ax/JrOvP.jpg";
+        let puzzle = document.getElementById("puzzle");
+
+        function sonidoClick() {
+            document.getElementById("clickSound").play();
+        }
+
+        function sonidoIntercambio() {
+            document.getElementById("swapSound").play();
+        }
+
+        function mostrarSeccion(seccion) {
+            document.querySelectorAll('.menu, .configuracion, .historia, .juego, .historial').forEach(div => div.classList.remove("active"));
+            document.getElementById(seccion).classList.add("active");
+            if (seccion === "juego") iniciarJuego();
+            if (seccion === "historial") mostrarHistorial();
+        }
+
+        function guardarConfiguracion() {
+            filas = parseInt(document.getElementById("filas").value);
+            columnas = parseInt(document.getElementById("columnas").value);
+            let archivo = document.getElementById("imagenInput").files[0];
+            if (archivo) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    imagenSrc = e.target.result;
+                };
+                reader.readAsDataURL(archivo);
+            }
+            mostrarSeccion("menu");
+        }
+
+        function iniciarJuego() {
+            puzzle.innerHTML = "";
+            puzzle.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
+            puzzle.style.width = "300px";
+            puzzle.style.height = "300px";
+            
+            let piezas = [];
+            for (let i = 0; i < filas * columnas; i++) {
+                let pieza = document.createElement("div");
+                pieza.className = "pieza";
+                pieza.style.width = `${300 / columnas}px`;
+                pieza.style.height = `${300 / filas}px`;
+                pieza.style.backgroundImage = `url(${imagenSrc})`;
+                pieza.style.backgroundSize = "300px 300px";
+                pieza.style.backgroundPosition = `${-(i % columnas) * (300 / columnas)}px ${-Math.floor(i / columnas) * (300 / filas)}px`;
+                pieza.dataset.index = i;
+                pieza.onclick = () => intercambiarPieza(pieza);
+                piezas.push(pieza);
+            }
+            piezas.sort(() => Math.random() - 0.5);
+            piezas.forEach(pieza => puzzle.appendChild(pieza));
+        }
+
+        let seleccionada = null;
+        function intercambiarPieza(pieza) {
+            if (!seleccionada) {
+                seleccionada = pieza;
+                pieza.style.border = "2px solid red";
+            } else {
+                sonidoIntercambio();
+                let tempBg = seleccionada.style.backgroundPosition;
+                seleccionada.style.backgroundPosition = pieza.style.backgroundPosition;
+                pieza.style.backgroundPosition = tempBg;
+                seleccionada.style.border = "1px solid white";
+                seleccionada = null;
+                verificarCompleto();
+            }
+        }
+
+        function verificarCompleto() {
+            let piezas = Array.from(puzzle.children);
+            let correcto = piezas.every((pieza, i) => pieza.style.backgroundPosition === `${-(i % columnas) * (300 / columnas)}px ${-Math.floor(i / columnas) * (300 / filas)}px`);
+            if (correcto) {
+                alert("¡Felicidades! Has completado el rompecabezas.");
+                guardarEnHistorial();
+                mostrarSeccion("menu");
+            }
+        }
+
+        function guardarEnHistorial() {
+            let historial = JSON.parse(localStorage.getItem("historial")) || [];
+            historial.push({ imagen: imagenSrc, filas, columnas });
+            localStorage.setItem("historial", JSON.stringify(historial));
+        }
+
+        function mostrarHistorial() {
+            let listaHistorial = document.getElementById("listaHistorial");
+            listaHistorial.innerHTML = "";
+            let historial = JSON.parse(localStorage.getItem("historial")) || [];
+            if (historial.length === 0) {
+                listaHistorial.innerHTML = "<p>No hay rompecabezas completados aún.</p>";
+                return;
+            }
+            historial.forEach((item, index) => {
+                let img = document.createElement("img");
+                img.src = item.imagen;
+                img.alt = `Rompecabezas ${index + 1}`;
+                listaHistorial.appendChild(img);
+            });
+        }
+    </script>
+</body>
+</html>

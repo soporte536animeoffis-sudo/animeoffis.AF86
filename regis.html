@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+</head>
+<body>
+
+    <h2>Registro</h2>
+    <form id="register-form">
+        <input type="text" id="name" placeholder="Nombre" required><br>
+        <input type="email" id="email" placeholder="Correo electrónico" required><br>
+        <input type="password" id="password" placeholder="Contraseña" required><br>
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+            authDomain: "anime-offis.firebaseapp.com",
+            projectId: "anime-offis",
+            storageBucket: "anime-offis.appspot.com",
+            messagingSenderId: "377121993034",
+            appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        document.getElementById("register-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    // Registrar el usuario con verified: false por defecto
+                    return db.collection("users").doc(user.uid).set({
+                        username: name,
+                        email: email,
+                        registrationDate: new Date().toISOString(),
+                        profilePhoto: "https://via.placeholder.com/120",
+                        verified: false  // Usuario no verificado por defecto
+                    });
+                })
+                .then(() => {
+                    alert("Registro exitoso. Redirigiendo al perfil...");
+                    window.location.href = "perfil.html";
+                })
+                .catch(error => {
+                    console.error("Error en el registro:", error.message); // Muestra el mensaje de error real
+                    alert("Error en el registro: " + error.message); // Lo muestra en una alerta
+                });
+        });
+    </script>
+</body>
+</html>

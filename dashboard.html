@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Usuario</title>
+   <div id="chat-toggle">
+    <img src="https://postimage.me/images/2025/02/06/IMG-20250123-WA0127.jpg" alt="Chat" id="chat-icon">
+</div>
+
+<div id="chat-container">
+    <div id="chat-header">Chat de Soporte con Kitten gift ❄️</div>
+    <div id="chat-messages"></div>
+    <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." />
+    <button id="send-btn">Enviar</button>
+</div>
+<!-- Botón Personalizado -->
+
+
+
+<style>
+    
+    .ko-fi-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff5f5f;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.ko-fi-button:hover {
+    background-color: #e04848;
+}
+    
+    /* Contenedor del chat */
+    #chat-container {
+        position: fixed;
+        bottom: 10px;
+        right: 20px;
+        width: 200px;
+        height: 250px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        display: none; /* Oculto al inicio */
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* Encabezado del chat */
+    #chat-header {
+        background: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    /* Área de mensajes */
+    #chat-messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        font-size: 14px;
+    }
+
+    /* Entrada de texto */
+    #chat-input {
+        border: none;
+        padding: 10px;
+        width: calc(100% - 60px);
+        border-top: 1px solid #ccc;
+    }
+
+    /* Botón de enviar */
+    #send-btn {
+        width: 50px;
+        border: none;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+    /* Botón flotante para mostrar/ocultar el chat */
+    #chat-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    /* Imagen dentro del botón */
+    #chat-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+        header img {
+            height: 40px;
+        }
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .menu li {
+            margin: 0 10px;
+        }
+        .menu li a {
+            color: white;
+            text-decoration: none;
+        }
+        .search-bar {
+            margin: 20px;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 70%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-results, .animes {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .search-results ul, .animes ul {
+            list-style: none;
+            padding: 0;
+        }
+        .search-results li, .animes li {
+            margin: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            color: blue;
+        }
+        .search-results li:hover, .animes li:hover {
+            text-decoration: underline;
+        }
+        .search-results {
+            display: none;
+        }
+        .intro, .user-info, .collaborators, .contact {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .intro img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .contact a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .survey {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.survey h2 {
+    margin-bottom: 10px;
+}
+
+.survey label {
+    display: block;
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.survey button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.survey button:hover {
+    background-color: #555;
+}
+
+.subscription {
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.subscription h2 {
+    margin-bottom: 10px;
+}
+
+.subscription select {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.subscription button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.subscription button:hover {
+    background-color: #0056b3;
+}
+.disabled {
+    pointer-events: none;  /* Deshabilita los clics */
+    color: grey;           /* Cambia el color para indicar que están deshabilitados */
+    text-decoration: none; /* Elimina el subrayado */
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
+        <ul class="menu">
+            <li><a href="juegos.html" id="juegos-link">minijuegos</a></li>
+             <li><a href="perfil.html" id="profile-link">Perfil</a></li>
+            <li><a href="logout.html" id="logout-link">Cerrar Sesión</a></li>
+        </ul>
+    </header>
+
+
+    <section class="search-bar">
+        <input type="text" id="search-input" placeholder="Buscar animes...">
+    </section>
+
+    <section class="search-results">
+        <h2>Resultados de búsqueda</h2>
+        <ul id="search-results-list"></ul>
+    </section>
+    <!-- Búsqueda de usuarios -->
+<section class="search-users">
+    <input type="text" id="search-user-input" placeholder="Buscar usuario...">
+    <button id="search-user-btn">Buscar</button>
+</section>
+<section class="search-users-results">
+    <h2>Usuarios Encontrados</h2>
+    <ul id="user-results-list"></ul>
+</section>
+
+    <section class="intro">
+        <h2>Bienvenido al Dashboard</h2>
+        <img src="https://postimage.me/images/2025/01/29/1738107853687.jpg" alt="Portada de Anime">
+        <p>Este es tu panel personal donde puedes ver tus animes recomendados y más.</p>
+    </section>
+    
+    <section>
+        <p><strong>Nombre:</strong> <span id="user-name">Cargando...</span></p>
+
+<p><strong>Correo Electrónico:</strong> <span id="user-email">Cargando...</span></p>
+
+<p><strong>Fecha de Creación:</strong> <span id="user-registration-date">Cargando...</span></p>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    </section>
+    
+    <section class="subscription">
+    <h2>Suscripción Anime Pass</h2>
+    <p>Disfruta de tus animes favoritos sin anuncios y en alta calidad.</p>
+    
+    <label for="plan-select">Elige tu plan:</label>
+    <select id="plan-select">
+        <option value="28">Anime Pass - 28 MXN/mes</option>
+        <option value="50">Anime Pass Plus - 50 MXN/mes</option>
+        <option value="80">Anime Pass Premium - 80 MXN/mes</option>
+    </select>
+
+    <button id="subscribe-btn">Suscribirse</button>
+
+    <p id="subscription-status" style="display: none; color: green;"></p>
+</section>
+<a href="https://ko-fi.com/kittengift56_botparati" target="_blank" class="ko-fi-button">
+    Suscribirse a Anime Pass en Ko-fi
+</a>
+    <section class="animes">
+        <h2>Animes Recomendados</h2>
+        <ul id="anime-list">
+            <li data-url="https://www.crunchyroll.com/series/G1XHJVXX2?utm_medium=android&utm_source=share">Takt Op Destiny</li>
+            <li data-url="https://www.crunchyroll.com/es/series/GYVNXJM8Y/attack-on-titan">Attack on Titan</li>
+            <li data-url="https://www.crunchyroll.com/es/series/G63H2EDKX/jujutsu-kaisen">Jujutsu Kaisen</li>
+            <li data-url="https://www.crunchyroll.com/es/series/GY5P48XEY/demon-slayer-kimetsu-no-yaiba">Demon Slayer</li>
+            <li data-url="https://www.crunchyroll.com/es/series/G6NQ5DWZ6/my-hero-academia">My Hero Academia</li>
+            <a href="kitten.html" id="kitten-link" class="disabled">Kitten</a>
+        </ul>
+    </section>
+
+    <section class="collaborators">
+        <h2>Colaboradores y Trabajadores</h2>
+        <p>Conoce a las personas que hacen posible esta página.</p>
+    </section>
+
+    <section class="contact">
+        <h2>Redes Sociales y Contacto</h2>
+        <a href="https://x.com/SergioY25444970?t=J9MX_P-rMqoDUs7Q0lM_mw&s=09">Twitter</a>
+        <a href="https://www.facebook.com/profile.php?id=100045586566501">Facebook</a>
+        <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==">Instagram</a>
+    </section>
+
+<section class="survey">
+    <h2>¿Qué anime te gusta más?</h2>
+    <form id="survey-form">
+        <label>
+            <input type="radio" name="anime" value="Attack on Titan"> Attack on Titan
+        </label><br>
+        <label>
+            <input type="radio" name="anime" value="Jujutsu Kaisen"> Jujutsu Kaisen
+        </label><br>
+        <label>
+            <input type="radio" name="anime" value="Demon Slayer"> Demon Slayer
+        </label><br>
+        <label>
+            <input type="radio" name="anime" value="My Hero Academia"> My Hero Academia
+        </label><br>
+        <label>
+            <input type="radio" name="anime" value="Takt Op Destiny"> Takt Op Destiny
+        </label><br>
+        <button type="submit">Votar</button>
+    </form>
+
+    <div id="survey-results" style="display:none;">
+        <h3>Resultados:</h3>
+        <ul>
+            <li>Attack on Titan: <span id="result-aot">0</span> votos</li>
+            <li>Jujutsu Kaisen: <span id="result-jk">0</span> votos</li>
+            <li>Demon Slayer: <span id="result-ds">0</span> votos</li>
+            <li>My Hero Academia: <span id="result-mha">0</span> votos</li>
+<li>Takt Op Destiny: <span id="result-tod">0</span> votos</li>            
+        </ul>
+    </div>
+</section>
+
+            
+<a href="libro.html" id="libros-link" class="disabled">Ver libros en proceso</a>
+            <p>los mejores libros de anime y fantasía de hakimito Martinez Javier©</p>
+            
+            <p>lo podras ver con el boton de arriba que dice ver libros en proceso</p>
+        </ul>
+
+    <footer>
+        <p>&copy; 2025 Página de Anime. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+    const animes = [
+        { name: "Takt Op Destiny", url: "https://www.crunchyroll.com/series/G1XHJVXX2?utm_medium=android&utm_source=share" },
+        { name: "Attack on Titan", url: "https://www.crunchyroll.com/es/series/GYVNXJM8Y/attack-on-titan" },
+        { name: "Jujutsu Kaisen", url: "https://www.crunchyroll.com/es/series/G63H2EDKX/jujutsu-kaisen" },
+        { name: "Demon Slayer", url: "https://www.crunchyroll.com/es/series/GY5P48XEY/demon-slayer-kimetsu-no-yaiba" },
+        { name: "My Hero Academia", url: "https://www.crunchyroll.com/es/series/G6NQ5DWZ6/my-hero-academia" },
+        { name: "kitten", url: "kitten.html" },
+        { name: "libros", url: "libro.html" },
+        { name: "juegos", url: "juegos.html" }
+    ];
+
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.querySelector('.search-results');
+    const searchResultsList = document.getElementById('search-results-list');
+    const animeList = document.querySelector('.animes');
+
+    function searchAnime() {
+        const searchQuery = searchInput.value.toLowerCase();
+        searchResultsList.innerHTML = '';
+
+        if (searchQuery === '') {
+            searchResults.style.display = 'none';
+            animeList.style.display = 'block';
+            return;
+        }
+
+        animeList.style.display = 'none';
+        searchResults.style.display = 'block';
+
+        const filteredAnimes = animes.filter(anime => anime.name.toLowerCase().includes(searchQuery));
+
+        if (filteredAnimes.length > 0) {
+            filteredAnimes.forEach(anime => {
+                const li = document.createElement('li');
+                li.textContent = anime.name;
+                li.dataset.url = anime.url;
+                li.addEventListener('click', () => window.location.href = anime.url);
+                searchResultsList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = `Buscar "${searchQuery}" en Google`;
+            li.style.color = 'red';
+            li.addEventListener('click', () => {
+                window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)} anime`;
+            });
+            searchResultsList.appendChild(li);
+        }
+    }
+
+    searchInput.addEventListener('input', searchAnime);
+
+    document.querySelectorAll("#anime-list li").forEach(li => {
+        li.addEventListener("click", function() {
+            window.location.href = this.dataset.url;
+        });
+    });
+
+    // Búsqueda de usuarios en Firestore
+    const firebaseConfig = {
+        apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+        authDomain: "anime-offis.firebaseapp.com",
+        projectId: "anime-offis",
+        storageBucket: "anime-offis.appspot.com",
+        messagingSenderId: "377121993034",
+        appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Evento para realizar la búsqueda de usuarios
+    document.getElementById("search-user-btn").addEventListener("click", function () {
+        let searchQuery = document.getElementById("search-user-input").value.toLowerCase();
+        let userResultsList = document.getElementById("user-results-list");
+        userResultsList.innerHTML = ""; // Limpiar resultados anteriores
+
+        if (searchQuery === "") {
+            return; // No hacer nada si no hay texto en la búsqueda
+        }
+
+        // Recorrer todos los documentos de la colección 'users'
+        db.collection("users")
+            .get()  // Obtiene todos los documentos dentro de la colección 'users'
+            .then((querySnapshot) => {
+                let foundUsers = false;
+
+                querySnapshot.forEach((doc) => {
+                    let userData = doc.data();
+                    // Verificar si el 'username' contiene el término de búsqueda
+                    if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
+                        foundUsers = true;
+                        let li = document.createElement("li");
+                        li.textContent = userData.username + " - " + userData.email;
+                        li.addEventListener("click", function () {
+                            // Verificar que el doc.id es el correcto
+                            console.log("Redirigiendo al perfil del usuario con ID: ", doc.id);
+                            window.location.href = `perfil.html?usuario=${doc.id}`; // Redirigir con el ID del usuario encontrado
+                        });
+                        userResultsList.appendChild(li);
+                    }
+                });
+
+                if (!foundUsers) {
+                    userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
+                }
+            })
+            .catch((error) => {
+                console.error("Error al buscar usuarios:", error);
+                userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
+            });
+    });
+
+    // Verificar si el usuario tiene la verificación dorada o dora para habilitar los libros
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            const userRef = firebase.firestore().collection('users').doc(user.uid);
+            userRef.get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    
+                    // Verificar si el usuario tiene la verificación dorada o dora
+                    if (userData.verified === "creador" || userData.verified === "dora") {
+                        // Permitir acceso al enlace de libros
+                        const librosLink = document.getElementById('libros-link');
+                        librosLink.classList.remove('disabled');
+                        librosLink.style.pointerEvents = 'auto';  // Habilitar el enlace
+                        librosLink.style.opacity = '1';  // Quitar la opacidad reducida
+                    } else {
+                        // Si no tiene la verificación dorada ni dora, mantener el enlace deshabilitado
+                        const librosLink = document.getElementById('libros-link');
+                        librosLink.classList.add('disabled');
+                        librosLink.style.pointerEvents = 'none';  // Deshabilitar el enlace
+                        librosLink.style.opacity = '0.5';  // Reducir la opacidad para indicar que está deshabilitado
+                    }
+                }
+            }).catch(error => {
+                console.error("Error al obtener los datos del usuario:", error);
+            });
+        } else {
+            // Si el usuario no está autenticado, redirigir a login
+            window.location.href = "login.html";
+        }
+    });
+</script>
+
+</body>
+</html>

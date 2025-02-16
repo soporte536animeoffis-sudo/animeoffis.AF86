@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        /* Estilos para el formulario */
+        input, button {
+            font-size: 18px; /* Aumenta el tamaño de la fuente */
+            padding: 12px;   /* Aumenta el tamaño del padding */
+            margin-bottom: 10px; /* Espacio entre los campos */
+            width: 100%;     /* Asegura que los campos ocupen todo el ancho disponible */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .reset-password-link {
+            font-size: 18px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .reset-password-link:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Iniciar Sesión</h2>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Correo electrónico" required><br>
+        <input type="password" id="password" placeholder="Contraseña" required><br>
+        <button type="submit">Ingresar</button>
+    </form>
+    <p><a href="cambiar.html" class="reset-password-link">¿Olvidaste tu contraseña? Restablecer aquí.</a></p>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+            authDomain: "anime-offis.firebaseapp.com",
+            projectId: "anime-offis",
+            storageBucket: "anime-offis.appspot.com",
+            messagingSenderId: "377121993034",
+            appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = "dashboard.html";
+                })
+                .catch(error => {
+                    console.error("Error al iniciar sesión:", error);
+                });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros en Curso</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlaza el archivo CSS -->
+    
+</head>
+<body>
+
+ <header>
+        <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
+        <ul class="menu">
+             <li><a href="perfil.html" id="profile-link">Perfil</a></li>
+            <li><a href="logout.html" id="logout-link">Cerrar Sesión</a></li>
+        </ul>
+    </header>
+
+<div class="container">
+    <h2>Libros en Curso</h2>
+    <div class="warning"> 
+        ⚠️ ADVERTENCIA ⚠️ <br>
+        Este material está protegido. Nadien puede usarlo para venta individual o comercial. <br>
+        Todos los derechos a <b>Haruto Hakimito (Martinez Javier)</b>.
+    </div>
+
+    <!-- Primer Libro -->
+    <div class="book">
+        <img src="https://postimage.me/images/2025/02/09/20250208_172209.jpg" alt="Portada del Primer Libro">
+        <div class="book-info">
+            <h3>El Mundo y los 9 dioses</h3>
+            <button onclick="toggleInfo('info1')">Más Información</button>
+            <p id="info1" class="more-info">Hace unos mil años atrás existían 9 dioses que fueron mandados a la tierra a corregir los errores de las personas el primer Dios era de felicidad,el segundo de la economía,el tercero de la protección y el cuarto del amor pero así como había dioses buenos también había malos como todo lo contrario a los buenos , falta un Dios verdad es el Dios único ese era el Dios de todo qué podía hacer lo bueno y lo malo , pero así como los buenos y los malos tienen un rey todo poderoso y inmortal, pero cada rey tenía sus motivos para mandar a sus dioses a la tierra el rey bueno los mando para salvar la tierra de la maldad, pero el rey malo los mandó para destruirla 
+Haci empieza la historia y el inicio de la batalla¿ Quién ganará el puesto de la tierra los veremos en el  capítulo 1 : el inicio de la batalla y la muerte del Dios de todo 
+.</p>
+        </div>
+    </div>
+
+    <!-- Segundo Libro -->
+    <div class="book">
+        <img src="https://postimage.me/images/2025/01/29/1738107853687.jpg" alt="Portada del Segundo Libro">
+        <div class="book-info">
+            <h3>aun en proceso tambien la portada</h3>
+            <button onclick="toggleInfo('info2')">Más Información</button>
+            <p id="info2" class="more-info">Esta es la introducción del segundo libro. También puedes poner aquí un pequeño resumen o el prólogo.</p>
+        </div>
+         </div>
+
+    <!-- tercer Libro -->
+    <div class="book">
+        <img src="https://postimage.me/images/2025/01/29/1738107853687.jpg" alt="Portada del Segundo Libro">
+        <div class="book-info">
+            <h3>aun en proceso tambien la portada</h3>
+            <button onclick="toggleInfo('info3')">Más Información</button>
+            <p id="info3" class="more-info">Esta es la introducción del segundo libro. También puedes poner aquí un pequeño resumen o el prólogo.</p>
+        </div>
+         </div>
+
+    <!-- cuarto Libro -->
+    <div class="book">
+        <img src="https://postimage.me/images/2025/02/09/IMG-20250208-WA0053.jpg" alt="Portada del Segundo Libro">
+        <div class="book-info">
+            <h3>takumi y el héroe renacido</h3>
+            <button onclick="toggleInfo('info4')">Más Información</button>
+            <p id="info4" class="more-info">Esta es la introducción del segundo libro. También puedes poner aquí un pequeño resumen o el prólogo.</p>
+        </div>
+        </div>
+            
+        <!-- quinto Libro -->
+        <div class="book">
+        <img src="https://postimage.me/images/2025/02/13/29-sin-titulo_20250213002514.png" alt="Portada del Segundo Libro">
+        <div class="book-info">
+            <h3>Destiny y su viaje por el Isekai what will happen next  </h3>
+            <button onclick="toggleInfo('info5')">Más Información</button>
+            <p id="info5" class="more-info">Esta es la introducción del segundo libro. También puedes poner aquí un pequeño resumen o el prólogo.</p>
+            <a href="https://docs.google.com/document/d/1eEWOeodmOXJiw0Df0L-bUqBoNCHbP7YIv3eW3U6scXI/edit?usp=drivesdk" target="_blank">
+                <button>leer el libro</button>
+        </a>            
+        </div>
+    </div>
+
+    <!-- Redes Sociales del Autor -->
+    <div class="socials">
+        <h3>Redes Sociales del Autor</h3>
+        <a href="https://www.facebook.com/profile.php?id=61553055253609" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">Facebook
+        </a>
+        <a href="https://x.com/SergioY25444970?t=j1-hZ5XyTQjDb06dDEupRQ&s=09" target="_blank">
+            <img src="https://postimage.me/images/2025/02/09/IMG-20250208-WA0052.jpg" alt="Twitter">Twitter
+        </a>
+        <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">Instagram
+        </a>
+    </div>
+</div>
+
+<script>
+function toggleInfo(id) {
+    var info = document.getElementById(id);
+    if (info.style.display === "none" || info.style.display === "") {
+        info.style.display = "block";
+    } else {
+        info.style.display = "none";
+    }
+}
+</script>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+h2 {
+    color: #333;
+}
+.warning {
+    background-color: #ffcc00;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.book {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.book img {
+    width: 100px;
+    height: 150px;
+    border-radius: 5px;
+}
+.book-info {
+    flex: 1;
+    margin-left: 15px;
+    text-align: left;
+}
+.more-info {
+    display: none;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+button:hover {
+    background-color: #555;
+}
+.socials {
+    margin-top: 20px;
+}
+.socials a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin: 5px;
+    font-size: 14px;
+    color: #333;
+}
+.socials img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 50%;
+}
+</style>
+
+</body>
+</html>
