@@ -32,9 +32,68 @@
             border: none;
             cursor: pointer;
         }
+        .message {
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        .username {
+            font-weight: bold;
+            color: black;
+            display: flex;
+            align-items: center;
+        }
+        .verification-img {
+            width: 16px;
+            height: 16px;
+            margin-left: 5px;
+        }
+        .badge-text {
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .gold-badge {
+            color: gold;
+        }
+        .blue-badge {
+            color: blue;
+        }
+         .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .menu li {
+            margin: 0 10px;
+        }
+        .menu li a {
+            color: white;
+            text-decoration: none;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+        header img {
+            height: 40px;
+        }
     </style>
 </head>
 <body>
+
+<header>
+    <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
+    <ul class="menu">
+        <li><a href="juegos.html">Minijuegos</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+        <li><a href="#" id="logout-link">Cerrar Sesión</a></li>
+    </ul>
+</header>
 
     <h2>Chat Global</h2>
     <div id="chat-box"></div>
@@ -44,53 +103,65 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
 
     <script>
-        // Configuración de Firebase
         const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_AUTH_DOMAIN",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_STORAGE_BUCKET",
-            messagingSenderId: "TU_MESSAGING_SENDER_ID",
-            appId: "TU_APP_ID"
+            apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+            authDomain: "anime-offis.firebaseapp.com",
+            projectId: "anime-offis",
+            storageBucket: "anime-offis.appspot.com",
+            messagingSenderId: "377121993034",
+            appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
         };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const messaging = firebase.messaging();
 
         const chatBox = document.getElementById('chat-box');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
 
-        // Autenticación y carga de mensajes
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = "login.html";
             } else {
                 loadMessages();
-                requestNotificationPermission();
             }
         });
 
-        // Cargar mensajes del chat
         function loadMessages() {
             db.collection('globalChat').orderBy('timestamp').onSnapshot(snapshot => {
                 chatBox.innerHTML = "";
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const messageElement = document.createElement('div');
-                    messageElement.innerHTML = `<strong>${data.username}</strong>: ${data.message}`;
-                    chatBox.appendChild(messageElement);
+                    messageElement.classList.add('message');
+
+                    // Obtener datos del usuario y verificar el tipo de verificación
+                    db.collection('users').where('username', '==', data.username).get().then(querySnapshot => {
+                        querySnapshot.forEach(userDoc => {
+                            const userData = userDoc.data();
+
+                            let verificationHTML = "";
+
+                            if (userData.verified === "creador") {
+                                verificationHTML = `<img src="crea.png" class="verification-img" alt="Creador"> <span class="badge-text">Creador</span>`;
+                            } else if (userData.verified === "dora") {
+                                verificationHTML = `<img src="verif.png" class="verification-img" alt="Premium"> <span class="badge-text gold-badge">Premium beta</span>`;
+                            } else if (userData.verified === "azul") {
+                                verificationHTML = `<img src="azul.png" class="verification-img" alt="Fan"> <span class="badge-text blue-badge">Fan</span>`;
+                            }
+
+                            messageElement.innerHTML = `<span class="username">${data.username} ${verificationHTML}</span>: ${data.message}`;
+                            chatBox.appendChild(messageElement);
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        });
+                    });
                 });
-                chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
 
-        // Enviar mensajes
         sendButton.addEventListener('click', () => {
             const message = messageInput.value.trim();
             if (message !== "") {
@@ -112,46 +183,6 @@
                 });
             }
         });
-
-        // Pedir permiso para notificaciones y obtener token
-        function requestNotificationPermission() {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    getToken();
-                }
-            });
-        }
-
-        // Obtener el token de FCM
-        function getToken() {
-            messaging.getToken({ vapidKey: "TU_VAPID_KEY_AQUI" })
-            .then(token => {
-                if (token) {
-                    console.log("Token obtenido:", token);
-                    auth.onAuthStateChanged(user => {
-                        if (user) {
-                            db.collection("users").doc(user.uid).set({ fcmToken: token }, { merge: true });
-                        }
-                    });
-                } else {
-                    console.log("No se obtuvo el token.");
-                }
-            })
-            .catch(error => console.error("Error obteniendo token:", error));
-        }
-
-        // Escuchar mensajes en primer plano
-        messaging.onMessage(payload => {
-            console.log("Mensaje recibido:", payload);
-            alert(`Nuevo mensaje: ${payload.notification.title} - ${payload.notification.body}`);
-        });
-
-        // Registrar Service Worker
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("/firebase-messaging-sw.js")
-            .then(registration => console.log("Service Worker registrado"))
-            .catch(error => console.error("Error registrando Service Worker:", error));
-        }
     </script>
 
 </body>
