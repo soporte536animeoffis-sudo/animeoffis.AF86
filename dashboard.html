@@ -106,6 +106,14 @@
         height: 30px;
         border-radius: 50%;
     }
+   .JDAnime-img img {
+    width: 300px;  /* Ajusta el ancho según lo necesites */
+    height: 350px; /* Ajusta la altura según lo necesites */
+    object-fit: cover; /* Evita la distorsión manteniendo el recorte */
+    border-radius: 10px; /* Opcional: bordes redondeados */
+    display: block; /* Para evitar espacios extra en línea */
+    margin: 10px auto; /* Centra la imagen */
+}
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -183,7 +191,7 @@
             font-size: 12px;
         }
         .contact a {
-            color: white;
+            color: red;
             text-decoration: none;
         }
         
@@ -266,7 +274,6 @@
             <li><a href="juegos.html" id="juegos-link">minijuegos</a></li>
              <li><a href="perfil.html" id="profile-link">Perfil</a></li>
             <li><a href="logout.html" id="logout-link">Cerrar Sesión</a></li>
-            <li><a href="chat.html" id="chat-link">foro de comunicación</a></li>
         </ul>
     </header>
 
@@ -294,30 +301,12 @@
         <img src="https://postimage.me/images/2025/01/29/1738107853687.jpg" alt="Portada de Anime">
         <p>Este es tu panel personal donde puedes ver tus animes recomendados y más.</p>
     </section>
-    
-    <section>
-        <p><strong>Nombre:</strong> <span id="user-name">Cargando...</span></p>
-
-<p><strong>Correo Electrónico:</strong> <span id="user-email">Cargando...</span></p>
-
-<p><strong>Fecha de Creación:</strong> <span id="user-registration-date">Cargando...</span></p>
-
+   
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     </section>
-    
-    <section class="subscription">
-    <h2>Suscripción Anime Pass</h2>
-    <p>Disfruta de tus animes favoritos sin anuncios y en alta calidad.</p>
-    
-    <label for="plan-select">Elige tu plan:</label>
-    <select id="plan-select">
-        <option value="28">Anime Pass - 28 MXN/mes</option>
-        <option value="50">Anime Pass Plus - 50 MXN/mes</option>
-        <option value="80">Anime Pass Premium - 80 MXN/mes</option>
-    </select>
 
     <button id="subscribe-btn">Suscribirse</button>
 
@@ -327,61 +316,28 @@
     Suscribirse a Anime Pass en Ko-fi
 </a>
     <section class="animes">
-        <h2>Animes Recomendados</h2>
+        <h2>búsqueda recomendadas</h2>
         <ul id="anime-list">
-            <li data-url="https://www.crunchyroll.com/series/G1XHJVXX2?utm_medium=android&utm_source=share">Takt Op Destiny</li>
-            <li data-url="https://www.crunchyroll.com/es/series/GYVNXJM8Y/attack-on-titan">Attack on Titan</li>
-            <li data-url="https://www.crunchyroll.com/es/series/G63H2EDKX/jujutsu-kaisen">Jujutsu Kaisen</li>
-            <li data-url="https://www.crunchyroll.com/es/series/GY5P48XEY/demon-slayer-kimetsu-no-yaiba">Demon Slayer</li>
-            <li data-url="https://www.crunchyroll.com/es/series/G6NQ5DWZ6/my-hero-academia">My Hero Academia</li>
-            <a href="kitten.html" id="kitten-link" class="disabled">Kitten</a>
+            <a href="juegos.html">minijuegos de Anime Offis</a><br><br>
+            <a href="chat.html">foro de comunicación</a><br><br>
+            <a href="https://t.me/+u481FzGk1fkyNDJh">canal de anime latinos (JD Anime)</a><br><br>
+            <a href="perfil.html">increíbles funciones en el perfil</a>
         </ul>
     </section>
 
     <section class="collaborators">
         <h2>Colaboradores y Trabajadores</h2>
-        <p>Conoce a las personas que hacen posible esta página.</p>
+        <p>Conoce a las personas que hacen posible esta página.<br><br>Destiny Oficial<br>Jonathan<br>Kitten gift<br>Martinez Javier<br>Josue = como rem</p>
     </section>
 
     <section class="contact">
         <h2>Redes Sociales y Contacto</h2>
-        <a href="https://x.com/SergioY25444970?t=J9MX_P-rMqoDUs7Q0lM_mw&s=09">Twitter</a>
-        <a href="https://www.facebook.com/profile.php?id=100045586566501">Facebook</a>
-        <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==">Instagram</a>
+        <a href="https://whatsapp.com/channel/0029VaIfUfHBPzjXBdYXPA0C">visita nuestro canal de WhatsApp</a> <br>
+         <a href="https://x.com/SergioY25444970?t=J9MX_P-rMqoDUs7Q0lM_mw&s=09">Twitter</a> <br>
+        <a href="https://www.facebook.com/profile.php?id=100045586566501">Facebook</a> <br>
+        <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==">Instagram</a> <br>
+        <a href="https://t.me/+u481FzGk1fkyNDJh">canal de anime latinos (JD Anime)</a>
     </section>
-
-<section class="survey">
-    <h2>¿Qué anime te gusta más?</h2>
-    <form id="survey-form">
-        <label>
-            <input type="radio" name="anime" value="Attack on Titan"> Attack on Titan
-        </label><br>
-        <label>
-            <input type="radio" name="anime" value="Jujutsu Kaisen"> Jujutsu Kaisen
-        </label><br>
-        <label>
-            <input type="radio" name="anime" value="Demon Slayer"> Demon Slayer
-        </label><br>
-        <label>
-            <input type="radio" name="anime" value="My Hero Academia"> My Hero Academia
-        </label><br>
-        <label>
-            <input type="radio" name="anime" value="Takt Op Destiny"> Takt Op Destiny
-        </label><br>
-        <button type="submit">Votar</button>
-    </form>
-
-    <div id="survey-results" style="display:none;">
-        <h3>Resultados:</h3>
-        <ul>
-            <li>Attack on Titan: <span id="result-aot">0</span> votos</li>
-            <li>Jujutsu Kaisen: <span id="result-jk">0</span> votos</li>
-            <li>Demon Slayer: <span id="result-ds">0</span> votos</li>
-            <li>My Hero Academia: <span id="result-mha">0</span> votos</li>
-<li>Takt Op Destiny: <span id="result-tod">0</span> votos</li>            
-        </ul>
-    </div>
-</section>
 
             
 <a href="libro.html" id="libros-link" class="disabled">Ver libros en proceso</a>
@@ -389,6 +345,15 @@
             
             <p>lo podras ver con el boton de arriba que dice ver libros en proceso</p>
         </ul>
+        <section class="JDAnime-img">
+        <h2>Anuncios Anime Offis x promoción </h2>
+        <img src="https://postimage.me/images/2025/02/17/1739741081602.jpg" alt="anuncio y promociones Anime Offis">
+        <h4>quieres anime en latino ?<br>
+Pues puedes conseguirlo con JD anime <br>
+<a href="https://t.me/+u481FzGk1fkyNDJh">canal de telegram</a><br>
+Anime Offis ❄️ siempre contigo</h4>
+<a href="anuncios.html">ver más anuncios</a>
+        </section>
 
     <footer>
         <p>&copy; 2025 Página de Anime. Todos los derechos reservados.</p>
