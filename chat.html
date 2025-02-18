@@ -32,10 +32,6 @@
             border: none;
             cursor: pointer;
         }
-        .message {
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
-        }
     </style>
 </head>
 <body>
@@ -48,47 +44,53 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
 
     <script>
+        // Configuración de Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-            authDomain: "anime-offis.firebaseapp.com",
-            projectId: "anime-offis",
-            storageBucket: "anime-offis.appspot.com",
-            messagingSenderId: "377121993034",
-            appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
         };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const messaging = firebase.messaging();
 
         const chatBox = document.getElementById('chat-box');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
 
+        // Autenticación y carga de mensajes
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = "login.html";
             } else {
                 loadMessages();
+                requestNotificationPermission();
             }
         });
 
+        // Cargar mensajes del chat
         function loadMessages() {
             db.collection('globalChat').orderBy('timestamp').onSnapshot(snapshot => {
                 chatBox.innerHTML = "";
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const messageElement = document.createElement('div');
-                    messageElement.classList.add('message');
-                    messageElement.textContent = `${data.username}: ${data.message}`;
+                    messageElement.innerHTML = `<strong>${data.username}</strong>: ${data.message}`;
                     chatBox.appendChild(messageElement);
                 });
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
 
+        // Enviar mensajes
         sendButton.addEventListener('click', () => {
             const message = messageInput.value.trim();
             if (message !== "") {
@@ -96,9 +98,9 @@
                     if (user) {
                         db.collection('users').doc(user.uid).get().then(doc => {
                             if (doc.exists) {
-                                const username = doc.data().username;
+                                const userData = doc.data();
                                 db.collection('globalChat').add({
-                                    username: username,
+                                    username: userData.username,
                                     message: message,
                                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                                 }).then(() => {
@@ -110,6 +112,46 @@
                 });
             }
         });
+
+        // Pedir permiso para notificaciones y obtener token
+        function requestNotificationPermission() {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    getToken();
+                }
+            });
+        }
+
+        // Obtener el token de FCM
+        function getToken() {
+            messaging.getToken({ vapidKey: "TU_VAPID_KEY_AQUI" })
+            .then(token => {
+                if (token) {
+                    console.log("Token obtenido:", token);
+                    auth.onAuthStateChanged(user => {
+                        if (user) {
+                            db.collection("users").doc(user.uid).set({ fcmToken: token }, { merge: true });
+                        }
+                    });
+                } else {
+                    console.log("No se obtuvo el token.");
+                }
+            })
+            .catch(error => console.error("Error obteniendo token:", error));
+        }
+
+        // Escuchar mensajes en primer plano
+        messaging.onMessage(payload => {
+            console.log("Mensaje recibido:", payload);
+            alert(`Nuevo mensaje: ${payload.notification.title} - ${payload.notification.body}`);
+        });
+
+        // Registrar Service Worker
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/firebase-messaging-sw.js")
+            .then(registration => console.log("Service Worker registrado"))
+            .catch(error => console.error("Error registrando Service Worker:", error));
+        }
     </script>
 
 </body>
