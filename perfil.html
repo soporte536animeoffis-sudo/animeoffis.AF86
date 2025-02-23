@@ -118,7 +118,12 @@
         <li><a href="#" id="logout-link">Cerrar Sesión</a></li>
     </ul>
 </header>
-
+    
+<div class="solo-verificados" style="display: none;">
+    <p>Contenido exclusivo para usuarios verificados.</p>
+</div>
+    <a class="solo-verificados" style="display: none;" href="https://destiny-oficial.github.io/Nadaxd/">ver fandubs</a>
+    
 <h2>Perfil</h2>
 <div id="profile-photo-container">
     <img src="https://via.placeholder.com/120" alt="Foto de Usuario" id="profile-photo">
@@ -353,6 +358,25 @@ document.querySelectorAll('.background-option').forEach(background => {
         }
     });
 });
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            const userRef = firebase.firestore().collection('users').doc(user.uid);
+            userRef.get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    
+                    // Si el usuario está verificado, mostrar todos los elementos con la clase "solo-verificados"
+                    if (userData.verified === "creador" || userData.verified === "dora") {
+                        document.querySelectorAll('.solo-verificados').forEach(elemento => {
+                            elemento.style.display = 'block';
+                        });
+                    }
+                }
+            }).catch(error => {
+                console.error("Error al obtener los datos del usuario:", error);
+            });
+        }
+    });
 </script>
 </body>
 </html>
