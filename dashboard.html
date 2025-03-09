@@ -11,46 +11,34 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
             margin: 20px 0;
         }
 
-        .anime-grid {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .anime-grid img {
-            width: 100px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
+        /* Estilos del carrusel */
         .carousel {
-            width: 200%;
+            width: 100%;
             overflow: hidden;
             margin: 20px 0;
             position: relative;
+            display: flex;
+            justify-content: center;
         }
 
         .carousel-container {
             display: flex;
-            width: 300%;
+            gap: 10px;
             animation: slide 10s infinite linear;
         }
 
         .carousel img {
-    width: 150px; /* Cambia el ancho de las imágenes */
-    height: 100px; /* Cambia la altura de las imágenes */
-    object-fit: cover; /* Ajusta la imagen sin deformarla */
-    border-radius: 5px; /* Esquinas redondeadas */
-    margin: 0 5px; /* Espaciado entre imágenes */
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
         }
 
         @keyframes slide {
@@ -59,11 +47,40 @@
             100% { transform: translateX(0); }
         }
 
+        /* Sección de animes */
+        .anime-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+
+        .anime-grid a {
+            text-decoration: none;
+        }
+
+        .anime-grid img {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .anime-grid img:hover {
+            transform: scale(1.1);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .anime-grid img {
                 width: 80px;
                 height: 120px;
+            }
+            .carousel img {
+                width: 100px;
+                height: 70px;
             }
         }
     </style>
@@ -73,9 +90,9 @@
     <!-- Carrusel de inicio -->
     <div class="carousel">
         <div class="carousel-container">
-            <img src="fondo3.jpg" alt="Anime 1">
-            <img src="anime2.jpg" alt="Anime 2">
-            <img src="anime3.jpg" alt="Anime 3">
+            <a href="https://destiny-oficial.github.io/Nadaxd/takt.html"><img src="fondo3.jpg" alt="Anime 1"></a>
+            <a href="https://destiny-oficial.github.io/Nadaxd/black.html"><img src="anime2.jpg" alt="Anime 2"></a>
+            <a href="https://ejemplo.com/anime3"><img src="anime3.jpg" alt="Anime 3"></a>
         </div>
     </div>
 
@@ -84,27 +101,27 @@
         <section>
             <h2>Recientes</h2>
             <div class="anime-grid">
-                <img src="fondo4.jpg" alt="Anime Reciente">
-                <img src="fondo5.jpg" alt="Anime Reciente">
-                <img src="fondo1.jpg" alt="Anime Reciente">
+                <a href="https://ejemplo.com/anime4"><img src="fondo4.jpg" alt="Anime Reciente"></a>
+                <a href="https://ejemplo.com/anime5"><img src="fondo5.jpg" alt="Anime Reciente"></a>
+                <a href="https://ejemplo.com/anime6"><img src="fondo1.jpg" alt="Anime Reciente"></a>
             </div>
         </section>
 
         <section>
             <h2>Recomendados</h2>
             <div class="anime-grid">
-                <img src="js.jpg" alt="Anime Recomendado">
-                <img src="fondo3.jpg" alt="Anime Recomendado">
-                <img src="sj.jpg" alt="Anime Recomendado">
+                <a href="https://ejemplo.com/anime7"><img src="js.jpg" alt="Anime Recomendado"></a>
+                <a href="https://ejemplo.com/anime8"><img src="fondo3.jpg" alt="Anime Recomendado"></a>
+                <a href="https://ejemplo.com/anime9"><img src="sj.jpg" alt="Anime Recomendado"></a>
             </div>
         </section>
 
         <section>
             <h2>En Emisión</h2>
             <div class="anime-grid">
-                <img src="anime.jpeg" alt="Anime en Emisión">
-                <img src="anime1.jpeg" alt="Anime en Emisión">
-                <img src="anime2.jpg" alt="Anime en Emisión">
+                <a href="https://ejemplo.com/anime10"><img src="anime.jpeg" alt="Anime en Emisión"></a>
+                <a href="https://ejemplo.com/anime11"><img src="anime1.jpeg" alt="Anime en Emisión"></a>
+                <a href="https://ejemplo.com/anime12"><img src="anime2.jpg" alt="Anime en Emisión"></a>
             </div>
         </section>
     </div>
@@ -112,29 +129,11 @@
     <!-- Carrusel final -->
     <div class="carousel">
         <div class="carousel-container">
-            <img src="anime3.jpg" alt="Anime 13">
-            <img src="fondo1.jpg" alt="Anime 14">
-            <img src="anime5.jpeg" alt="Anime 15">
+            <a href="https://ejemplo.com/anime13"><img src="anime3.jpg" alt="Anime 13"></a>
+            <a href="https://ejemplo.com/anime14"><img src="fondo1.jpg" alt="Anime 14"></a>
+            <a href="https://ejemplo.com/anime15"><img src="anime5.jpeg" alt="Anime 15"></a>
         </div>
     </div>
-
-    <script>
-        // Carrusel automático
-        const carousels = document.querySelectorAll(".carousel-container");
-
-        carousels.forEach(carousel => {
-            let scrollAmount = 0;
-            function autoScroll() {
-                if (scrollAmount < carousel.scrollWidth - carousel.clientWidth) {
-                    scrollAmount += 2;
-                } else {
-                    scrollAmount = 0;
-                }
-                carousel.scrollLeft = scrollAmount;
-            }
-            setInterval(autoScroll, 50);
-        });
-    </script>
 
 </body>
 </html>
