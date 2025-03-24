@@ -32,27 +32,37 @@
         }
         #profile-photo-container {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             display: inline-block;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
         #profile-photo {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
             display: block;
         }
         .frame {
             position: absolute;
-            top: -10px;
-            left: -6px;
-            width: calc(100% + 20px);
-            height: calc(100% + 20px);
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
             border-radius: 50%;
+            border: 5px solid gold; /* Color de borde del marco */
             pointer-events: none;
-            display: none;
-            transform: scale(1.1); /* Marco pequeño */
+            display: none; /* Ocultamos inicialmente */
+        }
+         .photo-frame {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
         #verified-badge {
             margin-left: 10px;
@@ -73,58 +83,113 @@
         .ko-fi-button:hover {
             background-color: #e04848;
         }
-        #photo-frames {
-            display: flex;
-            gap: 10px;
-        }
-        .photo-frame {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #ccc;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .photo-frame:hover {
-            transform: scale(1.1);
-        }
-        #photo-frames-container {
-            display: none;
-        }
 
-        /* Estilos para los fondos */
-        #background-options {
-            display: flex;
-            gap: 10px;
-        }
+        /* Estilo para las opciones de fondos */
         .background-option {
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
+            width: 100px;
+            height: 100px;
             background-size: cover;
-            border: 2px solid #ccc;
-            transition: transform 0.3s;
+            display: inline-block;
+            margin: 5px;
+            cursor: pointer;
         }
-        .background-option:hover {
-            transform: scale(1.1);
-        }
+        .message-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: green;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .message-button:hover {
+        background-color: blue;
+    }
+    /* Estilo del botón sencillo */
+.upload-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #ccc;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+}
+
+.upload-button:hover {
+    background-color: #bbb;
+}
+
+/* Estilo para la vista previa de la foto de perfil */
+#profile-photo-container {
+    width: 150px;
+    height: 150px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profile-section {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.profile-section textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.profile-section button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-section button:hover {
+    background-color: #45a049;
+}
     </style>
 </head>
 <body>
 <header>
-    <img src="https://i.ibb.co/bZ793Q2/20250220-225128826.png" alt="Logo">
+    <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
     <ul class="menu">
         <li><a href="juegos.html">Minijuegos</a></li>
         <li><a href="perfil.html">Perfil</a></li>
         <li><a href="#" id="logout-link">Cerrar Sesión</a></li>
     </ul>
+    
 </header>
-    
-<div class="solo-verificados" style="display: none;">
-    <p>Contenido exclusivo para usuarios verificados.</p>
-</div>
-    <a class="solo-verificados" style="display: none;" href="https://destiny-oficial.github.io/Nadaxd/">ver fandubs</a>
-    
-<h2>Perfil</h2>
+
+<a href="dashboard.html">⬅️ dashboard</a>
+
 <div id="profile-photo-container">
     <img src="https://via.placeholder.com/120" alt="Foto de Usuario" id="profile-photo">
     <img src="frame1.png" alt="Marco 1" class="frame" id="frame1">
@@ -132,38 +197,34 @@
     <img src="frame3.png" alt="Marco 3" class="frame" id="frame3">
     <img src="frame4.png" alt="Marco 4" class="frame" id="frame4">
 </div>
-
+<label for="file-input" class="upload-button">Subir Foto de Perfil</label>
+<input type="file" id="file-input" accept="image/*" style="display: none;">
 <!-- Elementos de usuario -->
+<div class="profile-section">
+    <label for="bio">Acerca de mí</label>
+    <textarea id="bio" placeholder="Escribe algo sobre ti..."></textarea>
+    <button id="save-bio">Guardar biografía</button>
+</div>
+
 <p>
     <strong>Nombre:</strong> <span id="user-name">Cargando...</span>
     <img src="verif.png" id="verified-badge" style="display: none;" alt="Verificado">
 </p>
 
 <a href="verificación.html" target="_blank" class="ko-fi-button" id="verify-button">
-    Verifica tu cuenta con una insignia
+    Verifica tu cuenta con una insignia no disponible actualmente 
 </a>
 
 <p id="verified-badge-text">Verificando...</p>
-
-<input type="text" id="new-name" placeholder="Nuevo nombre">
-<button id="update-name" disabled>Actualizar Nombre</button>
-
+    
 <p><strong>Correo Electrónico:</strong> <span id="user-email">Cargando...</span></p>
-<input type="email" id="new-email" placeholder="Nuevo correo">
-<button id="update-email" disabled>Actualizar Correo</button>
 
 <p><strong>Fecha de Creación:</strong> <span id="user-registration-date">Cargando...</span></p>
 
-<input type="password" id="new-password" placeholder="Nueva contraseña">
-<button id="update-password" disabled>Actualizar Contraseña</button>
-
-<button id="delete-account" disabled>Eliminar Cuenta</button>
-<button id="logout-btn">Cerrar Sesión</button>
-
-<li><a href="dashboard.html">Regresar al dashboard</a></li>
+<a href="mensajeprv.html" class="message-button">Envía mensaje</a>
 
 <!-- Sección para elegir marcos de perfil -->
-<h3>Elige un marco para tu foto de perfil:</h3>
+<h3>Eres usuario BETA?:</h3>
 <div id="photo-frames-container">
     <div id="photo-frames">
         <img src="frame1.png" alt="Marco 1" class="photo-frame" data-frame="frame1">
@@ -181,7 +242,7 @@
     <div class="background-option" style="background-image: url('fondo3.jpg');" data-background="fondo3.jpg"></div>
     <div class="background-option" style="background-image: url('fondo4.jpg');" data-background="fondo4.jpg"></div>
     <div class="background-option" style="background-image: url('fondo5.jpg');" data-background="fondo5.jpg"></div>
-     <div class="background-option" style="background-image: url('fondo6.jpg');" data-background="fondo6.jpg"></div>
+    <div class="background-option" style="background-image: url('fondo6.jpg');" data-background="fondo6.jpg"></div>
 </div>
 </div>
 
@@ -191,108 +252,124 @@
 
 <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-        authDomain: "anime-offis.firebaseapp.com",
-        projectId: "anime-offis",
-        storageBucket: "anime-offis.appspot.com",
-        messagingSenderId: "377121993034",
-        appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
-    };
+    apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+    authDomain: "anime-offis.firebaseapp.com",
+    projectId: "anime-offis",
+    storageBucket: "anime-offis.appspot.com",
+    messagingSenderId: "377121993034",
+    appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+};
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const userIdFromUrl = urlParams.get('usuario');
+auth.onAuthStateChanged(user => {
+    if (user) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userIdFromUrl = urlParams.get('usuario');
 
-            let userIdToFetch = userIdFromUrl ? userIdFromUrl : user.uid;
+        let userIdToFetch = userIdFromUrl ? userIdFromUrl : user.uid;
 
-            const userRef = db.collection('users').doc(userIdToFetch);
-            userRef.get().then(doc => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    document.getElementById('user-name').textContent = userData.username;
-                    document.getElementById('user-email').textContent = userData.email;
-                    document.getElementById('user-registration-date').textContent = new Date(userData.registrationDate).toLocaleDateString();
-                    document.getElementById('profile-photo').src = userData.profilePhoto;
+        const userRef = db.collection('users').doc(userIdToFetch);
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                document.getElementById('user-name').textContent = userData.username;
+                document.getElementById('user-email').textContent = userData.email;
+                document.getElementById('user-registration-date').textContent = new Date(userData.registrationDate).toLocaleDateString();
+                document.getElementById('profile-photo').src = userData.profilePhoto;
 
-                    const verifiedBadge = document.getElementById('verified-badge');
-                    const verifyButton = document.getElementById('verify-button');
-                    const badgeTextElement = document.getElementById('verified-badge-text');
+                const verifiedBadge = document.getElementById('verified-badge');
+                const verifyButton = document.getElementById('verify-button');
+                const badgeTextElement = document.getElementById('verified-badge-text');
 
-                    let badgeSrc = "";
-                    let badgeText = "";
-                    let hasBadge = false;
+                let badgeSrc = "";
+                let badgeText = "";
+                let hasBadge = false;
 
-                    // Revisar si el usuario tiene una insignia
-                    if (userData.verified) {
-                        switch (userData.verified) {
-                            case "creador":
-                                badgeSrc = "crea.png";
-                                badgeText = "Verificado (tarjeta de diamante de creador ❄️)";
-                                break;
-                            case "dora":
-                                badgeSrc = "verif.png";
-                                badgeText = "✅ Verificado (premium)";
-                                break;
-                            case "azul":
-                                badgeSrc = "azul.png";
-                                badgeText = "✅ Verificado (fan Anime Offis)";
-                                break;
-                            case "verde":
-                                badgeSrc = "verde.png";
-                                badgeText = "✅ Verificado (fan básico)";
-                                break;
-                            default:
-                                badgeSrc = "verde.png";
-                                badgeText = "✅ Verificado";
-                        }
-                        verifiedBadge.src = badgeSrc;
-                        verifiedBadge.style.display = "inline";
-                        badgeTextElement.textContent = badgeText;
-                        hasBadge = true;
+                // Revisar si el usuario tiene una insignia
+                if (userData.verified) {
+                    switch (userData.verified) {
+                        case "creador":
+                            badgeSrc = "crea.png";
+                            badgeText = "Verificado (tarjeta de diamante de creador ❄️)";
+                            break;
+                            case "colaborador":
+                            badgeSrc = "cola.png";
+                            badgeText = "En colaboración con (Anime Offis)";
+                            break;
+                        case "aportador":
+                            badgeSrc = "aportador.png";
+                            badgeText = "⚡ Trabajador en Anime Offis (aportador)"; 
+                            break;
+                        case "soporte":
+                            badgeSrc = "soport.png";
+                            badgeText = "✅ trabajador de anime Offis (Soporte)";
+                            break;
+                        case "beta":
+                            badgeSrc = "beta.png";
+                            badgeText = "⚙️ usuario Beta Anime Offis";
+                            break;
+                        case "dora":
+                            badgeSrc = "verif.png";
+                            badgeText = "✅ Verificado (premium)";
+                            break;
+                        case "azul":
+                            badgeSrc = "azul.png";
+                            badgeText = "✅ Verificado (fan Anime Offis)";
+                            break;
+                        case "verde":
+                            badgeSrc = "verde.png";
+                            badgeText = "✅ Verificado (fan básico)";
+                            break;
+                        default:
+                            badgeSrc = "verde.png";
+                            badgeText = "✅ Verificado";
                     }
-
-                    if (!hasBadge) {
-                        badgeTextElement.textContent = "❌ No Verificado";
-                    }
-
-                    // Si el usuario ya tiene una insignia, oculta el botón de verificación
-                    if (hasBadge) {
-                        verifyButton.style.display = "none";
-                        // Mostrar la opción de elegir marcos solo si está verificado
-                        document.getElementById('photo-frames-container').style.display = 'block';
-                    } else {
-                        verifyButton.style.display = "inline-block";
-                        verifyButton.textContent = "Verifica tu cuenta con una insignia";
-                        document.getElementById('photo-frames-container').style.display = 'none';
-                    }
-
-                    // Mostrar el marco seleccionado al cargar la página
-                    const selectedFrame = userData.profileFrame;
-                    if (selectedFrame) {
-                        document.getElementById(selectedFrame).style.display = 'block';
-                    }
-
-                } else {
-                    document.getElementById('user-name').textContent = "Usuario no encontrado";
-                    document.getElementById('user-email').textContent = "";
-                    document.getElementById('user-registration-date').textContent = "";
-                    document.getElementById('profile-photo').src = "";
+                    verifiedBadge.src = badgeSrc;
+                    verifiedBadge.style.display = "inline";
+                    badgeTextElement.textContent = badgeText;
+                    hasBadge = true;
                 }
-            }).catch(error => {
-                console.error("Error al obtener datos del usuario:", error);
-                document.getElementById('user-name').textContent = "Error al cargar el perfil";
-            });
-        } else {
-            window.location.href = "login.html";
-        }
-    });
 
-   // Lógica para aplicar el marco a la foto de perfil
+                if (!hasBadge) {
+                    badgeTextElement.textContent = "❌ No Verificado";
+                }
+
+                // Si el usuario ya tiene una insignia, oculta el botón de verificación
+                if (hasBadge) {
+                    verifyButton.style.display = "none";
+                    // Mostrar la opción de elegir marcos solo si está verificado
+                    document.getElementById('photo-frames-container').style.display = 'block';
+                } else {
+                    verifyButton.style.display = "inline-block";
+                    verifyButton.textContent = "Verifica tu cuenta con una insignia (disponible el 20 de septiembre)";
+                    document.getElementById('photo-frames-container').style.display = 'none';
+                }
+
+                // Mostrar el marco seleccionado al cargar la página
+                const selectedFrame = userData.profileFrame;
+                if (selectedFrame) {
+                    document.getElementById(selectedFrame).style.display = 'block';
+                }
+
+            } else {
+                document.getElementById('user-name').textContent = "Usuario no encontrado";
+                document.getElementById('user-email').textContent = "";
+                document.getElementById('user-registration-date').textContent = "";
+                document.getElementById('profile-photo').src = "";
+            }
+        }).catch(error => {
+            console.error("Error al obtener datos del usuario:", error);
+            document.getElementById('user-name').textContent = "Error al cargar el perfil";
+        });
+    } else {
+        window.location.href = "login.html";
+    }
+});
+
+// Lógica para aplicar el marco a la foto de perfil
 document.querySelectorAll('.photo-frame').forEach(frame => {
     frame.addEventListener('click', function() {
         const selectedFrame = this.getAttribute('data-frame');
@@ -305,37 +382,23 @@ document.querySelectorAll('.photo-frame').forEach(frame => {
         // Mostrar el marco correspondiente
         document.getElementById(selectedFrame).style.display = 'block';
 
-        // Guardar la selección del marco en Firestore
+        // Verificar si el usuario es el dueño del perfil
         const user = firebase.auth().currentUser;
         if (user) {
             const userRef = db.collection('users').doc(user.uid);
-            userRef.update({
-                profileFrame: selectedFrame // Guardar el marco seleccionado en Firestore
-            }).then(() => {
-                console.log('Marco actualizado correctamente');
-            }).catch(error => {
-                console.error("Error al guardar el marco:", error);
+            userRef.get().then(doc => {
+                if (doc.exists && doc.id === user.uid) {  // Verificar que el perfil pertenece al usuario autenticado
+                    userRef.update({
+                        profileFrame: selectedFrame // Guardar el marco seleccionado en Firestore
+                    }).then(() => {
+                        console.log('Marco actualizado correctamente');
+                    }).catch(error => {
+                        console.error("Error al guardar el marco:", error);
+                    });
+                }
             });
         }
     });
-});
-auth.onAuthStateChanged(user => {
-    if (user) {
-        const userRef = db.collection('users').doc(user.uid);
-
-        userRef.get().then(doc => {
-            if (doc.exists) {
-                const userData = doc.data();
-
-                // Aplicar el fondo guardado desde Firestore
-                if (userData.profileBackground) {
-                    document.body.style.backgroundImage = `url('${userData.profileBackground}')`;
-                }
-            }
-        }).catch(error => {
-            console.error("Error al obtener datos del usuario:", error);
-        });
-    }
 });
 
 // Lógica para cambiar el fondo y guardarlo en Firestore
@@ -344,39 +407,105 @@ document.querySelectorAll('.background-option').forEach(background => {
         const selectedBackground = this.getAttribute('data-background');
         document.body.style.backgroundImage = `url('${selectedBackground}')`;
 
-        // Guardar en Firestore
+        // Verificar si el usuario es el dueño del perfil
         const user = firebase.auth().currentUser;
         if (user) {
             const userRef = db.collection('users').doc(user.uid);
-            userRef.update({
-                profileBackground: selectedBackground
-            }).then(() => {
-                console.log('Fondo actualizado correctamente');
-            }).catch(error => {
-                console.error("Error al guardar el fondo:", error);
+            userRef.get().then(doc => {
+                if (doc.exists && doc.id === user.uid) {  // Verificar que el perfil pertenece al usuario autenticado
+                    userRef.update({
+                        profileBackground: selectedBackground
+                    }).then(() => {
+                        console.log('Fondo actualizado correctamente');
+                    }).catch(error => {
+                        console.error("Error al guardar el fondo:", error);
+                    });
+                }
             });
         }
     });
 });
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-            const userRef = firebase.firestore().collection('users').doc(user.uid);
-            userRef.get().then(doc => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    
-                    // Si el usuario está verificado, mostrar todos los elementos con la clase "solo-verificados"
-                    if (userData.verified === "creador" || userData.verified === "dora") {
-                        document.querySelectorAll('.solo-verificados').forEach(elemento => {
-                            elemento.style.display = 'block';
-                        });
-                    }
+
+// Obtener el input de archivo y la imagen de perfil
+const fileInput = document.getElementById('file-input');
+const profilePhoto = document.getElementById('profile-photo');
+
+// Tu API Key de imgBB
+const apiKey = '5b0931fc3792f2069b046ef7eed268da';
+
+// Lógica para manejar la carga de la foto
+fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        // Hacer la solicitud a imgBB para subir la imagen
+        fetch('https://api.imgbb.com/1/upload?key=' + apiKey, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Obtener la URL de la imagen subida
+                const imageUrl = data.data.url;
+
+                // Mostrar la imagen en el perfil
+                profilePhoto.src = imageUrl;
+
+                // Verificar si el usuario es el dueño del perfil
+                const user = firebase.auth().currentUser;
+                if (user) {
+                    const userRef = db.collection('users').doc(user.uid);
+                    userRef.get().then(doc => {
+                        if (doc.exists && doc.id === user.uid) {  // Verificar que el perfil pertenece al usuario autenticado
+                            userRef.update({
+                                profilePhoto: imageUrl
+                            }).then(() => {
+                                console.log('Foto de perfil actualizada correctamente');
+                            }).catch(error => {
+                                console.error("Error al actualizar la foto de perfil:", error);
+                            });
+                        }
+                    });
                 }
-            }).catch(error => {
-                console.error("Error al obtener los datos del usuario:", error);
-            });
+            } else {
+                console.error('Error al subir la imagen', data.error.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar la imagen a imgBB:', error);
+        });
+    }
+});
+// Función para cargar la biografía del usuario desde Firestore
+function loadBio() {
+    const user = firebase.auth().currentUser;
+    const urlParams = new URLSearchParams(window.location.search);
+    const userIdFromUrl = urlParams.get('usuario'); // Obtener el userId de la URL si existe
+    const userIdToFetch = userIdFromUrl ? userIdFromUrl : user?.uid;
+
+    // Si no hay userId en la URL ni el usuario autenticado, no cargamos nada
+    if (!userIdToFetch) return;
+
+    const userRef = db.collection('users').doc(userIdToFetch);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            const userData = doc.data();
+            // Mostrar la biografía del usuario
+            if (userData.bio) {
+                document.getElementById('bio').value = userData.bio;
+            } else {
+                document.getElementById('bio').value = "Amante del anime con Anime Offis......";
+            }
         }
+    }).catch(error => {
+        console.error("Error al obtener la biografía:", error);
     });
+}
+
+// Llamar a la función para cargar la biografía cuando la página cargue
+window.onload = loadBio;
 </script>
-</body>
-</html>
