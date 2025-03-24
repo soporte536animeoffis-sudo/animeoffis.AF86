@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos anteriores... */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #075e54;
+            padding: 10px 20px;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        #chat-container {
+            display: flex;
+            flex-grow: 1;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            width: 100%;
+        }
+        #user-list {
+            width: 250px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f1f1f1;
+            overflow-y: auto;
+            margin-right: 20px;
+        }
+        .user-item {
+            padding: 8px;
+            margin: 5px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .user-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .user-item:hover {
+            background-color: #f0f0f0;
+        }
+        .user-item.selected {
+            background-color: #b2dfdb;
+        }
+        .user-item .unread-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: green;
+            margin-left: 10px;
+        }
+        #chat-box {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #chat-header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #075e54;
+            color: white;
+            font-size: 18px;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        #chat-header img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        #chat-header #back-button {
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            background-color: transparent;
+            border: none;
+        }
+        #messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #dcf8c6;
+            width: fit-content;
+            max-width: 80%;
+        }
+        .message.sent {
+            background-color: #ffffff;
+            margin-left: auto;
+        }
+        .message.received {
+            background-color: #dcf8c6;
+        }
+        #message-input {
+            padding: 10px;
+            border: none;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        #send-button {
+            background-color: #25d366;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #send-button:hover {
+            background-color: #128c7e;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <span>Chat</span>
+    <button id="logout-button">Cerrar Sesión</button>
+</header>    
+
+<div id="chat-container">
+    <div id="user-list"></div>
+    
+    
+    <div id="chat-box" style="display:none;">
+        <div id="chat-header">
+            
+            
+            <img id="chat-user-img" src="https://via.placeholder.com/45" alt="Foto de usuario">
+            
+            <span id="chat-user-name">Selecciona un usuario</span>
+            <span id="chat-date"></span>
+            <button id="back-button" style="display:none;">⬅️Volver a la lista</button>
+            
+        </div>
+        <div id="messages"></div>
+        <input type="text" id="message-input" placeholder="Escribe un mensaje..." disabled>
+        <button id="send-button" disabled>Enviar</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+        authDomain: "anime-offis.firebaseapp.com",
+        projectId: "anime-offis",
+        storageBucket: "anime-offis.appspot.com",
+        messagingSenderId: "377121993034",
+        appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Función que se ejecuta cuando cambia el estado de autenticación
+    auth.onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        } else {
+            initializeChat(user);
+        }
+    });
+
+    // Función para inicializar el chat
+    function initializeChat(user) {
+        // Mostrar la lista de usuarios
+        showUserList(user);
+
+        // Función para enviar mensajes
+        document.getElementById("send-button").addEventListener("click", () => sendMessage(user));
+        document.getElementById("message-input").addEventListener("keypress", function(event) {
+            if (event.key === 'Enter') {
+                sendMessage(user);
+            }
+        });
+    }
+
+    function sendMessage(user) {
+        const message = document.getElementById("message-input").value.trim();
+        const toUser = document.querySelector('.user-item.selected');
+        if (message && toUser) {
+            const toUserId = toUser.getAttribute('data-id');
+            const messageData = {
+                text: message,
+                from: user.uid,
+                to: toUserId,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                read: false
+            };
+            db.collection('chats').add(messageData)
+                .then(() => {
+                    document.getElementById("message-input").value = '';
+                });
+        } else {
+            alert("Por favor, selecciona un usuario para enviar el mensaje.");
+        }
+    }
+
+    // Función para mostrar mensajes
+    function loadChatMessages(user, toUserId) {
+        const messagesDiv = document.getElementById("messages");
+
+        // Consulta para obtener los mensajes enviados por el usuario
+        const sentMessagesQuery = db.collection('chats')
+            .where("from", "==", user.uid)
+            .where("to", "==", toUserId)
+            .orderBy('timestamp');
+
+        // Consulta para obtener los mensajes recibidos por el usuario
+        const receivedMessagesQuery = db.collection('chats')
+            .where("from", "==", toUserId)
+            .where("to", "==", user.uid)
+            .orderBy('timestamp');
+
+        // Obtener los mensajes de ambas consultas
+        Promise.all([
+            sentMessagesQuery.get(),
+            receivedMessagesQuery.get()
+        ]).then(([sentSnapshot, receivedSnapshot]) => {
+            const allMessages = [];
+
+            // Agregar los mensajes enviados
+            sentSnapshot.forEach(doc => {
+                const messageData = doc.data();
+                allMessages.push({ ...messageData, fromSent: true });
+            });
+
+            // Agregar los mensajes recibidos
+            receivedSnapshot.forEach(doc => {
+                const messageData = doc.data();
+                allMessages.push({ ...messageData, fromSent: false });
+            });
+
+            // Ordenar todos los mensajes por timestamp
+            allMessages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+
+            // Limpiar los mensajes anteriores
+            messagesDiv.innerHTML = '';
+
+            // Mostrar los mensajes
+            allMessages.forEach(messageData => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(messageData.fromSent ? 'sent' : 'received');
+
+                if (!messageData.read) {
+                    messageDiv.classList.add('unread');
+                }
+
+                messageDiv.textContent = messageData.text;
+                messagesDiv.appendChild(messageDiv);
+            });
+
+            // Desplazarse al último mensaje
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Marcar los mensajes como leídos
+            markMessagesAsRead(user, toUserId);
+        }).catch(error => {
+            console.error("Error al cargar los mensajes: ", error);
+        });
+    }
+
+    function markMessagesAsRead(user, toUserId) {
+        const chatQuery = db.collection('chats')
+            .where("from", "==", toUserId)
+            .where("to", "==", user.uid)
+            .where("read", "==", false);
+
+        chatQuery.get().then(snapshot => {
+            snapshot.forEach(doc => {
+                doc.ref.update({
+                    read: true
+                });
+            });
+        });
+    }
+
+    function showUserList(user) {
+        const userListDiv = document.getElementById("user-list");
+        userListDiv.innerHTML = ""; // Limpiar la lista antes de agregar usuarios
+
+        db.collection('users').get().then(snapshot => {
+            snapshot.forEach(doc => {
+                const userData = doc.data();
+                if (user.uid === doc.id) return;
+
+                const userDiv = document.createElement('div');
+                userDiv.classList.add('user-item');
+                userDiv.setAttribute('data-id', doc.id);
+                userDiv.setAttribute('data-name', userData.username);
+                userDiv.setAttribute('data-photo', userData.profilePhoto || 'https://via.placeholder.com/40');
+
+                // Imagen de perfil y nombre de usuario
+                userDiv.innerHTML = `
+                    <img src="${userData.profilePhoto || 'https://via.placeholder.com/40'}" alt="Foto de usuario"> 
+                    ${userData.username}
+                `;
+
+                userDiv.addEventListener('click', () => selectUser(userDiv, user));
+                userListDiv.appendChild(userDiv);
+            });
+        });
+    }
+
+    function selectUser(userDiv, user) {
+        document.querySelectorAll('.user-item').forEach(u => u.classList.remove('selected'));
+        userDiv.classList.add('selected');
+
+        const toUserId = userDiv.getAttribute('data-id');
+        const toUserName = userDiv.getAttribute('data-name');
+        const toUserPhoto = userDiv.getAttribute('data-photo');
+
+        // Limpiar el chat antes de mostrar un nuevo usuario
+        document.getElementById("chat-user-name").textContent = toUserName;
+        document.getElementById("chat-user-img").src = toUserPhoto;
+        document.getElementById("chat-date").textContent = new Date().toLocaleString();
+
+        document.getElementById("message-input").disabled = false;
+        document.getElementById("send-button").disabled = false;
+
+        // Mostrar el chat y ocultar la lista de usuarios
+        document.getElementById("user-list").style.display = 'none';
+        document.getElementById("chat-box").style.display = 'block';
+
+        // Mostrar el botón para regresar a la lista
+        document.getElementById("back-button").style.display = 'inline-block';
+
+        // Cargar los mensajes entre el usuario y el usuario seleccionado
+        loadChatMessages(user, toUserId);
+    }
+
+    document.getElementById("back-button").addEventListener("click", () => {
+        // Limpiar el contenido del chat cuando regreses a la lista
+        document.getElementById("chat-user-name").textContent = "Selecciona un usuario";
+        document.getElementById("chat-user-img").src = "https://via.placeholder.com/45";
+        document.getElementById("chat-date").textContent = "";
+
+        // Volver a mostrar la lista de usuarios y ocultar el chat
+        document.getElementById("user-list").style.display = 'block';
+        document.getElementById("chat-box").style.display = 'none';
+
+        // Ocultar el botón de regresar
+        document.getElementById("back-button").style.display = 'none';
+    });
+
+    document.getElementById("logout-button").addEventListener("click", () => {
+        auth.signOut().then(() => {
+            window.location.href = "login.html";
+        });
+    });
+
+</script>
+
+</body>
+</html>
