@@ -139,11 +139,9 @@
 <body>
     
     <header>
-        <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
+        <img src="offis.png" alt="Logo">
         <ul class="menu">
-            <li><a href="juegos.html" id="juegos-link">Minijuegos</a></li>
-            <li><a href="perfil.html" id="profile-link">Perfil</a></li>
-            <li><a href="logout.html" id="logout-link">Cerrar Sesión</a></li>
+            <li><a href="parche.html" id="juegos-link">nuevo parche v1.2</a></li>
             <li><a href="#" id="agregar-link">Descargar la App</a></li>
         </ul>
         <button class="menu-toggle">&#9776;</button>
@@ -154,14 +152,27 @@
         <a href="https://destiny-oficial.github.io/mangas-offis/">Mangas</a>
         <a href="https://destiny-oficial.github.io/Novel-offis/">Novelas</a>
         <a href="https://destiny-oficial.github.io/hentai-offis/">Hentai</a>
-        <a href="juegos.html">Juegos</a>
+        <a href="https://destiny-oficial.github.io/Games/index.html">Juegos</a>
         <a href="perfil.html">Perfil</a>
         <a href="logout.html">Cerrar Sesión</a>
+        <a href="mensajeprv.html">mandar mensajes</a>
+        <a href="meli.html">fandubs exclusivos Meli </a>
     </div>
 
     <div class="overlay"></div>
 
     <h1>Bienvenido a Animes Offis ❄️</h1>
+    
+      <!-- Búsqueda de usuarios -->
+<section class="search-users">
+    <input type="text" id="search-user-input" placeholder="nombre de usuario a buscar...">
+    <button id="search-user-btn">Buscar</button>
+</section>
+<section class="search-users-results">
+    <h2>Usuarios Encontrados</h2>
+    <ul id="user-results-list"></ul>
+</section>
+    
     <img src="welcome.png" alt="Foto de bienvenida" width="90%">
 
     <div class="section">
@@ -171,6 +182,7 @@
             <img src="anime2.jpg" alt="Anime 2">
             <img src="anime3.jpeg" alt="Anime 3">
             <img src="anime4.jpeg" alt="Anime 4">
+            <a href="https://destiny-oficial.github.io/Nadaxd/dashboard.html">ver mas</a>
         </div>
     </div>
 
@@ -187,10 +199,10 @@
     <div class="section">
         <h2>Novelas Ligeras</h2>
         <div class="carousel">
-            <img src="novela1.png" alt="Novela 1">
+            <img src="novela5.jpg" alt="Novela 1">
             <img src="novela2.jpg" alt="Novela 2">
-            <img src="novela3.jpeg" alt="Novela 3">
-            <img src="novela4.png" alt="Novela 4">
+            <img src="novela3.jpg" alt="Novela 3">
+            <img src="novela4.jpg" alt="Novela 4">
         </div>
     </div>
 
@@ -207,33 +219,58 @@
     <div class="section">
         <h2>Síguenos en redes sociales</h2>
         <div class="social-links">
-            <a href="#">Facebook</a>
-            <a href="#">TikTok</a>
-            <a href="#">X (Twitter)</a>
-            <a href="#">Instagram</a>
-            <a href="#">Telegram</a>
-            <a href="#">WhatsApp</a>
+            <a href="https://www.facebook.com/profile.php?id=61574369782208">Facebook</a>
+            <a href="https://www.tiktok.com/@destiny_3361?_t=ZM-8uo7DyShmFj&_r=1">TikTok</a>
+            <a href="https://x.com/SergioY25444970?t=6LgYSoR4CHOqvRu_xT1tAw&s=09">X (Twitter)</a>
+            <a href="https://www.instagram.com/animeoffis?igsh=MWZiNml6OTZ2bjc5NQ==">Instagram</a>
+            <a href="https://t.me/destinyoficial33661">Telegram</a>
+            <a href="https://whatsapp.com/channel/0029VaIfUfHBPzjXBdYXPA0C">WhatsApp</a>
+            <a href="https://chat.whatsapp.com/FuyPmdVf0VT6XWaokIerWs">Grupo de soporte</a>
         </div>
     </div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <div class="section">
         <h2>Trabajadores y Contribuyentes</h2>
         <div class="workers">
             <div class="worker">
-                <img src="persona1.jpg" alt="Persona 1">
-                <p>Persona 1</p>
+                <img src="https://i.ibb.co/TMRz7834/1001708929.jpg" alt="Destiny Oficial">
+                <p>Destiny Oficial<br>creador(a).</p>
             </div>
             <div class="worker">
-                <img src="persona2.jpg" alt="Persona 2">
-                <p>Persona 2</p>
+                <img src="https://i.ibb.co/67xCXVth/images-20.jpg" alt="Jonathan">
+                <p>Jonathan</p>
             </div>
             <div class="worker">
-                <img src="persona3.jpg" alt="Persona 3">
-                <p>Persona 3</p>
+                <img src="https://i.ibb.co/rRSKnmFs/IMG-20250216-WA0027.jpg" alt="Josué (rem56)">
+                <p>Josue (rem56)</p>
             </div>
             <div class="worker">
-                <img src="persona4.jpg" alt="Persona 4">
-                <p>Persona 4</p>
+                <img src="https://i.ibb.co/k2HCPYqd/1742400066396.jpg" alt="JD anime latino">
+                <p>JD Anime latino</p>
+            </div>
+            <div class="worker">
+                <img src="https://i.ibb.co/Lz69NvNg/IMG-20250222-WA0128.jpg" alt="Kiyotaka">
+                <p>Kiyotaka</p>
+            </div>
+            <div class="worker">
+                <img src="https://i.ibb.co/tT283k3K/1742400162660.jpg" alt="Meli studio">
+                <p>Meli studio</p>
+            </div>
+            <div class="worker">
+                <img src="https://i.ibb.co/twmMtX2v/64f708716f82.jpg" alt="pablo">
+                <p>pablo</p>
+            </div>
+            <div class="worker">
+                <img src="https://postimage.me/images/2025/02/06/IMG-20250123-WA0127.jpg" alt="kitten gift">
+                <p>kitten</p>
+            </div>
+            <div class="worker">
+                <img src="https://i.ibb.co/ZzHT7FKz/1742632154389.jpg" alt="Martinez Javier">
+                <p>Javier</p>
             </div>
         </div>
     </div>
@@ -256,6 +293,60 @@
             sidebar.classList.remove('show');
             overlay.classList.remove('show');
         });
+        // Búsqueda de usuarios en Firestore
+    const firebaseConfig = {
+        apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+        authDomain: "anime-offis.firebaseapp.com",
+        projectId: "anime-offis",
+        storageBucket: "anime-offis.appspot.com",
+        messagingSenderId: "377121993034",
+        appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Evento para realizar la búsqueda de usuarios
+    document.getElementById("search-user-btn").addEventListener("click", function () {
+        let searchQuery = document.getElementById("search-user-input").value.toLowerCase();
+        let userResultsList = document.getElementById("user-results-list");
+        userResultsList.innerHTML = ""; // Limpiar resultados anteriores
+
+        if (searchQuery === "") {
+            return; // No hacer nada si no hay texto en la búsqueda
+        }
+
+        // Recorrer todos los documentos de la colección 'users'
+        db.collection("users")
+            .get()  // Obtiene todos los documentos dentro de la colección 'users'
+            .then((querySnapshot) => {
+                let foundUsers = false;
+
+                querySnapshot.forEach((doc) => {
+                    let userData = doc.data();
+                    // Verificar si el 'username' contiene el término de búsqueda
+                    if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
+                        foundUsers = true;
+                        let li = document.createElement("li");
+                        li.textContent = userData.username + " - " + userData.email;
+                        li.addEventListener("click", function () {
+                            // Verificar que el doc.id es el correcto
+                            console.log("Redirigiendo al perfil del usuario con ID: ", doc.id);
+                            window.location.href = `perfil.html?usuario=${doc.id}`; // Redirigir con el ID del usuario encontrado
+                        });
+                        userResultsList.appendChild(li);
+                    }
+                });
+
+                if (!foundUsers) {
+                    userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
+                }
+            })
+            .catch((error) => {
+                console.error("Error al buscar usuarios:", error);
+                userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
+            });
+    });
     </script>
 
 </body>
