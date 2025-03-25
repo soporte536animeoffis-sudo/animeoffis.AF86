@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parches de Actualización | Anime Offis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .sidebar {
+            width: 30%;
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .sidebar button {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: none;
+            background: #495057;
+            color: white;
+            cursor: pointer;
+            text-align: left;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .sidebar button:hover {
+            background: #6c757d;
+        }
+        .content {
+            width: 70%;
+            padding: 20px;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+        .content h2 {
+            color: #007bff;
+        }
+        .content a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .content a:hover {
+            text-decoration: underline;
+        }
+        .update-date {
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Historial de Parches</h2>
+        <button onclick="mostrarParche(1)">Parche 1.0 - Nueva Versión</button>
+    </div>
+
+    <div class="content" id="parche-info">
+        <h2>Descubre las novedades en <strong>Anime Offis</strong></h2>
+        <p>Haz clic en un parche para ver su información detallada.</p>
+    </div>
+
+    <script>
+        const parches = {
+            1: { 
+                titulo: "Parche 1.0 - Nueva Versión",
+                descripcion: `
+                    <p class="update-date"><strong>Fecha de actualización:</strong> 25 de marzo de 2025</p>
+                    <h3>Mejoras y correcciones:</h3>
+                    <ul>
+                        <li>Corrección de errores y optimización del rendimiento.</li>
+                        <li>Actualización de los <a href="términos.html">Términos y Condiciones</a>.</li>
+                        <li>Actualización de la <a href="política.html">Política de Privacidad</a> para mayor transparencia.</li>
+                        <li>Optimización del <a href="perfil.html">Perfil</a>, eliminando elementos innecesarios.</li>
+                        <li>Nuevo diseño en el Dashboard con fondo oscuro y barra de navegación superior.</li>
+                    </ul>
+                    
+                    <h3>Nuevas funciones:</h3>
+                    <ul>
+                        <li>Visualización gratuita de animes sin suscripción.</li>
+                        <li>Sección de novelas en Anime Offis (disponible entre el 28 y 30 de marzo).</li>
+                        <li>Próximamente: Sección de mangas (28 de marzo - 5 de abril).</li>
+                        <li>Próximamente: Sección de contenido para adultos (10-20 de abril).</li>
+                        <li>Nueva función de <a href="mensajeprv.html">mensajería privada</a> para contactar a creadores de contenido.</li>
+                    </ul>
+
+                    <h3>Mejoras en el perfil:</h3>
+                    <ul>
+                        <li>Corrección del error al subir una foto de perfil.</li>
+                        <li>Ahora puedes añadir una descripción a tu perfil (por defecto: "Amante del anime con Anime Offis").</li>
+                    </ul>
+
+                    <p>¡Sigue atento a más actualizaciones y mejoras en Anime Offis!</p>
+                `
+            }
+        };
+
+        function mostrarParche(id) {
+            const info = parches[id];
+            document.getElementById("parche-info").innerHTML = `
+                <h2>${info.titulo}</h2>
+                ${info.descripcion}
+            `;
+        }
+    </script>
+
+</body>
+</html>
