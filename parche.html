@@ -60,6 +60,10 @@
             font-size: 14px;
             color: #6c757d;
         }
+        .update-list {
+            list-style-type: disc; /* Use disc bullet points */
+            margin-left: 20px; /* Indent list items */
+        }
     </style>
 </head>
 <body>
@@ -67,6 +71,7 @@
     <div class="sidebar">
         <h2>Historial de Parches</h2>
         <button onclick="mostrarParche(1)">Parche 1.0 - Nueva Versión</button>
+        <button onclick="mostrarParche(2)">Parche 2.0 - Actualización Invernal</button>
     </div>
 
     <div class="content" id="parche-info">
@@ -81,7 +86,7 @@
                 descripcion: `
                     <p class="update-date"><strong>Fecha de actualización:</strong> 25 de marzo de 2025</p>
                     <h3>Mejoras y correcciones:</h3>
-                    <ul>
+                    <ul class="update-list">
                         <li>Corrección de errores y optimización del rendimiento.</li>
                         <li>Actualización de los <a href="términos.html">Términos y Condiciones</a>.</li>
                         <li>Actualización de la <a href="política.html">Política de Privacidad</a> para mayor transparencia.</li>
@@ -90,7 +95,7 @@
                     </ul>
                     
                     <h3>Nuevas funciones:</h3>
-                    <ul>
+                    <ul class="update-list">
                         <li>Visualización gratuita de animes sin suscripción.</li>
                         <li>Sección de novelas en Anime Offis (disponible entre el 28 y 30 de marzo).</li>
                         <li>Próximamente: Sección de mangas (28 de marzo - 5 de abril).</li>
@@ -99,12 +104,31 @@
                     </ul>
 
                     <h3>Mejoras en el perfil:</h3>
-                    <ul>
+                    <ul class="update-list">
                         <li>Corrección del error al subir una foto de perfil.</li>
                         <li>Ahora puedes añadir una descripción a tu perfil (por defecto: "Amante del anime con Anime Offis").</li>
                     </ul>
 
                     <p>¡Sigue atento a más actualizaciones y mejoras en Anime Offis!</p>
+                `
+            },
+            2: {
+                titulo: "Parche 2.0 - Actualización Invernal",
+                descripcion: `
+                    <p class="update-date"><strong>Fecha de inicio:</strong> 30 de mayo de 2025, 12:30 horas (México)</p>
+                    <h3>Nuevas funciones:</h3>
+                    <ul class="update-list">
+                        <li>Tu correo electrónico ya no se mostrará públicamente.</li>
+                        <li><a href="#">Nueva sección</a> para publicar momentos inolvidables de animes/mangas y fanarts.</li>
+                        <li>Ajustes para modificar tu perfil y cuenta.</li>
+                        <li>Nuevos diseños en <a href="#">login</a> y <a href="#">registro</a>; ahora puedes ver tu contraseña al momento de ponerla.</li>
+                        <li>Se agregó el correo electrónico al juego <a href="#">Flirting Star</a>.</li>
+                    </ul>
+                    <h3>Cambios importantes:</h3>
+                    <ul class="update-list">
+                        <li>Cierre de la sección de animes y hentai.</li>
+                        <li> Estamos trabajando para conseguir o crea un proveedor para los animes</li>
+                    </ul>
                 `
             }
         };
