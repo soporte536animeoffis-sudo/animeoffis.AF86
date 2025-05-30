@@ -1,130 +1,280 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <style>
-        /* Fondo */
-        body {
-            background: url('fondo6.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: white;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro Neko</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    body {
+      background: url("https://i.ibb.co/k22CRR82/Nyaa-Nekopara-GIF-Nyaa-Nekopara-Discover-Share-GIFs.gif") no-repeat center center fixed;
+      background-size: cover;
+      font-family: "Poppins", sans-serif;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* Contenedor del formulario */
-        .register-container {
-            background-color: rgba(0, 0, 0, 0.8);
-            max-width: 350px;
-            margin: 100px auto;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
+    .register-container {
+      background-color: rgba(30, 30, 60, 0.85);
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px 25px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(200, 132, 255, 0.5);
+      animation: fadeIn 1s ease-in-out;
+    }
 
-        /* Imagen de perfil */
-        .profile-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        /* Campos de entrada */
-        input {
-            font-size: 16px;
-            padding: 10px;
-            margin: 10px 0;
-            width: 90%;
-            border: none;
-            border-radius: 5px;
-            display: block;
-        }
+    .profile-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 3px solid #c084fc;
+    }
 
-        /* Botón de registro */
-        .btn-register {
-            background-color: #c084fc;
-            color: white;
-            font-size: 16px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-        }
+    input {
+      font-size: 16px;
+      padding: 12px;
+      margin: 10px 0;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background-color: #f3e8ff;
+      color: #333;
+      outline: none;
+    }
 
-        .btn-register:hover {
-            background-color: #a46ae3;
-        }
+    input::placeholder {
+      color: #666;
+    }
 
-        /* Pie de página */
-        .footer {
-            margin-top: 10px;
-            font-size: 12px;
-            color: gray;
-        }
-    </style>
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+    }
+
+    .btn-register {
+      background-color: #e879f9;
+      color: white;
+      font-size: 16px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn-register:hover {
+      background-color: #c084fc;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    /* --- Aquí el estilo para la gatita con globo --- */
+    .neko-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: rgba(255 255 255 / 0.1);
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #a66cff;
+    }
+    .neko-img {
+      width: 80px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 0 8px #a66cff;
+    }
+    .speech-bubble {
+      position: relative;
+      background: #a66cff;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 20px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -15px;
+      transform: translateY(-50%);
+      border: 10px solid transparent;
+      border-right-color: #a66cff;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="register-container">
-        <img src="https://i.ibb.co/bZ793Q2/20250220-225128826.png" class="profile-img" alt="Perfil">
-        <form id="register-form">
-            <input type="text" id="name" placeholder="Nombre" required>
-            <input type="email" id="email" placeholder="Correo electrónico" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            <button type="submit" class="btn-register">Registrarse</button>
-        </form>
-        <p class="footer">Plerodáctilo© 2015 - 2025</p>
+  <div class="register-container">
+    <!-- Gatita con globo -->
+    <img
+      src="https://i.ibb.co/bZ793Q2/20250220-225128826.png"
+      class="profile-img"
+      alt="Perfil Neko"
+    />
+    <div class="neko-container">
+      <img
+        src="https://images.steamusercontent.com/ugc/358399429473582778/4FA9E892C9C6484BE81F959914339423C84BCC98/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
+        alt="Gatita Neko"
+        class="neko-img"
+      />
+      <div class="speech-bubble">Nya~</div>
     </div>
+    <form id="register-form">
+      <input type="text" id="name" placeholder="Nombre Neko" required />
+      <input type="email" id="email" placeholder="Correo Neko" required />
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+      <div class="password-container">
+        <input
+          type="password"
+          id="password"
+          placeholder="Contraseña Nya~"
+          required
+        />
+        <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+      </div>
 
-    <script>
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-            authDomain: "anime-offis.firebaseapp.com",
-            projectId: "anime-offis",
-            storageBucket: "anime-offis.appspot.com",
-            messagingSenderId: "377121993034",
-            appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
-        };
+      <button type="submit" class="btn-register">Registrarse</button>
+    </form>
+    <p class="footer">AnimeOffis © 2015 - 2025 | Neko Powered</p>
+  </div>
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+  <!-- Audios -->
+  <audio id="sound-welcome" src="welcome.mp3" preload="auto"></audio>
+  <audio id="sound-miau" src="miau.mp3" preload="auto"></audio>
 
-        document.getElementById("register-form").addEventListener("submit", function (event) {
-            event.preventDefault();
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    return db.collection("users").doc(user.uid).set({
-                        username: name,
-                        email: email,
-                        registrationDate: new Date().toISOString(),
-                        profilePhoto: "https://via.placeholder.com/120",
-                        verified: false
-                    });
-                })
-                .then(() => {
-                    alert("Registro exitoso. Redirigiendo al perfil...");
-                    window.location.href = "perfil.html";
-                })
-                .catch(error => {
-                    console.error("Error en el registro:", error.message);
-                    alert("Error en el registro: " + error.message);
-                });
+  <!-- Todo el HTML es igual, solo actualizamos el <script> final -->
+<script>
+  // Configuración Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+    authDomain: "anime-offis.firebaseapp.com",
+    projectId: "anime-offis",
+    storageBucket: "anime-offis.appspot.com",
+    messagingSenderId: "377121993034",
+    appId: "1:377121993034:web:a4ba7995e827bcbea411b3",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  const soundWelcome = document.getElementById("sound-welcome");
+  const soundMiau = document.getElementById("sound-miau");
+
+  // Registro con verificación de correo
+  document
+    .getElementById("register-form")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          // Enviar correo de verificación
+          return user.sendEmailVerification().then(() => {
+            // Guardar en Firestore
+            return db.collection("users").doc(user.uid).set({
+              username: name,
+              email: email,
+              registrationDate: new Date().toISOString(),
+              profilePhoto: "https://i.ibb.co/TMyBkGGR/1745137425933.jpg",
+              verified: false,
+            }).then(() => {
+              soundWelcome.play();
+              alert(
+                "¡Registro exitoso! Te hemos enviado un correo de verificación. Por favor revisa tu bandeja de entrada (y la carpeta de spam)."
+              );
+              window.location.href = "perfil.html";
+              auth.signOut(); // Cerrar sesión para que no entre sin verificar
+            });
+          });
+        })
+        .catch((error) => {
+          console.error("Error en el registro:", error.message);
+          alert("Error en el registro: " + error.message);
         });
-    </script>
+    });
 
+  // Mostrar/ocultar contraseña
+  const togglePassword = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("password");
+
+  togglePassword.addEventListener("click", () => {
+    const type =
+      passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+  });
+
+  // Reproducir sonido miau al presionar botones e inputs
+  document.querySelectorAll("button, input").forEach((element) => {
+    element.addEventListener("click", () => {
+      soundMiau.currentTime = 0;
+      soundMiau.play();
+    });
+  });
+
+  // Texto animado en burbuja
+  const textos = ["bienvenido", "nya", "miau", "uwu", "anime Offis", "registro"];
+  const bubble = document.querySelector(".speech-bubble");
+  let indice = 0;
+
+  setInterval(() => {
+    bubble.textContent = textos[indice];
+    indice = (indice + 1) % textos.length;
+  }, 2000);
+</script>
 </body>
 </html>
