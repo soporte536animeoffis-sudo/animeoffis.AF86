@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil del Usuario</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #000;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #fff;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .username {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 80%;
+      max-width: 300px;
+      transition: background 0.2s;
+    }
+
+    .light-btn { background-color: #e2e8f0; }
+    .dark-btn { background-color: #4a5568; color: white; }
+    .danger-btn { background-color: #e53e3e; color: white; }
+    .link-btn { background-color: #805ad5; color: white; }
+    .secondary-btn { background-color: #718096; color: white; }
+  </style>
+</head>
+<body>
+
+  <img id="profilePhoto" class="profile-img" src="" alt="Foto de perfil">
+  <div class="username" id="username">Cargando...</div>
+
+  <button class="dark-btn" onclick="setDarkMode()">Modo Oscuro</button>
+  <button class="light-btn" onclick="setLightMode()">Modo Claro</button>
+  <button class="secondary-btn" onclick="changeUsername()">Cambiar Username</button>
+  <button class="danger-btn" onclick="deleteAccount()">Eliminar Cuenta</button>
+  <button class="light-btn" onclick="reportError()">Reportar un error</button>
+  <button class="link-btn" onclick="contactAnimeOffis()">Contactar Anime Offis - creado por Destiny</button>
+  <button class="danger-btn" onclick="logout()">Cerrar Sesión</button>
+  <button class="light-btn" onclick="window.location.href='index.html'">Regresar</button>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Mostrar datos
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection("users").doc(user.uid).get().then(doc => {
+          const data = doc.data();
+          document.getElementById("username").textContent = data.username;
+          document.getElementById("profilePhoto").src = data.profilePhoto || "https://via.placeholder.com/120";
+        });
+      } else {
+        alert("No estás autenticado");
+        window.location.href = "login.html";
+      }
+    });
+
+    // Modo oscuro
+    function setDarkMode() {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+
+    function setLightMode() {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+
+    // Cambiar username
+    function changeUsername() {
+      const newUsername = prompt("Escribe tu nuevo username:");
+      const user = auth.currentUser;
+      if (newUsername && user) {
+        db.collection("users").doc(user.uid).update({ username: newUsername })
+          .then(() => {
+            document.getElementById("username").textContent = newUsername;
+            alert("Username actualizado");
+          })
+          .catch(error => alert("Error: " + error.message));
+      }
+    }
+
+    // Eliminar cuenta
+    function deleteAccount() {
+      const confirmDelete = confirm("¿Estás seguro de que deseas eliminar tu cuenta?");
+      if (!confirmDelete) return;
+      const user = auth.currentUser;
+      db.collection("users").doc(user.uid).delete()
+        .then(() => user.delete())
+        .then(() => {
+          alert("Cuenta eliminada");
+          window.location.href = "index.html";
+        })
+        .catch(error => alert("Error: " + error.message));
+    }
+
+    // Reportar error
+    function reportError() {
+      const errorMsg = prompt("Describe el error:");
+      if (errorMsg) {
+        alert("Gracias por tu reporte. Lo revisaremos pronto.");
+        // Aquí podrías enviar el reporte a un servidor o Firestore
+      }
+    }
+
+    // Contacto
+    function contactAnimeOffis() {
+      window.open("mailto:soporte536animeoffis@gmail.com?subject=Contacto desde perfil&body=Hola Destiny,", "_blank");
+    }
+
+    // Cerrar sesión
+    function logout() {
+      auth.signOut().then(() => {
+        alert("Sesión cerrada");
+        window.location.href = "login.html";
+      });
+    }
+  </script>
+</body>
+</html>
