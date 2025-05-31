@@ -175,16 +175,66 @@
 .profile-section button:hover {
     background-color: #45a049;
 }
+  .sidebar {
+            position: fixed;
+            right: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #222;
+            transition: right 0.3s ease;
+            padding-top: 60px;
+            text-align: left;
+            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #444;
+        }
+        .sidebar a:hover {
+            background-color: #333;
+        }
+        .sidebar.show {
+            right: 0;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+        .overlay.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
 <header>
-    <img src="https://qu.ax/JrOvP.jpg" alt="Logo">
-    <ul class="menu">
-        <li><a href="juegos.html">Minijuegos</a></li>
-        <li><a href="perfil.html">Perfil</a></li>
-        <li><a href="#" id="logout-link">Cerrar Sesión</a></li>
-    </ul>
+    <img src="offis.png" alt="Logo">
+    <button class="menu-toggle">&#9776;</button>
+    <div class="sidebar">
+        <a href="dashboard.html">volver al dashboard</a>
+        <a href="https://destiny-oficial.github.io/Nadaxd/dashboard.html">Animes</a>
+        <a href="https://destiny-oficial.github.io/mangas-offis/">Mangas</a>
+        <a href="https://destiny-oficial.github.io/Novel-offis/">Novelas</a>
+        <a href="https://destiny-oficial.github.io/hentai-offis/">Hentai</a>
+        <a href="https://destiny-oficial.github.io/Games/index.html">Juegos</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="logout.html">Cerrar Sesión</a>
+        <a href="mensajeprv.html">mandar mensajes</a>
+        <a href="meli.html">fandubs exclusivos Meli </a>
+        <a href="ajustes.html">ajustes</a>
+    </div>
+    
+    <div class="overlay"></div>
     
 </header>
 
@@ -206,6 +256,8 @@
     <button id="save-bio">Guardar biografía</button>
 </div>
 
+<a href="repro.html">reproductor</a>
+
 <p>
     <strong>Nombre:</strong> <span id="user-name">Cargando...</span>
     <img src="verif.png" id="verified-badge" style="display: none;" alt="Verificado">
@@ -217,8 +269,6 @@
 
 <p id="verified-badge-text">Verificando...</p>
     
-<p><strong>Correo Electrónico:</strong> <span id="user-email">Cargando...</span></p>
-
 <p><strong>Fecha de Creación:</strong> <span id="user-registration-date">Cargando...</span></p>
 
 <a href="mensajeprv.html" class="message-button">Envía mensaje</a>
@@ -251,6 +301,20 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.overlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+        });
+    
     const firebaseConfig = {
     apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
     authDomain: "anime-offis.firebaseapp.com",
@@ -276,7 +340,6 @@ auth.onAuthStateChanged(user => {
             if (doc.exists) {
                 const userData = doc.data();
                 document.getElementById('user-name').textContent = userData.username;
-                document.getElementById('user-email').textContent = userData.email;
                 document.getElementById('user-registration-date').textContent = new Date(userData.registrationDate).toLocaleDateString();
                 document.getElementById('profile-photo').src = userData.profilePhoto;
 
@@ -297,11 +360,7 @@ auth.onAuthStateChanged(user => {
                             break;
                             case "colaborador":
                             badgeSrc = "cola.png";
-                            badgeText = "En colaboración con (Anime Offis)";
-                            break;
-                            case "colasl":
-                            badgeSrc = "colasl.png";
-                            badgeText = "En colaboración con (Anime Offis)";
+                            badgeText = "🤝En colaboración con (Anime Offis)";
                             break;
                         case "aportador":
                             badgeSrc = "aportador.png";
@@ -359,8 +418,7 @@ auth.onAuthStateChanged(user => {
                 }
 
             } else {
-                document.getElementById('user-name').textContent = "Usuario no encontrado";
-                document.getElementById('user-email').textContent = "";
+                document.getElementById('user-name').textContent = "Usuario no encontrado";                
                 document.getElementById('user-registration-date').textContent = "";
                 document.getElementById('profile-photo').src = "";
             }
