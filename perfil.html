@@ -570,4 +570,24 @@ function loadBio() {
 
 // Llamar a la función para cargar la biografía cuando la página cargue
 window.onload = loadBio;
+    // Guardar la biografía cuando se hace clic en el botón
+document.getElementById('save-bio').addEventListener('click', () => {
+    const bio = document.getElementById('bio').value;
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+        const userRef = db.collection('users').doc(user.uid);
+        userRef.get().then(doc => {
+            if (doc.exists && doc.id === user.uid) {
+                userRef.update({
+                    bio: bio
+                }).then(() => {
+                    alert('Biografía guardada correctamente.');
+                }).catch(error => {
+                    console.error("Error al guardar la biografía:", error);
+                });
+            }
+        });
+    }
+});
 </script>
