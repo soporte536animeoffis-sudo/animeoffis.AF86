@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ver Trabajos</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial; background: #f5f5f5; padding: 20px; }
+    .trabajo {
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      position: relative;
+    }
+    img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
+
+    .acciones {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .acciones button {
+      border: none;
+      background: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .comentarios {
+      margin-top: 10px;
+      background: #f0f0f0;
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .comentarios p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .comentarios input {
+      width: 100%;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    .fab-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 999;
+    }
+    .boton-fab {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      text-align: center;
+      line-height: 60px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .favorito { background-color: #e91e63; }
+  </style>
+</head>
+<body>
+  <h2>Trabajos Publicados</h2>
+  <div id="listaTrabajos"></div>
+
+  <!-- Botones flotantes -->
+  <div class="fab-container">
+    <a href="afavoritos.html" class="boton-fab favorito" title="Favoritos">⭐</a>
+    <a href="publicar.html" class="boton-fab" title="Publicar">＋</a>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      databaseURL: "https://anime-offis-default-rtdb.firebaseio.com/",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const listaTrabajos = document.getElementById("listaTrabajos");
+
+    db.ref("trabajos").on("value", snapshot => {
+      listaTrabajos.innerHTML = "";
+      const trabajos = snapshot.val();
+      if (trabajos) {
+        Object.keys(trabajos).reverse().forEach(key => {
+          const trabajo = trabajos[key];
+          const div = document.createElement("div");
+          div.className = "trabajo";
+          div.innerHTML = `
+            <h3>${trabajo.titulo}</h3>
+            <p>${trabajo.descripcion}</p>
+            <p><strong>Categoría:</strong> ${trabajo.categoria || "-"}</p>
+            <p><strong>Etiquetas:</strong> ${trabajo.etiquetas || "-"}</p>
+            ${trabajo.imageURL ? `<img src="${trabajo.imageURL}">` : ""}
+            <div class="acciones">
+              <button onclick="darLike('${key}')">❤️ <span id="likes-${key}">${trabajo.likes || 0}</span></button>
+              <button onclick="marcarFavorito('${key}')">⭐</button>
+            </div>
+            <div class="comentarios" id="comentarios-${key}">
+              <input type="text" placeholder="Escribe un comentario..." onkeydown="if(event.key==='Enter'){agregarComentario('${key}', this)}">
+              ${trabajo.comentarios ? Object.values(trabajo.comentarios).map(c => `<p>💬 ${c}</p>`).join('') : ''}
+            </div>
+          `;
+          listaTrabajos.appendChild(div);
+        });
+      } else {
+        listaTrabajos.innerHTML = "<p>No hay trabajos aún.</p>";
+      }
+    });
+
+    function darLike(key) {
+      const likeRef = db.ref(`trabajos/${key}/likes`);
+      likeRef.transaction(current => (current || 0) + 1);
+    }
+
+    function marcarFavorito(key) {
+      alert("Trabajo agregado a favoritos (ficticio). Puedes personalizar esto para que se guarde en tu base de datos o vaya a afavoritos.html");
+      // Aquí puedes guardar el ID en otra rama como /favoritos/${usuario}/${key}
+    }
+
+    function agregarComentario(key, input) {
+      const comentario = input.value.trim();
+      if (comentario === "") return;
+      db.ref(`trabajos/${key}/comentarios`).push(comentario);
+      input.value = "";
+    }
+  </script>
+</body>
+</html>

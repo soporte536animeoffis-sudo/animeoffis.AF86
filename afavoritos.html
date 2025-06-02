@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mis Favoritos</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    #user-info { margin-bottom: 20px; }
+    #filtros { margin-bottom: 20px; background: white; padding: 10px; border-radius: 8px; }
+    #listaFavoritos { background: white; padding: 15px; border-radius: 8px; }
+    .trabajo { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 10px; }
+    .acciones button { margin-top: 10px; background-color: #e74c3c; border: none; color: white; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
+    #loginForm { background: white; padding: 15px; border-radius: 8px; max-width: 300px; }
+    #loginForm input { width: 100%; margin-bottom: 10px; padding: 8px; }
+    #loginForm button { width: 100%; padding: 8px; cursor: pointer; background-color: #3498db; border: none; color: white; border-radius: 4px; }
+    #errorMsg { color: red; }
+  </style>
+</head>
+<body>
+  <div id="user-info">
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button type="submit">Iniciar sesión</button>
+      <p id="errorMsg"></p>
+      <p>¿No tienes cuenta? <a href="#" id="registerLink">Regístrate aquí</a></p>
+    </form>
+    <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
+    <p id="userName"></p>
+  </div>
+
+  <div id="filtros" style="display:none;">
+    <label>Filtrar por Categoría: </label>
+    <input type="text" id="filtroCategoria" placeholder="Ej: Ilustración" />
+    <br><br>
+    <label>Filtrar por Etiquetas: </label>
+    <input type="text" id="filtroEtiquetas" placeholder="Ej: anime, arte" />
+  </div>
+
+  <div id="listaFavoritos"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      databaseURL: "https://anime-offis-default-rtdb.firebaseio.com/",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userName = document.getElementById("userName");
+    const listaFavoritos = document.getElementById("listaFavoritos");
+    const filtroCategoria = document.getElementById("filtroCategoria");
+    const filtroEtiquetas = document.getElementById("filtroEtiquetas");
+    const filtrosDiv = document.getElementById("filtros");
+    const errorMsg = document.getElementById("errorMsg");
+    const registerLink = document.getElementById("registerLink");
+
+    let favoritosData = {};
+    let trabajosData = {};
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      errorMsg.textContent = "";
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      auth.signInWithEmailAndPassword(email, password)
+        .catch(error => {
+          if(error.code === "auth/user-not-found"){
+            errorMsg.textContent = "Usuario no encontrado. ¿Quieres registrarte?";
+          } else if(error.code === "auth/wrong-password"){
+            errorMsg.textContent = "Contraseña incorrecta.";
+          } else {
+            errorMsg.textContent = error.message;
+          }
+        });
+    });
+
+    registerLink.onclick = (e) => {
+      e.preventDefault();
+      errorMsg.textContent = "";
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if(!email || !password){
+        errorMsg.textContent = "Ingresa correo y contraseña para registrarte.";
+        return;
+      }
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          errorMsg.textContent = "Registro exitoso, ya puedes iniciar sesión.";
+        })
+        .catch(err => {
+          errorMsg.textContent = err.message;
+        });
+    };
+
+    logoutBtn.onclick = () => auth.signOut();
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        userName.textContent = `Bienvenido, ${user.email}`;
+        loginForm.style.display = "none";
+        logoutBtn.style.display = "inline";
+        filtrosDiv.style.display = "block";
+        cargarFavoritos();
+      } else {
+        userName.textContent = "";
+        loginForm.style.display = "block";
+        logoutBtn.style.display = "none";
+        filtrosDiv.style.display = "none";
+        listaFavoritos.innerHTML = "<p>Por favor inicia sesión para ver tus favoritos.</p>";
+      }
+    });
+
+    filtroCategoria.addEventListener("input", filtrarYMostrar);
+    filtroEtiquetas.addEventListener("input", filtrarYMostrar);
+
+    function cargarFavoritos() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      db.ref("favoritos/" + user.uid).once("value").then(snapshot => {
+        favoritosData = snapshot.val() || {};
+        return db.ref("trabajos").once("value");
+      }).then(snapshot => {
+        trabajosData = snapshot.val() || {};
+        filtrarYMostrar();
+      });
+    }
+
+    function filtrarYMostrar() {
+      const catFiltro = filtroCategoria.value.trim().toLowerCase();
+      const etiquetasFiltro = filtroEtiquetas.value.trim().toLowerCase().split(",").map(s => s.trim()).filter(Boolean);
+
+      listaFavoritos.innerHTML = "";
+
+      Object.keys(favoritosData).forEach(key => {
+        const trabajo = trabajosData[key];
+        if (!trabajo) return; // En caso de que el trabajo ya no exista
+
+        // Filtro por categoría
+        if (catFiltro && (!trabajo.categoria || !trabajo.categoria.toLowerCase().includes(catFiltro))) return;
+
+        // Filtro por etiquetas
+        if (etiquetasFiltro.length > 0) {
+          const tags = (trabajo.etiquetas || "").toLowerCase().split(",").map(s => s.trim());
+          const tieneEtiqueta = etiquetasFiltro.some(fTag => tags.includes(fTag));
+          if (!tieneEtiqueta) return;
+        }
+
+        const div = document.createElement("div");
+        div.className = "trabajo";
+        div.innerHTML = `
+          <h3>${trabajo.titulo}</h3>
+          <p>${trabajo.descripcion}</p>
+          ${trabajo.imageURL ? `<img src="${trabajo.imageURL}">` : ""}
+          <p><strong>Categoría:</strong> ${trabajo.categoria || "Ninguna"}</p>
+          <p><strong>Etiquetas:</strong> ${trabajo.etiquetas || "Ninguna"}</p>
+          <p><strong>Autor:</strong> ${trabajo.autor}</p>
+          <div class="acciones">
+            <button onclick="eliminarFavorito('${key}')">Eliminar de favoritos</button>
+          </div>
+        `;
+        listaFavoritos.appendChild(div);
+      });
+
+      if (listaFavoritos.innerHTML === "") {
+        listaFavoritos.innerHTML = "<p>No hay trabajos favoritos que coincidan con el filtro.</p>";
+      }
+    }
+
+    window.eliminarFavorito = (key) => {
+      const user = auth.currentUser;
+      if (!user) return;
+      if (confirm("¿Eliminar este trabajo de tus favoritos?")) {
+        db.ref(`favoritos/${user.uid}/${key}`).remove().then(() => {
+          cargarFavoritos();
+        });
+      }
+    };
+  </script>
+</body>
+</html>

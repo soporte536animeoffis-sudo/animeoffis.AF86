@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Publicar Trabajos</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    #user-info, #searchBar { margin-bottom: 20px; }
+    form, .trabajos { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    .trabajo { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 10px; }
+    .acciones button { margin-right: 5px; }
+    #previewImg { max-width: 200px; margin-top: 10px; border: 1px solid #ccc; border-radius: 6px; }
+    input[type="text"], input[type="email"], input[type="password"], textarea, select { width: 100%; padding: 8px; margin-top: 5px; }
+    .favorito-btn { background-color: gold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
+    #loginForm { max-width: 300px; margin-bottom: 20px; }
+    #loginForm > button { width: 100%; margin-top: 10px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <div id="user-info">
+    <div id="loginForm">
+      <h3>Iniciar sesión / Registrarse</h3>
+      <input type="email" id="emailInput" placeholder="Correo electrónico" required /><br>
+      <input type="password" id="passwordInput" placeholder="Contraseña" required /><br>
+      <button id="loginBtn">Iniciar sesión</button>
+      <button id="registerBtn">Registrarse</button>
+    </div>
+    <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
+    <p id="userName"></p>
+  </div>
+  <h2>buscar imágenes por palabras claves</h2>
+  <div id="searchBar">
+    <input type="text" id="busqueda" placeholder="Buscar por palabra clave..." />
+  </div>
+
+  <form id="trabajoForm" style="display:none;">
+    <h2 id="formTitle">Publicar trabajo</h2>
+    <label>Título:</label>
+    <input type="text" id="titulo" required /><br><br>
+    <label>Descripción:</label>
+    <textarea id="descripcion" required></textarea><br><br>
+    <label>Categoría:</label>
+    <input type="text" id="categoria" placeholder="Ej: Ilustración, Música, Cómic" /><br><br>
+    <label>Etiquetas (separadas por comas):</label>
+    <input type="text" id="etiquetas" placeholder="Ej: anime, digital, arte" /><br><br>
+    <label>Imagen:</label>
+    <input type="file" id="imagen" accept="image/*" /><br>
+    <img id="previewImg" src="" style="display:none;" /><br><br>
+    <button type="submit">Guardar</button>
+  </form>
+
+
+  <div class="trabajos">
+    <h2>Resultados de la búsqueda y las imágenes subidas</h2>
+    <div id="listaTrabajos"></div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      databaseURL: "https://anime-offis-default-rtdb.firebaseio.com/",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    const imgbbAPI = "5b0931fc3792f2069b046ef7eed268da";
+    let modoEdicion = false;
+    let trabajoEditandoKey = null;
+    let trabajosCargados = {};
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    const loginBtn = document.getElementById("loginBtn");
+    const registerBtn = document.getElementById("registerBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userName = document.getElementById("userName");
+    const trabajoForm = document.getElementById("trabajoForm");
+    const listaTrabajos = document.getElementById("listaTrabajos");
+    const previewImg = document.getElementById("previewImg");
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("emailInput");
+    const passwordInput = document.getElementById("passwordInput");
+
+    loginBtn.onclick = () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!email || !password) {
+        alert("Por favor ingresa correo y contraseña.");
+        return;
+      }
+      auth.signInWithEmailAndPassword(email, password)
+        .catch(error => alert("Error al iniciar sesión: " + error.message));
+    };
+
+    registerBtn.onclick = () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!email || !password) {
+        alert("Por favor ingresa correo y contraseña.");
+        return;
+      }
+      auth.createUserWithEmailAndPassword(email, password)
+        .catch(error => alert("Error al registrarse: " + error.message));
+    };
+
+    logoutBtn.onclick = () => auth.signOut();
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        userName.textContent = `Bienvenido, ${user.email}`;
+        loginForm.style.display = "none";
+        logoutBtn.style.display = "inline";
+        trabajoForm.style.display = "block";
+      } else {
+        userName.textContent = "";
+        loginForm.style.display = "block";
+        logoutBtn.style.display = "none";
+        trabajoForm.style.display = "none";
+      }
+      cargarTrabajos();
+    });
+
+    // Vista previa de imagen
+    document.getElementById("imagen").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = evt => {
+          previewImg.src = evt.target.result;
+          previewImg.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewImg.src = "";
+        previewImg.style.display = "none";
+      }
+    });
+
+    trabajoForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById("titulo").value;
+      const descripcion = document.getElementById("descripcion").value;
+      const categoria = document.getElementById("categoria").value;
+      const etiquetas = document.getElementById("etiquetas").value;
+      const imagen = document.getElementById("imagen").files[0];
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert("Debes iniciar sesión para publicar un trabajo.");
+        return;
+      }
+
+      let imageURL = "";
+
+      if (imagen) {
+        const formData = new FormData();
+        formData.append("image", imagen);
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPI}`, {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+        imageURL = data.data.url;
+      }
+
+      const trabajo = {
+        titulo,
+        descripcion,
+        categoria,
+        etiquetas,
+        autor: user.email,
+        uid: user.uid,
+        fecha: new Date().toISOString()
+      };
+      if (imageURL) trabajo.imageURL = imageURL;
+
+      if (modoEdicion && trabajoEditandoKey) {
+        db.ref("trabajos/" + trabajoEditandoKey).update(trabajo);
+        modoEdicion = false;
+        trabajoEditandoKey = null;
+        document.getElementById("formTitle").innerText = "Publicar trabajo";
+      } else {
+        db.ref("trabajos").push(trabajo);
+      }
+
+      trabajoForm.reset();
+      previewImg.style.display = "none";
+      cargarTrabajos();
+    };
+
+    function cargarTrabajos() {
+      db.ref("trabajos").once("value", snapshot => {
+        trabajosCargados = snapshot.val() || {};
+        filtrarTrabajos();
+      });
+    }
+
+    function filtrarTrabajos() {
+      const filtro = document.getElementById("busqueda").value.toLowerCase();
+      listaTrabajos.innerHTML = "";
+      const user = auth.currentUser;
+
+      Object.keys(trabajosCargados).reverse().forEach(key => {
+        const data = trabajosCargados[key];
+        const match = (
+          data.titulo.toLowerCase().includes(filtro) ||
+          data.descripcion.toLowerCase().includes(filtro) ||
+          (data.categoria || "").toLowerCase().includes(filtro) ||
+          (data.etiquetas || "").toLowerCase().includes(filtro)
+        );
+
+        if (match) {
+          const div = document.createElement("div");
+          div.className = "trabajo";
+          div.innerHTML = `
+            <h3>${data.titulo}</h3>
+            <p>${data.descripcion}</p>
+            ${data.imageURL ? `<img src="${data.imageURL}">` : ""}
+            <p><strong>Categoría:</strong> ${data.categoria || "Ninguna"}</p>
+            <p><strong>Etiquetas:</strong> ${data.etiquetas || "Ninguna"}</p>
+            <p><strong>Autor:</strong> ${data.autor}</p>
+            <div class="acciones">
+              ${user && user.uid === data.uid ? `
+                <button onclick="editarTrabajo('${key}')">Editar</button>
+                <button onclick="eliminarTrabajo('${key}')">Eliminar</button>` : ""}
+              ${user ? `<button class="favorito-btn" onclick="guardarFavorito('${key}')">★ Favorito</button>` : ""}
+            </div>
+          `;
+          listaTrabajos.appendChild(div);
+        }
+      });
+    }
+
+    document.getElementById("busqueda").addEventListener("input", filtrarTrabajos);
+
+    window.editarTrabajo = (key) => {
+      const data = trabajosCargados[key];
+      document.getElementById("titulo").value = data.titulo;
+      document.getElementById("descripcion").value = data.descripcion;
+      document.getElementById("categoria").value = data.categoria || "";
+      document.getElementById("etiquetas").value = data.etiquetas || "";
+      document.getElementById("formTitle").innerText = "Editar trabajo";
+      modoEdicion = true;
+      trabajoEditandoKey = key;
+      previewImg.src = data.imageURL || "";
+      previewImg.style.display = data.imageURL ? "block" : "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.eliminarTrabajo = (key) => {
+      if (confirm("¿Eliminar este trabajo?")) {
+        db.ref("trabajos/" + key).remove();
+        cargarTrabajos();
+      }
+    };
+
+    window.guardarFavorito = (key) => {
+      const user = auth.currentUser;
+      if (user) {
+        db.ref(`favoritos/${user.uid}/${key}`).set(true);
+        alert("¡Guardado en favoritos!");
+      }
+    };
+  </script>
+</body>
+</html>
