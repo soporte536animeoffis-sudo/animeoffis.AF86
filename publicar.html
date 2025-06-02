@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicar Trabajo</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <style>
+    body { font-family: Arial; background: #f5f5f5; padding: 20px; }
+    form { background: white; padding: 15px; border-radius: 8px; }
+    input, textarea { width: 100%; margin-top: 5px; padding: 8px; }
+    #previewImg { max-width: 200px; margin-top: 10px; display: none; }
+  </style>
+</head>
+<body>
+  <h2>Publicar Trabajo</h2>
+  <form id="trabajoForm">
+    <label>Título:</label>
+    <input type="text" id="titulo" required>
+    <label>Descripción:</label>
+    <textarea id="descripcion" required></textarea>
+    <label>Categoría:</label>
+    <input type="text" id="categoria">
+    <label>Etiquetas:</label>
+    <input type="text" id="etiquetas">
+    <label>Imagen:</label>
+    <input type="file" id="imagen" accept="image/*">
+    <img id="previewImg">
+    <button type="submit">Guardar</button>
+  </form>
+  <a href="ver.html">Ver trabajos publicados</a>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      databaseURL: "https://anime-offis-default-rtdb.firebaseio.com/",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const imgbbAPI = "5b0931fc3792f2069b046ef7eed268da";
+
+    const trabajoForm = document.getElementById("trabajoForm");
+    const previewImg = document.getElementById("previewImg");
+
+    document.getElementById("imagen").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = evt => {
+          previewImg.src = evt.target.result;
+          previewImg.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    trabajoForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById("titulo").value;
+      const descripcion = document.getElementById("descripcion").value;
+      const categoria = document.getElementById("categoria").value;
+      const etiquetas = document.getElementById("etiquetas").value;
+      const imagen = document.getElementById("imagen").files[0];
+      let imageURL = "";
+
+      if (imagen) {
+        const formData = new FormData();
+        formData.append("image", imagen);
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPI}`, {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+        imageURL = data.data.url;
+      }
+
+      const trabajo = {
+        titulo,
+        descripcion,
+        categoria,
+        etiquetas,
+        fecha: new Date().toISOString(),
+        imageURL
+      };
+
+      db.ref("trabajos").push(trabajo);
+      trabajoForm.reset();
+      previewImg.style.display = "none";
+      alert("Trabajo publicado con éxito.");
+    };
+  </script></body>
+</html>
