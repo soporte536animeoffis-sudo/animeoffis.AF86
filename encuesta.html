@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Encuesta Anime Offis</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
     body {
       background-color: #121212;
@@ -114,10 +116,7 @@
 
   <div class="form-container">
     <label for="sugerencia">¿Qué te gustaría que agreguemos a la página?</label>
-    <textarea
-      id="sugerencia"
-      placeholder="Ej: Agreguen más animes, doblajes, función para descargar..."
-    ></textarea>
+    <textarea id="sugerencia" placeholder="Ej: Más animes, doblajes, función para descargar..."></textarea>
     <button onclick="enviarSugerencia()">Enviar sugerencia</button>
   </div>
 
@@ -126,6 +125,28 @@
   </div>
 
   <script>
+    // Configurar Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Cargar sugerencias al iniciar
+    window.onload = async () => {
+      const snapshot = await db.collection("sugerencias").orderBy("votos", "desc").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        agregarSugerencia(doc.id, data.texto, data.votos);
+      });
+    };
+
     function enviarSugerencia() {
       const texto = document.getElementById('sugerencia').value.trim();
       if (texto === '') {
@@ -133,11 +154,16 @@
         return;
       }
 
-      agregarSugerencia(texto);
-      document.getElementById('sugerencia').value = '';
+      db.collection("sugerencias").add({
+        texto: texto,
+        votos: 0
+      }).then(docRef => {
+        agregarSugerencia(docRef.id, texto, 0);
+        document.getElementById('sugerencia').value = '';
+      });
     }
 
-    function agregarSugerencia(texto) {
+    function agregarSugerencia(id, texto, votosIniciales) {
       const sugerenciasDiv = document.getElementById('sugerencias');
 
       const sugerencia = document.createElement('div');
@@ -155,7 +181,13 @@
 
       const contador = document.createElement('span');
       contador.className = 'contador';
-      contador.textContent = '0';
+      contador.textContent = votosIniciales;
+
+      // Evitar votar más de una vez (por sesión)
+      if (sessionStorage.getItem(id)) {
+        boton.disabled = true;
+        boton.textContent = 'Gracias';
+      }
 
       boton.addEventListener('click', () => {
         let votos = parseInt(contador.textContent);
@@ -163,6 +195,11 @@
         contador.textContent = votos;
         boton.disabled = true;
         boton.textContent = 'Gracias';
+        sessionStorage.setItem(id, true);
+
+        db.collection("sugerencias").doc(id).update({
+          votos: votos
+        });
       });
 
       votosDiv.appendChild(boton);
