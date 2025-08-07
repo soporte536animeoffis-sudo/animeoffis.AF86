@@ -1,330 +1,381 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Offis ❄️</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-        }
-        header img {
-            height: 40px;
-        }
-        .menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        .menu li {
-            margin: 0 10px;
-        }
-        .menu li a {
-            color: white;
-            text-decoration: none;
-        }
-        .intro {
-            text-align: center;
-            padding: 20px;
-        }
-        .intro img {
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Anime Offis</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    @import url('https://use.fontawesome.com/releases/v6.5.1/css/all.css');
 
-        /* Estilos del carrusel */
-        .carousel-container {
-            overflow: hidden;
-            width: 100%;
-            height: 360px;
-            position: relative;
-            background-color: #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .carousel {
-            display: flex;
-            width: 100%;
-            height: 800px;
-            position: relative;
-        }
-        .carousel img {
-            width: 100%;
-            height: 80%;
-            object-fit: cover;
-            position: absolute;
-            opacity: 0;
-            transition: opacity 0.1s ease-in-out;
-        }
-        .carousel img.active {
-            opacity: 1;
-        }
-        .carousel img.rotate {
-            animation: rotate 1.5s linear;
-        }
-        .carousel-text {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-size: 18px;
-            text-align: center;
-        }
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
 
-        /* Animación de rotación */
-        @keyframes rotate {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #3a0074, #8b2fc9);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
 
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 12px;
-        }
+    /* Estilo base para teléfonos*/
+    .login-box {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
 
-        /* Nueva sección slider */
-        .image-slider {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: auto;
-            overflow: hidden;
-            border-radius: 10px;
-        }
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .slides {
-            display: flex;
-            transition: transform 1s ease-in-out;
-        }
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 25px;
+      background: #333;
+      color: #fff;
+    }
 
-        .slide {
-            min-width: 100%;
-            height: 400px;
-            position: relative;
-        }
+    .login-box input::placeholder {
+      color: #ccc;
+    }
 
-        .slide img {
-            width: 100%;
-            height: 800px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+    .password-container {
+      position: relative;
+    }
 
-        .overlay-text {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        /* Estilo del botón */
-    .cta-button {
-        background-color: #ff5733;
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .login-box input[type="submit"] {
+      background-color: #45f3ff;
+      color: #111;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .login-box input[type="submit"]:hover {
+      box-shadow: 0 0 10px #45f3ff;
+    }
+
+    .google-btn {
+      background-color: #fff;
+      color: #333;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      padding: 12px;
+      width: 100%;
+      margin-top: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .google-btn i {
+      margin-right: 10px;
+      color: #ea4335;
+    }
+
+    .login-box .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+
+    .login-box .links a {
+      color: #ff2770;
+      text-decoration: none;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: gray;
+    }
+
+    #alerta-error {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    /* ---------------------------- */
+    /* ESTILO PARA COMPUTADORAS    */
+    /* ---------------------------- */
+    @media (min-width: 768px) {
+      body {
+        background: linear-gradient(135deg, #3a0074, #8b2fc9);
+      }
+
+     .login-box {
+  display: flex;
+  width: 90vw;
+  max-width: 1000px;
+  height: auto;
+  min-height: 500px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+      .left-panel {
+        background-color: #300060;
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         color: white;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 15px 30px;
+      }
+
+      .left-panel h1 {
+        font-size: 3em;
         text-align: center;
-        border-radius: 30px;
-        text-decoration: none;
-        display: inline-block;
-        margin: 20px 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 10px;
+      }
+
+      .left-panel .circles {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .left-panel .circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff69f4, #d69ad7);
+      }
+
+      .right-panel {
+        flex: 1;
+        background: #fff;
+        color: #333;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .right-panel input {
+        background: none;
+        border: none;
+        border-bottom: 2px solid #6a0dad;
+        color: #000;
+        border-radius: 0;
+      }
+
+      .right-panel input::placeholder {
+        color: #888;
+      }
+
+      .google-btn {
+        background: #eee;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+      }
     }
+    @media (min-width: 992px) {
+  .login-container {
+    width: 70vw;
+    max-width: 1000px;
+    flex-direction: row;
+  }
 
-    /* Efectos hover */
-    .cta-button:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
+  .login-left, .login-right {
+    width: 50%;
+  }
 
-    .cta-button:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  .star {
-    display: inline-block;
-    padding: 30px 100px; /* Reduce el tamaño del botón */
-    font-size: 16px; /* Ajusta el tamaño del texto */
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    color: white;
-    background: linear-gradient(to right, blue, red);
-    border-radius: 8px; /* Bordes más sutiles */
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  .login-left {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
+
+  .login-right {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
 }
-
-.star:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
-
-.center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20vh;
-    width: 100vw; /* Asegura que ocupe todo el ancho */
-}
-
-a {
-    display: inline-block; /* Evita que el botón tome más espacio */
-}
-    </style>
+  </style>
 </head>
 <body>
 
-    <header>
-        <img src="offis.png" alt="Logo">
-        <ul class="menu">
-            <li><a href="parche.html">ver nuevo parche de actualización</a></li>
-            <li><a href="login.html">Iniciar Sesión</a></li>
-            <li><a href="regis.html">Registrarse</a></li>
-        </ul>
-    </header>
+<div class="login-box">
+  <div class="left-panel" style="display: none;">
+    <img src="https://emojicdn.elk.sh/💜" alt="Corazón" style="width: 30px;">
+    <h1>ANIME<br>OFFIS</h1>
+    <div class="circles">
+      <div class="circle" style="background: linear-gradient(135deg, #d41e9d, #b55da8);"></div>
+      <div class="circle" style="background: linear-gradient(135deg, #f8b5f8, #e8a4f9);"></div>
+      <div class="circle" style="background: linear-gradient(135deg, #f5e7f7, #d3c0da);"></div>
+      <div class="circle" style="background: linear-gradient(135deg, #dcd8e7, #c3b5d3);"></div>
+    </div>
+  </div>
 
-    <section class="intro">
-        <h2>Bienvenidos a la Oficina Anime</h2>
-        <img src="welcome.png" alt="Bienvenida">
-        <p>Explora los mejores animes y mantente siempre viendo anime y próximamente para ver Hentai gracias a sus sugerencias estamos creciendo.</p>
-        <p>descubre las nuevas funciones en Anime Offis tu opiniónes lo valen todo</p>
-    </section>
-    
-   <div class="center-container">
-    <a href="login.html" class="star">Empieza  a ver</a>
+  <div class="right-panel">
+    <form id="login-form">
+      <h2 style="text-align:center; margin-bottom: 20px;">¡Bienvenido!</h2>
+
+      <div id="alerta-error"></div>
+
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Contraseña" required />
+        <button type="button" class="toggle-password" onclick="togglePassword()">
+          <i id="eye-icon" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+      <input type="submit" value="Ingresar" />
+
+      <button type="button" class="google-btn" onclick="loginConGoogle()">
+        <i class="fab fa-google"></i> Iniciar sesión con Google
+      </button>
+
+      <div class="links">
+        <a href="cambiar.html">¿Olvidaste tu contraseña?</a>
+        <a href="regis.html">Registrarse</a>
+      </div>
+
+      <p class="footer">Anime Offis© 2024 - 2025</p>
+    </form>
+  </div>
 </div>
 
-<p>En anime Offis todos somo familia por que Anime Offis siempre está contigo ❄️</p>
+<script>
+  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+  if (isDesktop) {
+    document.querySelector(".left-panel").style.display = "flex";
+  }
 
-    <div class="carousel-container">
-        <div class="carousel">
-            <img src="https://i.ibb.co/dsGMLmC9/1739976458819.jpg" alt="Anime 1" class="active">
-            <img src="https://i.ibb.co/dsGMLmC9/1739976458819.jpg" alt="Anime 2">
-            <img src="https://i.ibb.co/Psj0s4PF/1739980391728.jpg" alt="Anime 3">
-            <img src="https://i.ibb.co/TBHg10fn/1739976240285.jpg" alt="Anime 4">
-            <img src="https://postimage.me/images/2025/01/29/1738107853687.jpg" alt="Anime 5">
-            <img src="https://i.ibb.co/RkY9k9BY/IMG-20250217-WA0073.jpg" alt="Anime 6">
-            <img src="https://i.ibb.co/fdPv81f7/IMG-20250217-WA0071.jpg" alt="Anime 7">
-             <img src="https://i.ibb.co/TBHg10fn/1739976240285.jpg" alt="Anime 8">
-        </div>
-        
-        <p class="carousel-text" id="carousel-text">¡Bienvenidos al Mundo del Anime!</p>
-    </div>
-    
-     <h1> Conoce alas personas que hacen posible esta página</h1>
-        <h5> ! Jonathan ! --> segundo lider de Destiny for anime Offis en WhatsApp</h5>
-        <h5> ! Destiny ! --> Lider y creador de Anime Offis</h5>
-        <h5> ! Josue ! --> Un moderador veterano </h5>
-        <h5> ! JD Anime ! --> Pagina de animes</h5>
-        <h5> ! kiyotaka ! --> encargado de subir animes ala página</h5>
-        <h5> ! Dumbito19 ! --> Encargado de dar soporte por correo</h5>
-        <h5> ! Kitten ! --> encargada y lider del bot Kitten gift</h5>
-        <h5> ! Javier! --> creador de historia cortas</h5>
-    
-    <section>
-        <h2>Explora nuevas cosas iniciando sesión</h2>
-        <h6>Foro de comunicación<br> Animes, trabajadores y un perfil interactivo .</h6>
-    </section>
-    
-    <!-- Nueva sección Slider de imágenes con texto -->
-    <div class="image-slider">
-        <div class="slides">
-            <div class="slide">
-                <img src="https://postimage.me/images/2025/02/17/1739741081602.jpg" alt="Anime 1">
-                <div class="overlay-text">¡Bienvenidos a tu oficina Anime!</div>
-            </div>
-            <div class="slide">
-                <img src="https://i.ibb.co/RkY9k9BY/IMG-20250217-WA0073.jpg" alt="Anime 2">
-                <div class="overlay-text">Explora lo nuevo del perfil</div>
-            </div>
-            <div class="slide">
-                <img src="https://i.ibb.co/fdPv81f7/IMG-20250217-WA0071.jpg" alt="Anime 3">
-                <div class="overlay-text">juega juegos sin salir de la página</div>
-            </div>
-        </div>
-    </div>
-    
-    <a href="regis.html" class="cta-button">¡Ven y explora estas nuevas funciones! Regístrate</a>
-<a href="login.html" class="cta-button">¿Ya tienes cuenta? Inicia sesión</a>
+  function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const eyeIcon = document.getElementById("eye-icon");
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      passwordField.type = "password";
+      eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+</script>
 
-    <footer>
-        <p>&copy; 2025 Anime Offis. Todos los derechos reservados.</p>
-        <p><a href="términos">Términos y Condiciones</a> | <a href="política">Política de Privacidad</a></p>
-    </footer>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        const slidesContainer = document.querySelector('.slides');
-        let currentSlide = 0;
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+    authDomain: "anime-offis.firebaseapp.com",
+    projectId: "anime-offis",
+    storageBucket: "anime-offis.appspot.com",
+    messagingSenderId: "377121993034",
+    appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-        function showSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
+  document.getElementById("login-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-        setInterval(showSlide, 3000);  // Cambia la imagen cada 3 segundos
-    </script>
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.href = "dashboard.html";
+      })
+      .catch(error => {
+        const errorMessage = traducirError(error.code);
+        mostrarAlerta(errorMessage);
+      });
+  });
 
-    <script>
-        const images = document.querySelectorAll('.carousel img');
-        const textElement = document.getElementById('carousel-text');
-        const texts = [ "¡Ve anime en español y estrenos!"
-            ,
-            "! Descubre nueva funciones",
-            "Los estrenos más esperados",
-            "Anime en emisión y finalizados",
-            "hentai y películas en anime Offis",
-            "Perfil con diseños especiales",
-            "juegos sin salir de la página", 
-            "conoces alos creador con el buscador"
-        ];
-        let currentIndex = 0;
+  function loginConGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then(() => {
+        window.location.href = "dashboard.html";
+      })
+      .catch(error => {
+        const errorMessage = traducirError(error.code);
+        mostrarAlerta(errorMessage);
+      });
+  }
 
-        function changeImage() {
-            images[currentIndex].classList.remove('active', 'rotate');
+  function traducirError(codigo) {
+    switch (codigo) {
+      case 'auth/user-not-found':
+        return 'Usuario no encontrado. ¿Estás registrado?';
+      case 'auth/wrong-password':
+        return 'Contraseña incorrecta. Intenta de nuevo.';
+      case 'auth/invalid-email':
+        return 'Correo electrónico inválido.';
+      case 'auth/user-disabled':
+        return 'Este usuario ha sido deshabilitado.';
+      case 'auth/too-many-requests':
+        return 'Demasiados intentos. Espera un momento.';
+      case 'auth/popup-closed-by-user':
+        return 'Ventana de Google cerrada. Inténtalo otra vez.';
+      default:
+        return 'Ocurrió un error al iniciar sesión.';
+    }
+  }
 
-            currentIndex = (currentIndex + 1) % images.length;
-
-            images[currentIndex].classList.add('active', 'rotate');
-            textElement.textContent = texts[currentIndex];
-
-            setTimeout(() => {
-                images[currentIndex].classList.remove('rotate');
-            }, 3000);
-        }
-
-        setInterval(changeImage, 4000);
-    </script>
+  function mostrarAlerta(mensaje) {
+    const alerta = document.getElementById("alerta-error");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    setTimeout(() => {
+      alerta.style.display = "none";
+    }, 6000);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        document.title = "¡vuelve te extrañamos 🥹";
+    } else {
+        document.title = "vive la experiencia del anime 🐱🥳";
+    }
+});
+</script>
 
 </body>
 </html>
