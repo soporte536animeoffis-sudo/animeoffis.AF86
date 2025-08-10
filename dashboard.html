@@ -1,319 +1,211 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animes Offis ❄️</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #fff;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            margin-top: 20px;
-        }
-        .section {
-            margin: 40px 0;
-        }
-        .carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 10px;
-            scroll-snap-type: x mandatory;
-        }
-        .carousel img {
-            width: 200px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-            scroll-snap-align: center;
-        }
-        .social-links a {
-            display: block;
-            color: #1da1f2;
-            text-decoration: none;
-            margin: 5px 0;
-            font-size: 18px;
-        }
-        .workers {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .worker {
-            text-align: center;
-        }
-        .worker img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .terms {
-            margin-top: 40px;
-            font-size: 14px;
-            opacity: 0.7;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            position: relative;
-        }
-        header img {
-            height: 40px;
-        }
-        .menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        .menu li {
-            margin: 0 10px;
-        }
-        .menu li a {
-            color: white;
-            text-decoration: none;
-        }
-        .menu-toggle {
-            font-size: 30px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-        }
-        .sidebar {
-            position: fixed;
-            right: -250px;
-            top: 0;
-            width: 250px;
-            height: 100%;
-            background-color: #222;
-            transition: right 0.3s ease;
-            padding-top: 60px;
-            text-align: left;
-            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        .sidebar a {
-            display: block;
-            padding: 15px;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #444;
-        }
-        .sidebar a:hover {
-            background-color: #333;
-        }
-        .sidebar.show {
-            right: 0;
-        }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-        }
-        .overlay.show {
-            display: block;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Anime Offis</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #300050; color: #fff; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Sidebar */
+    .sidebar { background: #3d006e; width: 240px; height: 100vh; position: fixed; top: 0; left: 0; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .sidebar img.avatar { width: 100px; border-radius: 50%; margin: 0 auto; }
+    .username { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; font-weight: bold; }
+    .verificacion-img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid white; display: none; }
+    .sidebar button { background: #000; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+    .sidebar button:hover { background: #222; }
+    .premium { background: linear-gradient(to right, gold, orange); color: #000; font-weight: bold; }
+
+    /* Main content */
+    .main { margin-left: 260px; padding: 20px; }
+    .header { display: flex; justify-content: space-between; align-items: center; }
+    .search { width: 100%; max-width: 500px; display: flex; }
+    .search input { flex: 1; padding: 10px; border-radius: 20px 0 0 20px; border: none; }
+    .search button { background: black; border: none; color: white; padding: 10px 20px; border-radius: 0 20px 20px 0; cursor: pointer; }
+    .grid { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+    .anime-card { background: #1a0033; padding: 10px; border-radius: 15px; text-align: center; }
+    .anime-card img { width: 100%; border-radius: 10px; }
+    .anime-card button { margin-top: 10px; background: #000; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 0.9em; }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 10px; }
+      .mobile-nav { position: fixed; bottom: 0; width: 100%; background: #3d006e; display: flex; justify-content: space-around; padding: 10px 0; z-index: 999; }
+      .mobile-nav button { background: none; color: white; font-weight: bold; border: none; font-size: 0.9em; }
+      .search { flex-direction: column; }
+      .search input, .search button { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+    }
+
+    /* Encabezado móvil */
+    .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; background: #3d006e; padding: 10px; display: flex; align-items: center; gap: 10px; color: white; z-index: 1000; }
+    .mobile-header #menu-btn { background: none; border: none; color: white; font-size: 1.5em; cursor: pointer; }
+    .mobile-title { font-weight: bold; font-size: 1.2em; }
+
+    /* Menú desplegable lateral */
+    .mobile-menu { position: fixed; top: 0; left: -240px; width: 240px; height: 100%; background: #3d006e; padding: 20px; display: flex; flex-direction: column; gap: 15px; transition: left 0.3s ease; z-index: 999; }
+    .mobile-menu button { background: none; border: none; color: white; font-size: 1em; text-align: left; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .mobile-menu.show { left: 0; }
+
+    /* Ocultar en PC */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .mobile-header { display: flex; }
+    }
+
+    .terms { margin-top: 40px; font-size: 14px; opacity: 0.7; }
+     .anime-card button {
+    background-color: #f47521; /* Naranja Crunchyroll */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .anime-card button:hover {
+    background-color: #ff8c42; /* Un poco más claro al pasar */
+    transform: scale(1.05);
+  }
+  </style>
 </head>
 <body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <img id="avatar-img" src="https://i.ibb.co/k2HCPYqd/1742400066396.jpg" alt="Avatar" class="avatar" />
+    <div class="username">
+      <span id="username">Cargando...</span>
+      <img class="verificacion-img" id="badge-img" src="" alt="Verificado" />
+    </div>
+    <button>Inicio</button>
+    <button>Subtitulado</button>
+    <button>Doblajes</button>
+    <button>Horarios</button>
+    <button class="premium">PREMIUM ACTIVO</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="header">
+      <div class="search">
+        <input type="text" placeholder="Busca una serie" />
+        <button>🔍</button>
+      </div>
+    </div>
     
-    <header>
-        <img src="offis.png" alt="Logo">
-        <ul class="menu">
-            <li><a href="parche.html" id="juegos-link">nuevo parche v2.0</a></li>
-            <li><a href="https://old.appsgeyser.com/building/?type=apk&widget_name=Anime%20Offis_18838036&_gl=1*9uptcq*_ga*NzQxNjU0NDI1LjE3NDg4ODY3OTc.*_ga_WRFFFBGC4Z*czE3NDg4ODY3OTckbzEkZzEkdDE3NDg4ODc0NjQkajM4JGwwJGgw" id="agregar-link">Descargar la App (con anuncios)</a></li>
-        </ul>
-        <button class="menu-toggle">&#9776;</button>
-    </header>
+    <h5>Actualmente nuestra página está en versión beta y no alojamos animes directamente.<br>
+Los animes que ves te llevarán a sus versiones oficiales en Crunchyroll.
+La beta finalizará el 22 de septiembre de 2025.<br>
+Próximamente esperamos traer contenido con licencia oficial para que disfrutes todo el anime legalmente y sin costo.<br>
+¡Gracias por tu apoyo y por ser parte de Anime Offis!</h5>
 
-    <div class="sidebar" >
-        <a href="https://destiny-oficial.github.io/Games/index.html">Juegos</a>
-        <a href="perfil.html">Perfil</a>
-        <a href="logout.html">Cerrar Sesión</a>
-        <a href="ajustes.html">ajustes de la cuenta</a>
-        <a href="ver.html">ver momento de animes de los usuarios</a>
-    </div>
+    <div class="anime-card">
+  <img src="anime1.jpg" alt="Anime 1" />
+  <button onclick="window.open('https://www.crunchyroll.com/series/G9VHN91DJ/the-angel-next-door-spoils-me-rotten?utm_medium=android&utm_source=share', '_blank')">
+    Ver Temporadas
+  </button>
+</div>
 
-    <div class="overlay"></div>
-
-    <h1>Bienvenido a Animes Offis ❄️</h1>
-    
-      <!-- Búsqueda de usuarios -->
-<section class="search-users">
-    <input type="text" id="search-user-input" placeholder="nombre de usuario a buscar...">
-    <button id="search-user-btn">Buscar</button>
-</section>
-<section class="search-users-results">
-    <h2>Usuarios Encontrados</h2>
-    <ul id="user-results-list"></ul>
-</section>
-    <a href="https://t.me/animeoffis" target="_blank" style="display:block; text-align:center; margin:20px; font-weight:bold; color:#0088cc;">
-📲 Únete a nuestro canal oficial de Telegram
-    </a>
-
-    <div class="section">
-        <h2>Animes</h2>
-        <div class="carousel">
-            <img src="anime1.jpg" alt="Anime 1">
-            <img src="anime2.jpg" alt="Anime 2">
-        </div>
-
-    <div class="section">
-        <h2>Novelas Ligeras</h2>
-        <div class="carousel">
-            <img src="novela5.jpg" alt="Novela 1">
-            <img src="novela2.jpg" alt="Novela 2">
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Síguenos en redes sociales</h2>
-        <div class="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61578585404705">Facebook</a>
-            <a href="https://www.tiktok.com/@animeoffis_oficia?_t=ZS-8ybpz8vcubR&_r=1">TikTok</a>
-            <a href="https://x.com/Animeoffis?t=QExZSqq7g5gHi2JFal0Jqg&s=09">X (Twitter)</a>
-            <a href="https://www.instagram.com/animeoffis?igsh=MWZiNml6OTZ2bjc5NQ==">Instagram</a>
-            <a href="https://t.me/animeoffis">Telegram</a>
-            <a href="https://whatsapp.com/channel/0029VaIfUfHBPzjXBdYXPA0C">WhatsApp</a>
-        </div>
-    </div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <div class="section">
-        <h2>Trabajadores y Contribuyentes</h2>
-        <div class="workers">
-            <div class="worker">
-                <img src="https://i.ibb.co/TMRz7834/1001708929.jpg" alt="Destiny Oficial">
-                <p>Destiny (Sergio)<br>creador(a).</p>
-            </div>
-            <div class="worker">
-                <img src="https://i.ibb.co/67xCXVth/images-20.jpg" alt="Jonathan">
-                <p>Jonathan</p>
-            </div>
-            <div class="worker">
-                <img src="https://i.ibb.co/rRSKnmFs/IMG-20250216-WA0027.jpg" alt="Josué (rem56)">
-                <p>Josue (rem56)</p>
-            </div>
-            <div class="worker">
-                <img src="https://i.ibb.co/k2HCPYqd/1742400066396.jpg" alt="JD anime latino">
-                <p>JD latino</p>
-            </div>
-            <div class="worker">
-                <img src="animeSL.png" alt="JD anime SL">
-                <p>JD SL 🇯🇵</p>
-            </div>
-            <div class="worker">
-                <img src="https://i.ibb.co/Lz69NvNg/IMG-20250222-WA0128.jpg" alt="Kiyotaka">
-                <p>Kiyotaka</p>
-            </div>
-            <div class="worker">
-                <img src="https://i.ibb.co/tT283k3K/1742400162660.jpg" alt="Meli studio">
-                <p>Meli studio</p>
-            </div>
-            <div class="worker">
-                <img src="https://i.ibb.co/twmMtX2v/64f708716f82.jpg" alt="pablo">
-                <p>pablo</p>
-            </div>
-        </div>
-    </div>
+<div class="anime-card">
+  <img src="anime2.jpg" alt="Anime 2" />
+  <button onclick="window.open(' https://www.crunchyroll.com/series/G8DHV784M/i-may-be-a-guild-receptionist-but-ill-solo-any-boss-to-clock-out-on-time?utm_medium=android&utm_source=share', '_blank')">
+    Ver Temporadas
+  </button>
+</div>
 
     <div class="terms">
-        <a href="términos.html">Términos y condiciones</a> <br> <a href="política.html">Política de privacidad</a>| <a href="acerca.html">Acerca de la página</a> <br> <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial😉❤️</h5>
+      <a href="terminos.html">Términos y condiciones</a> <br>
+      <a href="política.html">Política de privacidad</a> |
+      <a href="acerca.html">Acerca de la página</a>
+      <br>
+      <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial 😉❤️</h5>
     </div> 
+  </div>
 
-    <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const sidebar = document.querySelector('.sidebar');
-        const overlay = document.querySelector('.overlay');
+  <!-- MOBILE HEADER -->
+  <div class="mobile-header">
+    <button id="menu-btn">☰</button>
+    <span class="mobile-title">Anime Offis</span>
+  </div>
 
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-        });
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" class="mobile-menu">
+    <button>Inicio</button>
+    <button>Sub</button>
+    <button>Doblajes</button>
+    <a href="perfil.html">perfil</a>
+  </div>
 
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('show');
-            overlay.classList.remove('show');
-        });
-        // Búsqueda de usuarios en Firestore
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-        authDomain: "anime-offis.firebaseapp.com",
-        projectId: "anime-offis",
-        storageBucket: "anime-offis.appspot.com",
-        messagingSenderId: "377121993034",
-        appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
     };
 
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Evento para realizar la búsqueda de usuarios
-    document.getElementById("search-user-btn").addEventListener("click", function () {
-        let searchQuery = document.getElementById("search-user-input").value.toLowerCase();
-        let userResultsList = document.getElementById("user-results-list");
-        userResultsList.innerHTML = ""; // Limpiar resultados anteriores
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection('users').doc(user.uid).get().then(doc => {
+          if (doc.exists) {
+            const userData = doc.data();
 
-        if (searchQuery === "") {
-            return; // No hacer nada si no hay texto en la búsqueda
-        }
+            // Username
+            document.getElementById('username').textContent = userData.username || user.displayName || "Usuario";
 
-        // Recorrer todos los documentos de la colección 'users'
-        db.collection("users")
-            .get()  // Obtiene todos los documentos dentro de la colección 'users'
-            .then((querySnapshot) => {
-                let foundUsers = false;
+            // Foto de perfil
+            const avatarImg = document.getElementById('avatar-img');
+            if (userData.profilePhoto) {
+              avatarImg.src = userData.profilePhoto;
+            } else if (user.photoURL) {
+              avatarImg.src = user.photoURL;
+            } else {
+              avatarImg.src = "https://i.ibb.co/k2HCPYqd/1742400066396.jpg";
+            }
 
-                querySnapshot.forEach((doc) => {
-                    let userData = doc.data();
-                    // Verificar si el 'username' contiene el término de búsqueda
-                    if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
-                        foundUsers = true;
-                        let li = document.createElement("li");
-                        li.textContent = userData.username + " - " + userData.email;
-                        li.addEventListener("click", function () {
-                            // Verificar que el doc.id es el correcto
-                            console.log("Redirigiendo al perfil del usuario con ID: ", doc.id);
-                            window.location.href = `perfil.html?usuario=${doc.id}`; // Redirigir con el ID del usuario encontrado
-                        });
-                        userResultsList.appendChild(li);
-                    }
-                });
-
-                if (!foundUsers) {
-                    userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
-                }
-            })
-            .catch((error) => {
-                console.error("Error al buscar usuarios:", error);
-                userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
-            });
+            // Insignia
+            const badgeImg = document.getElementById('badge-img');
+            let badgeSrc = "";
+            switch (userData.verified) {
+              case "creador": badgeSrc = "crea.png"; break;
+              case "colaborador": badgeSrc = "cola.png"; break;
+              case "aportador": badgeSrc = "aportador.png"; break;
+              case "soporte": badgeSrc = "soport.png"; break;
+              case "beta": badgeSrc = "beta.png"; break;
+              case "dora": badgeSrc = "verif.png"; break;
+              case "azul": badgeSrc = "azul.png"; break;
+              case "verde": badgeSrc = "verde.png"; break;
+              default: badgeSrc = "verde.png";
+            }
+            badgeImg.src = badgeSrc;
+            badgeImg.style.display = "inline-block";
+          }
+        });
+      } else {
+        window.location.href = "login.html";
+      }
     });
-    </script>
 
+    // Mostrar / ocultar el menú móvil
+    document.getElementById("menu-btn").addEventListener("click", () => {
+      document.getElementById("mobile-menu").classList.toggle("show");
+    });
+  </script>
 </body>
 </html>
