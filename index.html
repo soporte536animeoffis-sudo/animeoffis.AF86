@@ -328,14 +328,32 @@
 
   function loginConGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
+
+    // Forzar flujo web y evitar SHA-1
+    provider.setCustomParameters({
+        client_id: "377121993034-5meh53d7t9fv03jj07di27ev6636hibb.apps.googleusercontent.com",
+        prompt: "select_account"
+    });
+
     auth.signInWithPopup(provider)
-      .then(() => {
-        window.location.href = "dashboard.html";
-      })
-      .catch(error => {
-        const errorMessage = traducirError(error.code);
-        mostrarAlerta(errorMessage);
-      });
+        .then((result) => {
+            const user = result.user;
+
+            // Guardar el usuario en Firestore si no existe
+            firebase.firestore().collection("usuarios").doc(user.uid).set({
+                nombre: user.displayName || "",
+                email: user.email,
+                foto: user.photoURL || "",
+                creado: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true })
+            .then(() => {
+                window.location.href = "dashboard.html";
+            });
+        })
+        .catch(error => {
+            const errorMessage = traducirError(error.code);
+            mostrarAlerta(errorMessage);
+        });
   }
 
   function traducirError(codigo) {
