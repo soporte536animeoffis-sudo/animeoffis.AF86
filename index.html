@@ -232,7 +232,7 @@
   }
 }
   </style>
-   <link rel="manifest" href="manifest.json">
+   <link rel="manifest" href=""/anime-offis/manifest.json">
 <meta name="theme-color" content="#ff6600">
 </head>
 <body>
@@ -393,7 +393,7 @@
     }
 });
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('/anime-offis/sw.js')
       .then(reg => console.log('Service Worker registrado', reg))
       .catch(err => console.log('Error en SW', err));
   }
