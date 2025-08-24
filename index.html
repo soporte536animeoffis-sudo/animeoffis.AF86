@@ -232,6 +232,8 @@
   }
 }
   </style>
+   <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff6600">
 </head>
 <body>
 
@@ -390,6 +392,11 @@
         document.title = "vive la experiencia del anime 🐱🥳";
     }
 });
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registrado', reg))
+      .catch(err => console.log('Error en SW', err));
+  }
 </script>
 
 </body>
