@@ -43,6 +43,12 @@
     .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; background: #3d006e; padding: 10px; display: flex; align-items: center; gap: 10px; color: white; z-index: 1000; }
     .mobile-header #menu-btn { background: none; border: none; color: white; font-size: 1.5em; cursor: pointer; }
     .mobile-title { font-weight: bold; font-size: 1.2em; }
+    .mobile-title2 {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-left: 0;   /* Lo pega a la izquierda */
+  margin-right: auto;
+    }
 
     /* Menú desplegable lateral */
     .mobile-menu { position: fixed; top: 0; left: -240px; width: 240px; height: 100%; background: #3d006e; padding: 20px; display: flex; flex-direction: column; gap: 15px; transition: left 0.3s ease; z-index: 999; }
@@ -131,6 +137,8 @@ Próximamente esperamos traer contenido con licencia oficial para que disfrutes 
   <div class="mobile-header">
     <button id="menu-btn">☰</button>
     <span class="mobile-title">Anime Offis</span>
+    <span class="mobile-title2">Descargar app</span>
+    
   </div>
 
   <!-- MOBILE MENU -->
