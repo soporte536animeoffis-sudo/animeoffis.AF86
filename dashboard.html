@@ -103,6 +103,14 @@
         <button>🔍</button>
       </div>
     </div>
+
+    <section class="search-users">
+    <input type="text" id="search-user-input" placeholder="nombre de usuario a buscar...">
+    <button id="search-user-btn">Buscar</button>
+</section>
+<section class="search-users-results">
+    <ul id="user-results-list"></ul>
+</section>
     
     <h5>Actualmente nuestra página está en versión beta y no alojamos animes directamente.<br>
 Los animes que ves te llevarán a sus versiones oficiales en Crunchyroll.
@@ -213,6 +221,47 @@ Próximamente esperamos traer contenido con licencia oficial para que disfrutes 
     // Mostrar / ocultar el menú móvil
     document.getElementById("menu-btn").addEventListener("click", () => {
       document.getElementById("mobile-menu").classList.toggle("show");
+    });
+      // Evento para realizar la búsqueda de usuarios
+    document.getElementById("search-user-btn").addEventListener("click", function () {
+        let searchQuery = document.getElementById("search-user-input").value.toLowerCase();
+        let userResultsList = document.getElementById("user-results-list");
+        userResultsList.innerHTML = ""; // Limpiar resultados anteriores
+
+        if (searchQuery === "") {
+            return; // No hacer nada si no hay texto en la búsqueda
+        }
+
+        // Recorrer todos los documentos de la colección 'users'
+        db.collection("users")
+            .get()  // Obtiene todos los documentos dentro de la colección 'users'
+            .then((querySnapshot) => {
+                let foundUsers = false;
+
+                querySnapshot.forEach((doc) => {
+                    let userData = doc.data();
+                    // Verificar si el 'username' contiene el término de búsqueda
+                    if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
+                        foundUsers = true;
+                        let li = document.createElement("li");
+                        li.textContent = userData.username + " - " + userData.email;
+                        li.addEventListener("click", function () {
+                            // Verificar que el doc.id es el correcto
+                            console.log("Redirigiendo al perfil del usuario con ID: ", doc.id);
+                            window.location.href = `perfil.html?usuario=${doc.id}`; // Redirigir con el ID del usuario encontrado
+                        });
+                        userResultsList.appendChild(li);
+                    }
+                });
+
+                if (!foundUsers) {
+                    userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
+                }
+            })
+            .catch((error) => {
+                console.error("Error al buscar usuarios:", error);
+                userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
+            });
     });
   </script>
 </body>
