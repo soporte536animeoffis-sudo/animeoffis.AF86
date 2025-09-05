@@ -24,7 +24,6 @@
       color: white;
     }
 
-    /* Estilo base para teléfonos*/
     .login-box {
       background: rgba(0, 0, 0, 0.8);
       padding: 30px;
@@ -130,22 +129,20 @@
       display: none;
     }
 
-    /* ---------------------------- */
-    /* ESTILO PARA COMPUTADORAS    */
-    /* ---------------------------- */
     @media (min-width: 768px) {
       body {
-        background-image: url('mora.jpg'); /* Tu fondo */
-     .login-box {
-  display: flex;
-  width: 90vw;
-  max-width: 1000px;
-  height: auto;
-  min-height: 500px;
-  padding: 0;
-  overflow: hidden;
-  border-radius: 20px;
-}
+        background-image: url('mora.jpg');
+      }
+      .login-box {
+        display: flex;
+        width: 90vw;
+        max-width: 1000px;
+        height: auto;
+        min-height: 500px;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 20px;
+      }
 
       .left-panel {
         background-color: #300060;
@@ -211,29 +208,26 @@
       }
     }
     @media (min-width: 992px) {
-  .login-container {
-    width: 70vw;
-    max-width: 1000px;
-    flex-direction: row;
-  }
-
-  .login-left, .login-right {
-    width: 50%;
-  }
-
-  .login-left {
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-  }
-
-  .login-right {
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-  }
-}
+      .login-container {
+        width: 70vw;
+        max-width: 1000px;
+        flex-direction: row;
+      }
+      .login-left, .login-right {
+        width: 50%;
+      }
+      .login-left {
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+      .login-right {
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+      }
+    }
   </style>
-   <link rel="manifest" href="/anime-offis/manifest.json">
-<meta name="theme-color" content="#8000FF">
+  <link rel="manifest" href="/anime-offis/manifest.json">
+  <meta name="theme-color" content="#8000FF">
 </head>
 <body>
 
@@ -300,6 +294,7 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
   const firebaseConfig = {
@@ -312,13 +307,18 @@
   };
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
+  const db = firebase.firestore();
 
+  // --- LOGIN NORMAL ---
   document.getElementById("login-form").addEventListener("submit", function (event) {
     event.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    auth.signInWithEmailAndPassword(email, password)
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => {
+        return auth.signInWithEmailAndPassword(email, password);
+      })
       .then(() => {
         window.location.href = "dashboard.html";
       })
@@ -328,70 +328,63 @@
       });
   });
 
+  // --- LOGIN CON GOOGLE ---
   function loginConGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-
-    // Forzar flujo web y evitar SHA-1
     provider.setCustomParameters({
-        client_id: "377121993034-5meh53d7t9fv03jj07di27ev6636hibb.apps.googleusercontent.com",
-        prompt: "select_account"
+      client_id: "377121993034-5meh53d7t9fv03jj07di27ev6636hibb.apps.googleusercontent.com",
+      prompt: "select_account"
     });
 
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            const user = result.user;
-
-            // Guardar el usuario en Firestore si no existe
-            firebase.firestore().collection("usuarios").doc(user.uid).set({
-                nombre: user.displayName || "",
-                email: user.email,
-                foto: user.photoURL || "",
-                creado: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true })
-            .then(() => {
-                window.location.href = "dashboard.html";
-            });
-        })
-        .catch(error => {
-            const errorMessage = traducirError(error.code);
-            mostrarAlerta(errorMessage);
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => {
+        return auth.signInWithPopup(provider);
+      })
+      .then((result) => {
+        const user = result.user;
+        db.collection("usuarios").doc(user.uid).set({
+          nombre: user.displayName || "",
+          email: user.email,
+          foto: user.photoURL || "",
+          creado: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true })
+        .then(() => {
+          window.location.href = "dashboard.html";
         });
+      })
+      .catch(error => {
+        const errorMessage = traducirError(error.code);
+        mostrarAlerta(errorMessage);
+      });
   }
 
+  // --- TRADUCCIÓN DE ERRORES ---
   function traducirError(codigo) {
     switch (codigo) {
-      case 'auth/user-not-found':
-        return 'Usuario no encontrado. ¿Estás registrado?';
-      case 'auth/wrong-password':
-        return 'Contraseña incorrecta. Intenta de nuevo.';
-      case 'auth/invalid-email':
-        return 'Correo electrónico inválido.';
-      case 'auth/user-disabled':
-        return 'Este usuario ha sido deshabilitado.';
-      case 'auth/too-many-requests':
-        return 'Demasiados intentos. Espera un momento.';
-      case 'auth/popup-closed-by-user':
-        return 'Ventana de Google cerrada. Inténtalo otra vez.';
-      default:
-        return 'Ocurrió un error al iniciar sesión.';
+      case 'auth/user-not-found': return 'Usuario no encontrado. ¿Estás registrado?';
+      case 'auth/wrong-password': return 'Contraseña incorrecta. Intenta de nuevo.';
+      case 'auth/invalid-email': return 'Correo electrónico inválido.';
+      case 'auth/user-disabled': return 'Este usuario ha sido deshabilitado.';
+      case 'auth/too-many-requests': return 'Demasiados intentos. Espera un momento.';
+      case 'auth/popup-closed-by-user': return 'Ventana de Google cerrada. Inténtalo otra vez.';
+      default: return 'Ocurrió un error al iniciar sesión.';
     }
   }
 
+  // --- MOSTRAR ALERTA ---
   function mostrarAlerta(mensaje) {
     const alerta = document.getElementById("alerta-error");
     alerta.textContent = mensaje;
     alerta.style.display = "block";
-    setTimeout(() => {
-      alerta.style.display = "none";
-    }, 6000);
+    setTimeout(() => { alerta.style.display = "none"; }, 6000);
   }
+
+  // --- CAMBIO DE TÍTULO ---
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        document.title = "¡vuelve te extrañamos 🥹";
-    } else {
-        document.title = "vive la experiencia del anime 🐱🥳";
-    }
-});
+    document.title = document.hidden ? "¡vuelve te extrañamos 🥹" : "vive la experiencia del anime 🐱🥳";
+  });
+
+  // --- SERVICE WORKER ---
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/anime-offis/sw.js')
       .then(reg => console.log('Service Worker registrado', reg))
