@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Enviar Recomendaciones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Barra de navegación -->
+  <nav class="bg-gray-800 shadow-md">
+    <ul class="flex justify-around p-4 text-sm font-semibold">
+      <li><a href="#" class="hover:text-yellow-400">Perfiles</a></li>
+      <li><a href="#" class="hover:text-yellow-400">Dashboard</a></li>
+      <li><a href="#" class="hover:text-yellow-400">Juegos</a></li>
+      <li><a href="#" class="hover:text-yellow-400">Mensajes</a></li>
+      <li><a href="#" class="hover:text-yellow-400">Tiendas</a></li>
+      <li><a href="#" class="hover:text-yellow-400">Eventos</a></li>
+    </ul>
+  </nav>
+
+  <!-- Formulario -->
+  <div class="max-w-lg mx-auto bg-gray-800 p-6 rounded-2xl mt-8 shadow-lg">
+    <h2 class="text-2xl font-bold mb-4 text-center">Enviar Recomendación</h2>
+    <form id="recommendForm" class="space-y-4">
+      <div>
+        <label class="block mb-1 text-sm">Nombre:</label>
+        <input type="text" id="nombre" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-yellow-400 outline-none">
+      </div>
+      <div>
+        <label class="block mb-1 text-sm">Texto de la recomendación:</label>
+        <textarea id="texto" rows="4" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-yellow-400 outline-none"></textarea>
+      </div>
+      <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg">Enviar</button>
+    </form>
+    <p id="msg" class="mt-4 text-center text-green-400 hidden">✅ Recomendación enviada con éxito</p>
+  </div>
+
+  <script>
+    // Configuración Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Enviar recomendación
+    const form = document.getElementById("recommendForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value.trim();
+      const texto = document.getElementById("texto").value.trim();
+
+      if(nombre && texto){
+        try {
+          await db.collection("recomendaciones").add({
+            nombre: nombre,
+            texto: texto,
+            fecha: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          form.reset();
+          msg.classList.remove("hidden");
+          setTimeout(() => msg.classList.add("hidden"), 3000);
+        } catch (error) {
+          alert("❌ Error al enviar: " + error.message);
+        }
+      } else {
+        alert("Por favor completa todos los campos.");
+      }
+    });
+  </script>
+</body>
+</html>
