@@ -1,268 +1,276 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Anime Offis</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: #300050; color: #fff; }
-    a { text-decoration: none; color: inherit; }
-
-    /* Sidebar */
-    .sidebar { background: #3d006e; width: 240px; height: 100vh; position: fixed; top: 0; left: 0; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-    .sidebar img.avatar { width: 100px; border-radius: 50%; margin: 0 auto; }
-    .username { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; font-weight: bold; }
-    .verificacion-img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid white; display: none; }
-    .sidebar button { background: #000; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-    .sidebar button:hover { background: #222; }
-    .premium { background: linear-gradient(to right, gold, orange); color: #000; font-weight: bold; }
-
-    /* Main content */
-    .main { margin-left: 260px; padding: 20px; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
-    .search { width: 100%; max-width: 500px; display: flex; }
-    .search input { flex: 1; padding: 10px; border-radius: 20px 0 0 20px; border: none; }
-    .search button { background: black; border: none; color: white; padding: 10px 20px; border-radius: 0 20px 20px 0; cursor: pointer; }
-    .grid { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-    .anime-card { background: #1a0033; padding: 10px; border-radius: 15px; text-align: center; }
-    .anime-card img { width: 100%; border-radius: 10px; }
-    .anime-card button { margin-top: 10px; background: #000; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 0.9em; }
-
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; padding: 10px; }
-      .mobile-nav { position: fixed; bottom: 0; width: 100%; background: #3d006e; display: flex; justify-content: space-around; padding: 10px 0; z-index: 999; }
-      .mobile-nav button { background: none; color: white; font-weight: bold; border: none; font-size: 0.9em; }
-      .search { flex-direction: column; }
-      .search input, .search button { width: 100%; border-radius: 10px; margin-bottom: 10px; }
-    }
-
-    /* Encabezado móvil */
-    .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; background: #3d006e; padding: 10px; display: flex; align-items: center; gap: 10px; color: white; z-index: 1000; }
-    .mobile-header #menu-btn { background: none; border: none; color: white; font-size: 1.5em; cursor: pointer; }
-    .mobile-title { font-weight: bold; font-size: 1.2em; }
-    .mobile-title2 {
-  font-weight: bold;
-  font-size: 1.2em;
-  position: relative;
-  left: -30px; /* Mueve el texto 10px a la izquierda */
-    }
-
-    /* Menú desplegable lateral */
-    .mobile-menu { position: fixed; top: 0; left: -240px; width: 240px; height: 100%; background: #3d006e; padding: 20px; display: flex; flex-direction: column; gap: 15px; transition: left 0.3s ease; z-index: 999; }
-    .mobile-menu button { background: none; border: none; color: white; font-size: 1em; text-align: left; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .mobile-menu.show { left: 0; }
-
-    /* Ocultar en PC */
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .mobile-header { display: flex; }
-    }
-
-    .terms { margin-top: 40px; font-size: 14px; opacity: 0.7; }
-     .anime-card button {
-    background-color: #f47521; /* Naranja Crunchyroll */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .anime-card button:hover {
-    background-color: #ff8c42; /* Un poco más claro al pasar */
-    transform: scale(1.05);
-  }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard - Navbar con perfil</title>
+<style>
+:root{
+  --bg:#0b0b0c;
+  --panel:#141415;
+  --muted:#9aa0a6;
+  --accent:#ff6a00;
+  --glass: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.04);
+  font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial;
+}
+html,body{height:100%;margin:0;background:var(--bg);color:#fff}
+/* Top bar */
+.topbar{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--border);backdrop-filter:blur(6px);position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));}
+.left-group{display:flex;align-items:center;gap:14px}
+.hamburger{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;background:var(--panel);cursor:pointer}
+.hamburger svg{opacity:0.9}
+.logo{display:flex;align-items:center;gap:10px;cursor:default}
+.logo img {height:40px;width:auto;display:block;}
+.search {
+  display: flex;
+  align-items: center;
+  background: var(--panel, #141415);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: text;
+  width: 160px; /* Ajusta este valor a tu gusto */
+  gap: 6px;
+} 12px;border-radius:10px;color:var(--muted);display:flex;align-items:center;gap:8px;cursor:text;width:250px;}
+.search svg{flex-shrink:0;color:var(--muted)}
+.search input{flex:1;border:none;outline:none;background:transparent;color:white;font-size:14px}
+#user-results-list{margin-top:4px;padding:0;list-style:none;background:var(--panel);border-radius:6px;max-height:200px;overflow-y:auto}
+#user-results-list li{padding:6px 10px;cursor:pointer;color:white}
+#user-results-list li:hover{background:rgba(255,255,255,0.1)}
+.profile-btn{display:flex;align-items:center;gap:8px;cursor:pointer}
+.avatar{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.04);background:linear-gradient(180deg,#222,#111)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+main{padding:18px}
+h1{font-size:20px;margin:8px 0 18px}
+.profile-panel{position:fixed;right:12px;top:76px;width:320px;max-width:92vw;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--border);border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);transform:translateY(-8px);opacity:0;pointer-events:none;transition:all 180ms ease-in-out;backdrop-filter: blur(8px);}
+.profile-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.profile-header{display:flex;gap:12px;align-items:center;padding:8px 4px}
+.profile-name{font-size:18px;font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);padding:6px 8px;border-radius:999px;font-size:13px;color:var(--accent);font-weight:700}
+.section{margin-top:8px;border-top:1px solid var(--border);padding-top:10px}
+.menu-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:8px;cursor:pointer}
+.menu-item:hover{background:var(--glass)}
+.menu-item svg{width:20px;height:20px;opacity:0.9}
+.muted{color:var(--muted);font-size:14px}
+@media (max-width:520px){.profile-panel{right:8px;left:8px;top:64px;width:auto;border-radius:10px}}
+.icon-small{width:18px;height:18px;display:inline-block}
+</style>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <img id="avatar-img" src="https://i.ibb.co/k2HCPYqd/1742400066396.jpg" alt="Avatar" class="avatar" />
-    <div class="username">
-      <span id="username">Cargando...</span>
-      <img class="verificacion-img" id="badge-img" src="" alt="Verificado" />
-    </div>
-    <button>Inicio</button>
-    <button>Subtitulado</button>
-    <button>Doblajes</button>
-    <button>Horarios</button>
-    <button class="premium">PREMIUM ACTIVO</button>
+<header class="topbar">
+<div class="left-group">
+  <div class="hamburger" id="hamburger" title="Menu">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
+  <div class="logo">
+    <img src="offis.png" alt="Logo Anime Offis">
+  </div>
+</div>
 
-  <!-- MAIN -->
-  <div class="main">
-    <div class="header">
-      <div class="search">
-        <input type="text" placeholder="Busca una serie" />
-        <button>🔍</button>
+<div style="display:flex;align-items:center;gap:12px">
+  <div class="search" role="search" aria-label="Buscar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="11" cy="11" r="6" stroke-linecap="round" stroke-linejoin="round"></circle>
+      <path d="M21 21l-4.35-4.35" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <input id="search-user-input" type="text" placeholder="Buscar...">
+  </div>
+  <ul id="user-results-list"></ul>
+
+  <div class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+    <div class="avatar">
+      <img id="avatar-topbar" src="avatar.jpg" alt="Avatar"
+      onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\' viewBox=\'0 0 120 120\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23111\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'46\' fill=\'%23fff\'>D</text></svg>'"/>
+    </div>
+  </div>
+</div>
+</header>
+
+<aside class="profile-panel" id="profilePanel" role="dialog" aria-label="Panel de perfil">
+<div class="profile-header">
+  <div class="avatar" style="width:64px;height:64px;border-radius:12px;overflow:hidden">
+    <img id="avatar-panel" src="avatar.jpg" alt="Avatar"
+    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'220\' height=\'220\' viewBox=\'0 0 220 220\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23111\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'90\' fill=\'%23fff\'>DO</text></svg>'"/>
+  </div>
+  <div class="username" style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+    <span id="username">Cargando...</span>
+    <img class="verificacion-img" id="badge-img" src="" alt="Verificado" style="width:18px; height:18px;" />
+    <div class="badge">&#x1F451; Miembro Premium</div>
+  </div>
+  <button style="margin-left:auto;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px">✎</button>
+        </div>        
       </div>
     </div>
+<div class="section">
+  <div class="menu-item">
+    <a href="perfil.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Cambiar perfil</div>
+    </a>
+  </div>
 
-    <section class="search-users">
-    <input type="text" id="search-user-input" placeholder="nombre de usuario a buscar...">
-    <button id="search-user-btn">Buscar</button>
-</section>
-<section class="search-users-results">
-    <ul id="user-results-list"></ul>
-</section>
-    
-    <h5>Actualmente nuestra página está en versión beta y no alojamos animes directamente.<br>
-Los animes que ves te llevarán a sus versiones oficiales en Crunchyroll.
-La beta finalizará el 22 de septiembre de 2025.<br>
-Próximamente esperamos traer contenido con licencia oficial para que disfrutes todo el anime legalmente y sin costo.<br>
-¡Gracias por tu apoyo y por ser parte de Anime Offis!</h5>
-
-    <div class="anime-card">
-  <img src="anime1.jpg" alt="Anime 1" />
-  <button onclick="window.open('https://www.crunchyroll.com/series/G9VHN91DJ/the-angel-next-door-spoils-me-rotten?utm_medium=android&utm_source=share', '_blank')">
-    Ver Temporadas
-  </button>
+  <div class="menu-item">
+    <a href="ajuste.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M1 12h4M19 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Opciones</div>
+    </a>
+  </div>
 </div>
 
-<div class="anime-card">
-  <img src="anime2.jpg" alt="Anime 2" />
-  <button onclick="window.open(' https://www.crunchyroll.com/series/G8DHV784M/i-may-be-a-guild-receptionist-but-ill-solo-any-boss-to-clock-out-on-time?utm_medium=android&utm_source=share', '_blank')">
-    Ver Temporadas
-  </button>
+<div class="section">
+  <div class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v4H6zM6 13h12v8H6z" stroke-linecap="round" stroke-linejoin="round"/></svg><div> Favoritos</div></div>
+  <div class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg><div> Offislists</div></div>
+  <div class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18" stroke-linecap="round" stroke-linejoin="round"/></svg><div> Histórico</div></div>
 </div>
 
-    <div class="terms">
-      <a href="terminos.html">Términos y condiciones</a> <br>
-      <a href="política.html">Política de privacidad</a> |
-      <a href="acerca.html">Acerca de la página</a>
-      <br>
-      <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial 😉❤️</h5>
-    </div> 
+<div class="section">
+  <div class="menu-item">
+    <a href="notif.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Notificaciones</div>
+    </a>
   </div>
 
-  <!-- MOBILE HEADER -->
-  <div class="mobile-header">
-    <button id="menu-btn">☰</button>
-    <span class="mobile-title">Anime Offis</span>
-    <span class="mobile-title2">Descargar app</span>
-    
+  <div class="menu-item">
+    <a href="canjeo.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 3h18v14H3zM8 21v-4h8v4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Tarjeta de regalo</div>
+    </a>
   </div>
 
-  <!-- MOBILE MENU -->
-  <div id="mobile-menu" class="mobile-menu">
-    <button>Inicio</button>
-    <button>Sub</button>
-    <button>Doblajes</button>
-    <a href="perfil.html">perfil</a>
-  </div>
+  <div class="menu-item">
+  <a id="logout" href="logout.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M16 17l5-5-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 12H9" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>Desconectar</div>
+  </a>
+</div>
+</div>  
+</aside>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<main>
+<h1>Dashboard demo</h1>
+<p class="muted"> prueba de dasb nuevo, más diseñado de anime offis 
+actualización 20 de septiembre 2025.</p>
+</main>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-      authDomain: "anime-offis.firebaseapp.com",
-      projectId: "anime-offis",
-      storageBucket: "anime-offis.appspot.com",
-      messagingSenderId: "377121993034",
-      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
-    };
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+  authDomain: "anime-offis.firebaseapp.com",
+  projectId: "anime-offis",
+  storageBucket: "anime-offis.appspot.com",
+  messagingSenderId: "377121993034",
+  appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection('users').doc(user.uid).get().then(doc => {
-          if (doc.exists) {
-            const userData = doc.data();
+auth.onAuthStateChanged(user => {
+  if(user){
+    db.collection('users').doc(user.uid).get().then(doc=>{
+      if(doc.exists){
+        const data=doc.data();
+        document.getElementById('username').textContent=data.username||user.displayName||"Usuario";
 
-            // Username
-            document.getElementById('username').textContent = userData.username || user.displayName || "Usuario";
+        // Avatar topbar
+        const avatarTop = document.getElementById('avatar-topbar');
+        const avatarPanel = document.getElementById('avatar-panel');
+        const photo = data.profilePhoto||user.photoURL||"https://i.ibb.co/k2HCPYqd/1742400066396.jpg";
+        avatarTop.src = photo;
+        avatarPanel.src = photo;
 
-            // Foto de perfil
-            const avatarImg = document.getElementById('avatar-img');
-            if (userData.profilePhoto) {
-              avatarImg.src = userData.profilePhoto;
-            } else if (user.photoURL) {
-              avatarImg.src = user.photoURL;
-            } else {
-              avatarImg.src = "https://i.ibb.co/k2HCPYqd/1742400066396.jpg";
-            }
-
-            // Insignia
-            const badgeImg = document.getElementById('badge-img');
-            let badgeSrc = "";
-            switch (userData.verified) {
-              case "creador": badgeSrc = "crea.png"; break;
-              case "colaborador": badgeSrc = "cola.png"; break;
-              case "aportador": badgeSrc = "aportador.png"; break;
-              case "soporte": badgeSrc = "soport.png"; break;
-              case "beta": badgeSrc = "beta.png"; break;
-              case "dora": badgeSrc = "verif.png"; break;
-              case "azul": badgeSrc = "azul.png"; break;
-              case "verde": badgeSrc = "verde.png"; break;
-              default: badgeSrc = "verde.png";
-            }
-            badgeImg.src = badgeSrc;
-            badgeImg.style.display = "inline-block";
-          }
-        });
-      } else {
-        window.location.href = "login.html";
+        // Badge
+        const badge = document.getElementById('badge-img');
+        let src="";
+        switch(data.verified){
+          case "creador": src="crea.png"; break;
+          case "colaborador": src="cola.png"; break;
+          case "aportador": src="aportador.png"; break;
+          case "soporte": src="soport.png"; break;
+          case "beta": src="beta.png"; break;
+          case "dora": src="verif.png"; break;
+          case "azul": src="azul.png"; break;
+          case "verde": src="verde.png"; break;
+          default: src="verde.png";
+        }
+        badge.src=src;
+        badge.style.display="inline-block";
       }
     });
+  } else window.location.href="login.html";
+});
 
-    // Mostrar / ocultar el menú móvil
-    document.getElementById("menu-btn").addEventListener("click", () => {
-      document.getElementById("mobile-menu").classList.toggle("show");
+// Buscador
+const searchInput = document.getElementById('search-user-input');
+const resultsList = document.getElementById('user-results-list');
+
+searchInput.addEventListener('input', async () => {
+  const query = searchInput.value.trim().toLowerCase();
+  resultsList.innerHTML = '';
+  if (!query) return;
+
+  const snapshot = await db.collection('users')
+    .orderBy('usernameLower')
+    .startAt(query)
+    .endAt(query + '\uf8ff')
+    .limit(5)
+    .get();
+
+  snapshot.forEach(doc => {
+    const user = doc.data();
+    const li = document.createElement('li');
+    li.textContent = user.username || 'Sin nombre';
+    li.addEventListener('click', () => {
+      alert('Seleccionaste a: ' + li.textContent);
+      searchInput.value = '';
+      resultsList.innerHTML = '';
     });
-      // Evento para realizar la búsqueda de usuarios
-    document.getElementById("search-user-btn").addEventListener("click", function () {
-        let searchQuery = document.getElementById("search-user-input").value.toLowerCase();
-        let userResultsList = document.getElementById("user-results-list");
-        userResultsList.innerHTML = ""; // Limpiar resultados anteriores
+    resultsList.appendChild(li);
+  });
+});
 
-        if (searchQuery === "") {
-            return; // No hacer nada si no hay texto en la búsqueda
-        }
+// Abrir/cerrar panel de perfil
+const profileBtn = document.getElementById('profileBtn');
+const profilePanel = document.getElementById('profilePanel');
 
-        // Recorrer todos los documentos de la colección 'users'
-        db.collection("users")
-            .get()  // Obtiene todos los documentos dentro de la colección 'users'
-            .then((querySnapshot) => {
-                let foundUsers = false;
+profileBtn.addEventListener('click', () => {
+  profilePanel.classList.toggle('open');
+});
 
-                querySnapshot.forEach((doc) => {
-                    let userData = doc.data();
-                    // Verificar si el 'username' contiene el término de búsqueda
-                    if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
-                        foundUsers = true;
-                        let li = document.createElement("li");
-                        li.textContent = userData.username + " - " + userData.email;
-                        li.addEventListener("click", function () {
-                            // Verificar que el doc.id es el correcto
-                            console.log("Redirigiendo al perfil del usuario con ID: ", doc.id);
-                            window.location.href = `perfil.html?usuario=${doc.id}`; // Redirigir con el ID del usuario encontrado
-                        });
-                        userResultsList.appendChild(li);
-                    }
-                });
+// Cerrar al hacer clic afuera
+document.addEventListener('click', e => {
+  if(!profilePanel.contains(e.target) && !profileBtn.contains(e.target)){
+    profilePanel.classList.remove('open');
+  }
+});
 
-                if (!foundUsers) {
-                    userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
-                }
-            })
-            .catch((error) => {
-                console.error("Error al buscar usuarios:", error);
-                userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
-            });
+    // simple hamburger interaction (example)
+    hamburger.addEventListener('click', ()=>{
+      alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
     });
-  </script>
+
+// Logout demo
+document.getElementById('logout').addEventListener('click', () => {
+  auth.signOut().then(() => window.location.href="login.html");
+});
+</script>
 </body>
 </html>
