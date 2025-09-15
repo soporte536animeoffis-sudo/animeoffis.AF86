@@ -61,12 +61,13 @@ function showAnimation(type, allowed) {
       }, { once: true });
     }
   }
- if (type === "fireworks") {
-  startFireworksVideo();
-}
   if (type === "mexico") {
   startMexicoAnimation();
   }
+ if (type === "fireworks") {
+  startFireworksVideo();
+}
+
 if (type === "sakura") {
     overlay = document.getElementById("sakura-animation");
     overlay.style.display = "block";
@@ -268,41 +269,6 @@ function startSakura() {
   setTimeout(() => clearInterval(interval), 6000); // dura 6s
 }
 
-
-function launchFireworkVideo() {
-  const overlay = document.getElementById("fireworks-animation");
-
-  // Crear un video nuevo
-  const video = document.createElement("video");
-  video.src = "fuegos.mp4"; // 🎆 tu archivo mp4
-  video.autoplay = true;
-  video.muted = true;
-  video.playsInline = true;
-  video.classList.add("firework-video");
-
-  // Posición aleatoria en pantalla
-  video.style.top = Math.random() * (window.innerHeight - 200) + "px";
-  video.style.left = Math.random() * (window.innerWidth - 200) + "px";
-
-  overlay.appendChild(video);
-
-  // Eliminar cuando termine
-  video.onended = () => video.remove();
-}
-
-function startFireworksVideo() {
-  const overlay = document.getElementById("fireworks-animation");
-  overlay.style.display = "block";
-
-  // Generar explosiones cada medio segundo
-  const interval = setInterval(launchFireworkVideo, 500);
-
-  // Detener después de 6s
-  setTimeout(() => {
-    clearInterval(interval);
-    setTimeout(() => { overlay.style.display = "none"; }, 2000); // esperar que acaben los videos
-  }, 6000);
-}
 function createConfetti() {
   const confetti = document.createElement("div");
   confetti.classList.add("confetti");
@@ -341,4 +307,40 @@ function startMexicoAnimation() {
     clearInterval(flagInterval);
     setTimeout(() => overlay.style.display = "none", 3000);
   }, 5000);
-      }
+}
+
+
+function launchFireworkVideo() {
+  const overlay = document.getElementById("fireworks-animation");
+
+  // Crear un video nuevo
+  const video = document.createElement("video");
+  video.src = "fuegos.mp4"; // 🎆 tu archivo mp4
+  video.autoplay = true;
+  video.muted = true;
+  video.playsInline = true;
+  video.classList.add("firework-video");
+
+  // Posición aleatoria en pantalla
+  video.style.top = Math.random() * (window.innerHeight - 200) + "px";
+  video.style.left = Math.random() * (window.innerWidth - 200) + "px";
+
+  overlay.appendChild(video);
+
+  // Eliminar cuando termine
+  video.onended = () => video.remove();
+}
+
+function startFireworksVideo() {
+  const overlay = document.getElementById("fireworks-animation");
+  overlay.style.display = "block";
+
+  // Generar explosiones cada medio segundo
+  const interval = setInterval(launchFireworkVideo, 500);
+
+  // Detener después de 6s
+  setTimeout(() => {
+    clearInterval(interval);
+    setTimeout(() => { overlay.style.display = "none"; }, 2000); // esperar que acaben los videos
+  }, 6000);
+}
