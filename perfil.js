@@ -64,6 +64,9 @@ function showAnimation(type, allowed) {
  if (type === "fireworks") {
   startFireworksVideo();
 }
+  if (type === "mexico") {
+  startMexicoAnimation();
+  }
 if (type === "sakura") {
     overlay = document.getElementById("sakura-animation");
     overlay.style.display = "block";
@@ -300,3 +303,42 @@ function startFireworksVideo() {
     setTimeout(() => { overlay.style.display = "none"; }, 2000); // esperar que acaben los videos
   }, 6000);
 }
+function createConfetti() {
+  const confetti = document.createElement("div");
+  confetti.classList.add("confetti");
+
+  // Colores patrios 🇲🇽
+  const colors = ["#006847", "#ffffff", "#ce1126"];
+  confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+  confetti.style.left = Math.random() * window.innerWidth + "px";
+  confetti.style.animationDuration = (Math.random() * 2 + 3) + "s";
+  document.getElementById("mexico-animation").appendChild(confetti);
+  setTimeout(() => confetti.remove(), 5000);
+}
+
+function createFlag() {
+  const flag = document.createElement("div");
+  flag.classList.add("flag");
+  flag.textContent = "🇲🇽";
+  flag.style.left = Math.random() * window.innerWidth + "px";
+  flag.style.animationDuration = "4s";
+  document.getElementById("mexico-animation").appendChild(flag);
+  setTimeout(() => flag.remove(), 4000);
+}
+
+function startMexicoAnimation() {
+  const overlay = document.getElementById("mexico-animation");
+  overlay.style.display = "block";
+
+  // Generar confeti y banderas
+  const confettiInterval = setInterval(createConfetti, 100);
+  const flagInterval = setInterval(createFlag, 800);
+
+  // Detener después de 5s
+  setTimeout(() => {
+    clearInterval(confettiInterval);
+    clearInterval(flagInterval);
+    setTimeout(() => overlay.style.display = "none", 3000);
+  }, 5000);
+      }
