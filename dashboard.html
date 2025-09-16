@@ -218,33 +218,42 @@ auth.onAuthStateChanged(user => {
   } else window.location.href="login.html";
 });
 
-// Buscador
-const searchInput = document.getElementById('search-user-input');
-const resultsList = document.getElementById('user-results-list');
+ // Evento para realizar la búsqueda de usuarios
+    const searchInput = document.getElementById("search-user-input");
+const userResultsList = document.getElementById("user-results-list");
 
-searchInput.addEventListener('input', async () => {
-  const query = searchInput.value.trim().toLowerCase();
-  resultsList.innerHTML = '';
-  if (!query) return;
+// Escuchar cambios en el input
+searchInput.addEventListener("input", function () {
+    let searchQuery = searchInput.value.toLowerCase();
+    userResultsList.innerHTML = ""; // Limpiar resultados
 
-  const snapshot = await db.collection('users')
-    .orderBy('usernameLower')
-    .startAt(query)
-    .endAt(query + '\uf8ff')
-    .limit(5)
-    .get();
+    if (searchQuery === "") return;
 
-  snapshot.forEach(doc => {
-    const user = doc.data();
-    const li = document.createElement('li');
-    li.textContent = user.username || 'Sin nombre';
-    li.addEventListener('click', () => {
-      alert('Seleccionaste a: ' + li.textContent);
-      searchInput.value = '';
-      resultsList.innerHTML = '';
-    });
-    resultsList.appendChild(li);
-  });
+    // Buscar usuarios en Firebase
+    db.collection("users")
+        .get()
+        .then((querySnapshot) => {
+            let foundUsers = false;
+
+            querySnapshot.forEach((doc) => {
+                let userData = doc.data();
+                if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
+                    foundUsers = true;
+                    let li = document.createElement("li");
+                    li.textContent = userData.username + " - " + userData.email;
+                    li.addEventListener("click", function () {
+                        window.location.href = `perfil.html?usuario=${doc.id}`;
+                    });
+                    userResultsList.appendChild(li);
+                }
+            });
+
+            if (!foundUsers) userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
+        })
+        .catch((error) => {
+            console.error("Error al buscar usuarios:", error);
+            userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
+        });
 });
 
 // Abrir/cerrar panel de perfil
@@ -273,4 +282,4 @@ document.getElementById('logout').addEventListener('click', () => {
 });
 </script>
 </body>
-</html>
+                                                                          </html>
