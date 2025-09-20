@@ -3,284 +3,394 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar Sesión</title>
+  <title>Iniciar Sesión - Anime Offis</title>
   <style>
-    @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
-    @import url("https://use.fontawesome.com/releases/v6.5.1/css/all.css");
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    @import url('https://use.fontawesome.com/releases/v6.5.1/css/all.css');
 
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: #25252b;
+    * {
+      box-sizing: border-box;
+      padding: 0;
       margin: 0;
     }
 
-    * {
-      font-family: "Poppins", sans-serif;
-      box-sizing: border-box;
-    }
-
-    @property --a {
-      syntax: "<angle>";
-      inherits: false;
-      initial-value: 0deg;
-    }
-
-    .box {
-      position: relative;
-      width: 400px;
-      height: 200px;
-      background: repeating-conic-gradient(
-        from var(--a),
-        #ff2770 0%,
-        #ff2770 5%,
-        transparent 5%,
-        transparent 40%,
-        #ff2770 50%
-      );
-      filter: drop-shadow(0 15px 50px #000);
-      border-radius: 20px;
-      animation: rotating 4s linear infinite;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url('mora.jpg'); /* Tu fondo */
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: 0.5s;
+      color: white;
     }
 
-    @keyframes rotating {
-      0% {
-        --a: 0deg;
-      }
-      100% {
-        --a: 360deg;
-      }
-    }
-
-    .box::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: repeating-conic-gradient(
-        from var(--a),
-        #45f3ff 0%,
-        #45f3ff 5%,
-        transparent 5%,
-        transparent 40%,
-        #45f3ff 50%
-      );
-      filter: drop-shadow(0 15px 50px #000);
-      border-radius: 20px;
-      animation: rotating 4s linear infinite;
-      animation-delay: -1s;
-    }
-
-    .box::after {
-      content: "";
-      position: absolute;
-      inset: 4px;
-      background: #2d2d39;
+    .login-box {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px;
       border-radius: 15px;
-      border: 8px solid #25252b;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
 
-    .box:hover {
-      width: 450px;
-      height: 500px;
-    }
-
-    .box:hover .login {
-      inset: 40px;
-    }
-
-    .box:hover .loginBx {
-      transform: translateY(0px);
-    }
-
-    .login {
-      position: absolute;
-      inset: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      border-radius: 10px;
-      background: #00000033;
-      color: #fff;
-      z-index: 1000;
-      box-shadow: inset 0 10px 20px #00000080;
-      border-bottom: 2px solid #ffffff80;
-      transition: 0.5s;
-      overflow: hidden;
-    }
-
-    .loginBx {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
-      width: 70%;
-      transform: translateY(126px);
-      transition: 0.5s;
-    }
-
-    h2 {
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+    .login-box h2 {
       text-align: center;
+      margin-bottom: 20px;
     }
 
-    h2 i {
-      color: #ff2770;
-      text-shadow: 0 0 5px #ff2770, 0 0 20px #ff2770;
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 25px;
+      background: #333;
+      color: #fff;
+    }
+
+    .login-box input::placeholder {
+      color: #ccc;
     }
 
     .password-container {
       position: relative;
-      width: 100%;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px 20px;
-      outline: none;
-      font-size: 1em;
-      color: #fff;
-      background: #0000001a;
-      border: 2px solid #fff;
-      border-radius: 30px;
-    }
-
-    input::placeholder {
-      color: #999;
     }
 
     .toggle-password {
       position: absolute;
-      right: 20px;
       top: 50%;
+      right: 15px;
       transform: translateY(-50%);
-      color: #fff;
       background: none;
       border: none;
+      color: #ccc;
       cursor: pointer;
     }
 
-    input[type="submit"] {
-      background: #45f3ff;
-      font-weight: 500;
+    .login-box input[type="submit"] {
+      background-color: #45f3ff;
       color: #111;
+      font-weight: bold;
+      transition: 0.3s;
       cursor: pointer;
-      transition: 0.5s;
     }
 
-    input[type="submit"]:hover {
-      box-shadow: 0 0 10px #45f3ff, 0 0 60px #45f3ff;
+    .login-box input[type="submit"]:hover {
+      box-shadow: 0 0 10px #45f3ff;
     }
 
-    .group {
+    .google-btn {
+      background-color: #fff;
+      color: #333;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      padding: 12px;
       width: 100%;
+      margin-top: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .google-btn i {
+      margin-right: 10px;
+      color: #ea4335;
+    }
+
+    .login-box .links {
       display: flex;
       justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.9em;
     }
 
-    .group a {
-      color: #fff;
+    .login-box .links a {
+      color: #ff2770;
       text-decoration: none;
     }
 
-    .group a:nth-child(2) {
-      color: #ff2770;
-      font-weight: 600;
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: gray;
     }
-      /* Pie de página */
-        .footer {
-            margin-top: 10px;
-            font-size: 12px;
-            color: gray;
-        }
+
+    #alerta-error {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        background-image: url('mora.jpg');
+      }
+      .login-box {
+        display: flex;
+        width: 90vw;
+        max-width: 1000px;
+        height: auto;
+        min-height: 500px;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 20px;
+      }
+
+      .left-panel {
+        background-color: #300060;
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+
+      .left-panel h1 {
+        font-size: 3em;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .left-panel .circles {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .left-panel .circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff69f4, #d69ad7);
+      }
+
+      .right-panel {
+        flex: 1;
+        background: #fff;
+        color: #333;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .right-panel input {
+        background: none;
+        border: none;
+        border-bottom: 2px solid #6a0dad;
+        color: #000;
+        border-radius: 0;
+      }
+
+      .right-panel input::placeholder {
+        color: #888;
+      }
+
+      .google-btn {
+        background: #eee;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+      }
+    }
+    @media (min-width: 992px) {
+      .login-container {
+        width: 70vw;
+        max-width: 1000px;
+        flex-direction: row;
+      }
+      .login-left, .login-right {
+        width: 50%;
+      }
+      .login-left {
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+      .login-right {
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+      }
+    }
   </style>
+  <link rel="manifest" href="/anime-offis/manifest.json">
+  <meta name="theme-color" content="#8000FF">
 </head>
 <body>
 
-  <div class="box">
-    <div class="login">
-      <form class="loginBx" id="login-form">
-        <h2><i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-heart"></i></h2>
-        <input type="email" id="email" placeholder="Correo electrónico" required />
-
-        <div class="password-container">
-          <input type="password" id="password" placeholder="Contraseña" required />
-          <button type="button" class="toggle-password" onclick="togglePassword()">
-            <i id="eye-icon" class="fa-solid fa-eye"></i>
-          </button>
-        </div>
-
-        <input type="submit" value="Ingresar" />
-        <div class="group">
-          <a href="cambiar.html">¿Olvidaste tu contraseña?</a>
-          <a href="regis.html">Registrarse</a>
-          <hr>
-            <p class="footer">Anime Offis© 2024 - 2025</p>
-        </div>
-      </form>
+<div class="login-box">
+  <div class="left-panel" style="display: none;">
+    <img src="login.png" alt="Anime Offis" style="max-width: 100%; height: auto;" />
+    <div class="circles">
+      <div class="circle" style="background: linear-gradient(135deg, #d41e9d, #b55da8);"></div>
+      <div class="circle" style="background: linear-gradient(135deg, #f8b5f8, #e8a4f9);"></div>
+      <div class="circle" style="background: linear-gradient(135deg, #f5e7f7, #d3c0da);"></div>
+      <div class="circle" style="background: linear-gradient(135deg, #dcd8e7, #c3b5d3);"></div>
     </div>
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <div class="right-panel">
+    <form id="login-form">
+      <h2 style="text-align:center; margin-bottom: 20px;">¡Bienvenido!</h2>
 
-  <!-- Firebase config -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-      authDomain: "anime-offis.firebaseapp.com",
-      projectId: "anime-offis",
-      storageBucket: "anime-offis.appspot.com",
-      messagingSenderId: "377121993034",
-      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-  </script>
+      <div id="alerta-error"></div>
 
-  <!-- Lógica de login -->
-  <script>
-    document.getElementById("login-form").addEventListener("submit", function (event) {
-      event.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Contraseña" required />
+        <button type="button" class="toggle-password" onclick="togglePassword()">
+          <i id="eye-icon" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "dashboard.html";
-        })
-        .catch(error => {
-          alert("Error al iniciar sesión: " + error.message);
-          console.error("Error al iniciar sesión:", error);
-        });
+      <input type="submit" value="Ingresar" />
+
+      <button type="button" class="google-btn" onclick="loginConGoogle()">
+        <i class="fab fa-google"></i> Iniciar sesión con Google
+      </button>
+
+      <div class="links">
+        <a href="cambiar.html">¿Olvidaste tu contraseña?</a>
+        <a href="regis.html">Registrarse</a>
+      </div>
+
+      <p class="footer">Anime Offis© 2024 - 2025</p>
+    </form>
+  </div>
+</div>
+
+<script>
+  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+  if (isDesktop) {
+    document.querySelector(".left-panel").style.display = "flex";
+  }
+
+  function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const eyeIcon = document.getElementById("eye-icon");
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      passwordField.type = "password";
+      eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+</script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+    authDomain: "anime-offis.firebaseapp.com",
+    projectId: "anime-offis",
+    storageBucket: "anime-offis.appspot.com",
+    messagingSenderId: "377121993034",
+    appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // --- LOGIN NORMAL ---
+  document.getElementById("login-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => {
+        return auth.signInWithEmailAndPassword(email, password);
+      })
+      .then(() => {
+        window.location.href = "dashboard.html";
+      })
+      .catch(error => {
+        const errorMessage = traducirError(error.code);
+        mostrarAlerta(errorMessage);
+      });
+  });
+
+  // --- LOGIN CON GOOGLE ---
+  function loginConGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+      client_id: "377121993034-5meh53d7t9fv03jj07di27ev6636hibb.apps.googleusercontent.com",
+      prompt: "select_account"
     });
 
-    function togglePassword() {
-      const passwordField = document.getElementById("password");
-      const eyeIcon = document.getElementById("eye-icon");
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeIcon.classList.remove("fa-eye");
-        eyeIcon.classList.add("fa-eye-slash");
-      } else {
-        passwordField.type = "password";
-        eyeIcon.classList.remove("fa-eye-slash");
-        eyeIcon.classList.add("fa-eye");
-      }
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => {
+        return auth.signInWithPopup(provider);
+      })
+      .then((result) => {
+        const user = result.user;
+        db.collection("usuarios").doc(user.uid).set({
+          nombre: user.displayName || "",
+          email: user.email,
+          foto: user.photoURL || "",
+          creado: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true })
+        .then(() => {
+          window.location.href = "dashboard.html";
+        });
+      })
+      .catch(error => {
+        const errorMessage = traducirError(error.code);
+        mostrarAlerta(errorMessage);
+      });
+  }
+
+  // --- TRADUCCIÓN DE ERRORES ---
+  function traducirError(codigo) {
+    switch (codigo) {
+      case 'auth/user-not-found': return 'Usuario no encontrado. ¿Estás registrado?';
+      case 'auth/wrong-password': return 'Contraseña incorrecta. Intenta de nuevo.';
+      case 'auth/invalid-email': return 'Correo electrónico inválido.';
+      case 'auth/user-disabled': return 'Este usuario ha sido deshabilitado.';
+      case 'auth/too-many-requests': return 'Demasiados intentos. Espera un momento.';
+      case 'auth/popup-closed-by-user': return 'Ventana de Google cerrada. Inténtalo otra vez.';
+      default: return 'Ocurrió un error al iniciar sesión.';
     }
-  </script>
+  }
+
+  // --- MOSTRAR ALERTA ---
+  function mostrarAlerta(mensaje) {
+    const alerta = document.getElementById("alerta-error");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    setTimeout(() => { alerta.style.display = "none"; }, 6000);
+  }
+
+  // --- CAMBIO DE TÍTULO ---
+  document.addEventListener("visibilitychange", () => {
+    document.title = document.hidden ? "¡vuelve te extrañamos 🥹" : "vive la experiencia del anime 🐱🥳";
+  });
+
+  // --- SERVICE WORKER ---
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/anime-offis/sw.js')
+      .then(reg => console.log('Service Worker registrado', reg))
+      .catch(err => console.log('Error en SW', err));
+  }
+</script>
 
 </body>
 </html>
