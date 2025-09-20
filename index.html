@@ -1,396 +1,708 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar Sesión - Anime Offis</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-    @import url('https://use.fontawesome.com/releases/v6.5.1/css/all.css');
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard - Navbar con perfil</title>
 
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-image: url('mora.jpg'); /* Tu fondo */
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-    }
+  <!-- Íconos Font Awesome desde CDNJS (sin CORS) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-    .login-box {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
+<style>
+:root{
+  --bg:#0b0b0c;
+  --panel:#141415;
+  --muted:#9aa0a6;
+  --accent:#ff6a00;
+  --glass: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.04);
+  font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial;
+}
+html,body{height:100%;margin:0;background:var(--bg);color:#fff}
+/* Top bar */
+.topbar{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--border);backdrop-filter:blur(6px);position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));}
+.left-group{display:flex;align-items:center;gap:14px}
+.hamburger{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;background:var(--panel);cursor:pointer}
+.hamburger svg{opacity:0.9}
+.logo{display:flex;align-items:center;gap:10px;cursor:default}
+.logo img {height:40px;width:auto;display:block;}
+.search {
+  display: flex;
+  align-items: center;
+  background: var(--panel, #141415);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: text;
+  width: 160px; /* Ajusta este valor a tu gusto */
+  gap: 6px;
+} 12px;border-radius:10px;color:var(--muted);display:flex;align-items:center;gap:8px;cursor:text;width:250px;}
+.search svg{flex-shrink:0;color:var(--muted)}
+.search input{flex:1;border:none;outline:none;background:transparent;color:white;font-size:14px}
+#user-results-list{margin-top:4px;padding:0;list-style:none;background:var(--panel);border-radius:6px;max-height:200px;overflow-y:auto}
+#user-results-list li{padding:6px 10px;cursor:pointer;color:white}
+#user-results-list li:hover{background:rgba(255,255,255,0.1)}
+.profile-btn{display:flex;align-items:center;gap:8px;cursor:pointer}
+.avatar{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.04);background:linear-gradient(180deg,#222,#111)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+main{padding:18px}
+h1{font-size:20px;margin:8px 0 18px}
+.profile-panel {
+  position: fixed;
+  right: 12px;
+  top: 76px;
+  width: 320px;
+  max-width: 92vw;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 180ms ease-in-out;
+  backdrop-filter: blur(8px);
+  z-index: 999; /* 👈 AÑADE ESTA LÍNEA */
+}
+.profile-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.profile-header{display:flex;gap:12px;align-items:center;padding:8px 4px}
+.profile-name{font-size:18px;font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);padding:6px 8px;border-radius:999px;font-size:13px;color:var(--accent);font-weight:700}
+.section{margin-top:8px;border-top:1px solid var(--border);padding-top:10px}
+.menu-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:8px;cursor:pointer}
+.menu-item:hover{background:var(--glass)}
+.menu-item svg{width:20px;height:20px;opacity:0.9}
+.muted{color:var(--muted);font-size:14px}
+@media (max-width:520px){.profile-panel{right:8px;left:8px;top:64px;width:auto;border-radius:10px}}
+.icon-small{width:18px;height:18px;display:inline-block}
+.carousel-container-cards {
+  position: relative;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
 
-    .login-box h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.carousel-track-cards {
+  display: flex;
+  transition: transform 0.5s ease;
+  gap: 14px;
+  padding: 10px 0;
+}
 
-    .login-box input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 25px;
-      background: #333;
-      color: #fff;
-    }
+.carousel-card {
+  min-width: 120px;  /* ancho de la tarjeta */
+  max-width: 140px;  /* opcional, para no expandirse demasiado */
+  height: 180px;     /* alto de la tarjeta */
+  background: #141415;
+  border-radius: 12px;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
 
-    .login-box input::placeholder {
-      color: #ccc;
-    }
+.carousel-card img {
+  width: 100%;       /* que la imagen ocupe toda la tarjeta */
+  height: 100%;      /* que llene verticalmente */
+  object-fit: cover; /* recorta si es necesario */
+}
 
-    .password-container {
-      position: relative;
-    }
+.card-buttons {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
 
-    .toggle-password {
-      position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: #ccc;
-      cursor: pointer;
-    }
+.card-buttons button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  transition: background 0.3s;
+}
 
-    .login-box input[type="submit"] {
-      background-color: #45f3ff;
-      color: #111;
-      font-weight: bold;
-      transition: 0.3s;
-      cursor: pointer;
-    }
+.card-buttons button:hover {
+  background: rgba(255,106,0,0.8);
+}
 
-    .login-box input[type="submit"]:hover {
-      box-shadow: 0 0 10px #45f3ff;
-    }
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+}
 
-    .google-btn {
-      background-color: #fff;
-      color: #333;
-      font-weight: bold;
-      border: none;
-      border-radius: 25px;
-      padding: 12px;
-      width: 100%;
-      margin-top: 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.7);
+}
 
-    .google-btn i {
-      margin-right: 10px;
-      color: #ea4335;
-    }
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
 
-    .login-box .links {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-      font-size: 0.9em;
-    }
+@media (max-width: 600px) {
+  .carousel-card { min-width: 140px; }
+}
+/* sin movimiento */
+.carousel-container-recommendations {
+  position: relative;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
 
-    .login-box .links a {
-      color: #ff2770;
-      text-decoration: none;
-    }
+.carousel-track-recommendations {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  transition: transform 0.5s ease;
+}
 
-    .footer {
+.carousel-card {
+  min-width: 180px;
+  background: #141415;
+  border-radius: 12px;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.carousel-card img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.card-buttons {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.card-buttons button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  transition: background 0.3s;
+}
+
+.card-buttons button:hover {
+  background: rgba(255,106,0,0.8);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+@media (max-width: 150px) {
+  .carousel-card { min-width: 25px; }
+}
+
+.offis{display:flex;align-items:center;gap:10px;cursor:default}
+.offis img {height:180px;width:auto;display:block;}
+
+ .social-links {
       margin-top: 20px;
-      text-align: center;
-      font-size: 12px;
-      color: gray;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
-    #alerta-error {
-      background: #ff4d4d;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 0.9em;
-      margin-bottom: 10px;
-      display: none;
+    .social-links a {
+      font-size: 26px;
+      color: #00f0ff;
+      transition: transform 0.3s, color 0.3s;
+      text-shadow: 0 0 10px #00f0ff;
     }
 
-    @media (min-width: 768px) {
-      body {
-        background-image: url('mora.jpg');
-      }
-      .login-box {
-        display: flex;
-        width: 90vw;
-        max-width: 1000px;
-        height: auto;
-        min-height: 500px;
-        padding: 0;
-        overflow: hidden;
-        border-radius: 20px;
-      }
-
-      .left-panel {
-        background-color: #300060;
-        flex: 1;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
-      }
-
-      .left-panel h1 {
-        font-size: 3em;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-
-      .left-panel .circles {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .left-panel .circle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #ff69f4, #d69ad7);
-      }
-
-      .right-panel {
-        flex: 1;
-        background: #fff;
-        color: #333;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .right-panel input {
-        background: none;
-        border: none;
-        border-bottom: 2px solid #6a0dad;
-        color: #000;
-        border-radius: 0;
-      }
-
-      .right-panel input::placeholder {
-        color: #888;
-      }
-
-      .google-btn {
-        background: #eee;
-      }
-
-      .footer {
-        position: absolute;
-        bottom: 10px;
-        width: 100%;
-      }
+    .social-links a:hover {
+      color: #ff00ff;
+      transform: scale(1.3);
+      text-shadow: 0 0 20px #ff00ff;
     }
-    @media (min-width: 992px) {
-      .login-container {
-        width: 70vw;
-        max-width: 1000px;
-        flex-direction: row;
-      }
-      .login-left, .login-right {
-        width: 50%;
-      }
-      .login-left {
-        border-top-left-radius: 30px;
-        border-bottom-left-radius: 30px;
-      }
-      .login-right {
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
-      }
+
+/* Nav */
+    nav{
+      max-width:1100px; margin:10px auto 0; padding:0 16px 12px;
     }
-  </style>
-  <link rel="manifest" href="/anime-offis/manifest.json">
-  <meta name="theme-color" content="#8000FF">
+    .tabs{
+      display:flex; gap:8px; overflow:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{
+      background:var(--panel); border:1px solid var(--border); color:var(--text);
+      padding:10px 14px; border-radius:999px; font-weight:700; white-space:nowrap; cursor:pointer;
+      transition:.2s background;
+    }
+    .tab:hover{background:#202226}
+    .tab.active{background:var(--brand); border-color:var(--brand); color:#111; box-shadow:0 8px 20px rgba(255,106,0,.35)}
+    
+  /* Hero */
+    .hero{
+      max-width:1100px; margin:20px auto 0; padding:18px 16px 6px;
+      display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    }
+    .hero-card{
+      flex:1 1 520px; background:linear-gradient(160deg, #1d1f23, #161719 60%);
+      border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+    }
+    .hero-title{font-size:0.85rem; font-weight:800; margin:0 0 5px}
+    .hero-sub{color:var(--muted); margin:0}
+    .hero-icons{
+      display:grid; grid-template-columns:repeat(7, 42px); gap:10px; margin-top:14px;
+    }
+    .icon{
+      width:42px; height:42px; border-radius:12px; display:grid; place-items:center; background:#1f2126; border:1px solid var(--border); color:var(--accent); font-size:18px;
+    }
+ .terms {
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff6600">
 </head>
 <body>
 
-<div class="login-box">
-  <div class="left-panel" style="display: none;">
-    <img src="login.png" alt="Anime Offis" style="max-width: 100%; height: auto;" />
-    <div class="circles">
-      <div class="circle" style="background: linear-gradient(135deg, #d41e9d, #b55da8);"></div>
-      <div class="circle" style="background: linear-gradient(135deg, #f8b5f8, #e8a4f9);"></div>
-      <div class="circle" style="background: linear-gradient(135deg, #f5e7f7, #d3c0da);"></div>
-      <div class="circle" style="background: linear-gradient(135deg, #dcd8e7, #c3b5d3);"></div>
-    </div>
+<header class="topbar">
+<div class="left-group">
+  <div class="hamburger" id="hamburger" title="Menu">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
-
-  <div class="right-panel">
-    <form id="login-form">
-      <h2 style="text-align:center; margin-bottom: 20px;">¡Bienvenido!</h2>
-
-      <div id="alerta-error"></div>
-
-      <input type="email" id="email" placeholder="Correo electrónico" required />
-      <div class="password-container">
-        <input type="password" id="password" placeholder="Contraseña" required />
-        <button type="button" class="toggle-password" onclick="togglePassword()">
-          <i id="eye-icon" class="fa-solid fa-eye"></i>
-        </button>
-      </div>
-
-      <input type="submit" value="Ingresar" />
-
-      <button type="button" class="google-btn" onclick="loginConGoogle()">
-        <i class="fab fa-google"></i> Iniciar sesión con Google
-      </button>
-
-      <div class="links">
-        <a href="cambiar.html">¿Olvidaste tu contraseña?</a>
-        <a href="regis.html">Registrarse</a>
-      </div>
-
-      <p class="footer">Anime Offis© 2024 - 2025</p>
-    </form>
+  <div class="logo">
+    <img src="offis.png" alt="Logo Anime Offis">
   </div>
 </div>
 
-<script>
-  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-  if (isDesktop) {
-    document.querySelector(".left-panel").style.display = "flex";
-  }
+<div style="display:flex;align-items:center;gap:12px">
+  <div class="search" role="search" aria-label="Buscar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="11" cy="11" r="6" stroke-linecap="round" stroke-linejoin="round"></circle>
+      <path d="M21 21l-4.35-4.35" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <input id="search-user-input" type="text" placeholder="Buscar...">
+  </div>
+  <ul id="user-results-list"></ul>
 
-  function togglePassword() {
-    const passwordField = document.getElementById("password");
-    const eyeIcon = document.getElementById("eye-icon");
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-      eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
-    } else {
-      passwordField.type = "password";
-      eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
-    }
-  }
-</script>
+  <div class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+    <div class="avatar">
+      <img id="avatar-topbar" src="avatar.jpg" alt="Avatar"
+      onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\' viewBox=\'0 0 120 120\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23111\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'46\' fill=\'%23fff\'>D</text></svg>'"/>
+    </div>
+  </div>
+</div>
+</header>
 
-<!-- Firebase SDK -->
+<aside class="profile-panel" id="profilePanel" role="dialog" aria-label="Panel de perfil">
+<div class="profile-header">
+  <div class="avatar" style="width:64px;height:64px;border-radius:12px;overflow:hidden">
+    <img id="avatar-panel" src="avatar.jpg" alt="Avatar"
+    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'220\' height=\'220\' viewBox=\'0 0 220 220\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23111\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'90\' fill=\'%23fff\'>DO</text></svg>'"/>
+  </div>
+  <div class="username" style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+    <span id="username">Cargando...</span>
+    <img class="verificacion-img" id="badge-img" src="" alt="Verificado" style="width:18px; height:18px;" />
+    <div class="badge">&#x1F451; Miembro Premium</div>
+  </div>
+  <button style="margin-left:auto;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px">✎</button>
+        </div>        
+      </div>
+    </div>
+<div class="section">
+  <div class="menu-item">
+    <a href="Perfil.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Editar perfil</div>
+    </a>
+  </div>
+
+  <div class="menu-item">
+    <a href="ajuste.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M1 12h4M19 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Opciones</div>
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="menu-item">
+    <a href="notif.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Notificaciones</div>
+    </a>
+  </div>
+
+  <div class="menu-item">
+    <a href="canjeo.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 3h18v14H3zM8 21v-4h8v4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Tarjeta de regalo</div>
+    </a>
+  </div>
+
+  <div class="menu-item">
+  <a id="logout" href="logout.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M16 17l5-5-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 12H9" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>Desconectar</div>
+  </a>
+</div>
+</div>  
+</aside>
+
+<main>
+<h1>Dashboard demo</h1>
+<p class="muted"> prueba de dasb nuevo, más diseñado de anime offis 
+actualización 20 de septiembre 2025.</p>
+
+<!-- Carrusel de tarjetas -->
+  <div class="carousel-container-cards">
+    <button class="carousel-btn prev">&#10094;</button>
+    <div class="carousel-track-cards">
+      <div class="carousel-card">
+        <img src="Aperfil.jpg" alt="Anime 1">
+        <div class="card-buttons">
+          <button onclick="perfil.html">Ver perfiles</button>
+          <button onclick="alert('Favoritos Anime 1')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="Anovela.jpg" alt="Anime 2">
+        <div class="card-buttons">
+          <button onclick="alert('Ver Anime 2')">Ver novelas</button>
+          <button onclick="alert('Favoritos Anime 2')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="Amanga.jpg" alt="Anime 3">
+        <div class="card-buttons">
+          <button onclick="window.location.href='mangaS.html'">leer manga</button>
+          <button onclick="alert('Favoritos Anime 3')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="https://i.ibb.co/jzk0WDv/img4.jpg" alt="Anime 4">
+        <div class="card-buttons">
+          <button onclick="alert('Ver Anime 4')">Ver más</button>
+          <button onclick="alert('Favoritos Anime 4')">❤</button>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+  
+  <h1>Nuestra recomendaciónes</h1>
+
+ <nav aria-label="Navegación principal">
+    <div class="tabs">
+      <button class="tab active" data-i18n="tab.home">Inicio</button>
+      <button class="tab" data-i18n="tab.popular">Lo más popular</button>
+      <button class="tab" data-i18n="tab.simulcasts">Transmisiones simultáneas</button>
+      <button class="tab" data-i18n="tab.calendar">Calendario</button>
+      <button class="tab" data-i18n="tab.news">Noticias</button>
+      <button class="tab" data-i18n="tab.games">Juegos</button>
+    </div>
+  </nav>
+
+<div class="carousel-container-recommendations">
+    <button class="carousel-btn prev">&#10094;</button>
+    <div class="carousel-track-recommendations">
+      <div class="carousel-card">
+        <img src="Aperfil.jpg" alt="Anime 1">
+        <div class="card-buttons">
+          <button onclick="window.location.href='perfil.html'">Ver perfil</button>
+          <button onclick="alert('Favoritos Anime 1')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="https://i.ibb.co/hK6W0tz/img2.jpg" alt="Anime 2">
+        <div class="card-buttons">
+          <button onclick="window.location.href">Ver más</button>
+          <button onclick="alert('Favoritos Anime 2')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="https://i.ibb.co/NWZ0shx/img3.jpg" alt="Anime 3">
+        <div class="card-buttons">
+          <button onclick="alert('Ver Anime 3')">Ver más</button>
+          <button onclick="alert('Favoritos Anime 3')">❤</button>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+
+<section class="hero">
+    <div class="hero-card">
+        <div class="offis">
+    <h1>AF | Anime Offis </h1>
+  </div>
+        <p>GDL México | © Anime Offis 2025 </p>
+      <p class="hero-title" data-i18n="welcome">Te damos la bienvenida a Anime Offis, tu destino número uno para ver el mejor anime.</p>
+      
+      <div class="social-links">
+      <a href="https://www.tiktok.com/@destiny_3361?_t=ZS-8x9sXYq5Ge0&_r=1" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=100066969176717" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://youtube.com/@destinyyt33621?si=d5cQh4q1ln9KD9AH" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
+    
+          <h3>Utilidades</h3>
+
+<a href="acerca.html">acerca</a>
+<br> <Br>
+<a href="aplicación.html">nuestras aplicaciones</a><Br><Br>
+<a href="help.html">centro de ayuda</a>
+<Br><Br>
+<a href="trabajo.html">únete a AF nacional</a>
+<Br><Br>
+<a href="mailto:promocion86animeoffios@gmail.com">consulta promocionales</a>
+      
+      </section>
+
+<div class="terms">
+        <a href="términos.html">Términos y condiciones</a> <br> <a href="política.html">Política de privacidad</a> | <a href="acerca.html">Acerca de la página</a> <br> <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial😉❤️</h5>
+    </div> 
+
+</main>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-    authDomain: "anime-offis.firebaseapp.com",
-    projectId: "anime-offis",
-    storageBucket: "anime-offis.appspot.com",
-    messagingSenderId: "377121993034",
-    appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+const firebaseConfig = {
+  apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+  authDomain: "anime-offis.firebaseapp.com",
+  projectId: "anime-offis",
+  storageBucket: "anime-offis.appspot.com",
+  messagingSenderId: "377121993034",
+  appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-  // --- LOGIN NORMAL ---
-  document.getElementById("login-form").addEventListener("submit", function (event) {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+auth.onAuthStateChanged(user => {
+  if(user){
+    db.collection('users').doc(user.uid).get().then(doc=>{
+      if(doc.exists){
+        const data=doc.data();
+        document.getElementById('username').textContent=data.username||user.displayName||"Usuario";
 
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => {
-        return auth.signInWithEmailAndPassword(email, password);
-      })
-      .then(() => {
-        window.location.href = "dashboard.html";
-      })
-      .catch(error => {
-        const errorMessage = traducirError(error.code);
-        mostrarAlerta(errorMessage);
+        // Avatar topbar
+        const avatarTop = document.getElementById('avatar-topbar');
+        const avatarPanel = document.getElementById('avatar-panel');
+        const photo = data.profilePhoto||user.photoURL||"https://i.ibb.co/k2HCPYqd/1742400066396.jpg";
+        avatarTop.src = photo;
+        avatarPanel.src = photo;
+
+        // Badge
+        const badge = document.getElementById('badge-img');
+        let src="";
+        switch(data.verified){
+          case "creador": src="crea.png"; break;
+          case "colaborador": src="cola.png"; break;
+          case "aportador": src="aportador.png"; break;
+          case "soporte": src="soport.png"; break;
+          case "beta": src="beta.png"; break;
+          case "dora": src="verif.png"; break;
+          case "azul": src="azul.png"; break;
+          case "verde": src="verde.png"; break;
+          default: src="verde.png";
+        }
+        badge.src=src;
+        badge.style.display="inline-block";
+      }
+    });
+  } else window.location.href="login.html";
+});
+
+ // Evento para realizar la búsqueda de usuarios
+    const searchInput = document.getElementById("search-user-input");
+const userResultsList = document.getElementById("user-results-list");
+
+// Escuchar cambios en el input
+searchInput.addEventListener("input", function () {
+    let searchQuery = searchInput.value.toLowerCase();
+    userResultsList.innerHTML = ""; // Limpiar resultados
+
+    if (searchQuery === "") return;
+
+    // Buscar usuarios en Firebase
+    db.collection("users")
+        .get()
+        .then((querySnapshot) => {
+            let foundUsers = false;
+
+            querySnapshot.forEach((doc) => {
+                let userData = doc.data();
+                if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
+                    foundUsers = true;
+                    let li = document.createElement("li");
+                    li.textContent = userData.username + " - " + userData.email;
+                    li.addEventListener("click", function () {
+                        window.location.href = `perfil.html?usuario=${doc.id}`;
+                    });
+                    userResultsList.appendChild(li);
+                }
+            });
+
+            if (!foundUsers) userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
+        })
+        .catch((error) => {
+            console.error("Error al buscar usuarios:", error);
+            userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
+        });
+});
+
+// Abrir/cerrar panel de perfil
+const profileBtn = document.getElementById('profileBtn');
+const profilePanel = document.getElementById('profilePanel');
+
+profileBtn.addEventListener('click', () => {
+  profilePanel.classList.toggle('open');
+});
+
+// Cerrar al hacer clic afuera
+document.addEventListener('click', e => {
+  if(!profilePanel.contains(e.target) && !profileBtn.contains(e.target)){
+    profilePanel.classList.remove('open');
+  }
+});
+
+const trackCards = document.querySelector('.carousel-track-cards');
+const cards = Array.from(trackCards.children);
+let currentIndexCards = 0;
+
+const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
+
+function updateCarouselCards() {
+  const cardWidth = cards[0].offsetWidth + 14; // ancho + gap
+  trackCards.style.transform = `translateX(-${currentIndexCards * cardWidth}px)`;
+}
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndexCards < cards.length - Math.floor(trackCards.parentElement.offsetWidth / (cards[0].offsetWidth + 14))) {
+    currentIndexCards++;
+    updateCarouselCards();
+  }
+});
+
+prevBtn.addEventListener('click', () => {
+  if (currentIndexCards > 0) {
+    currentIndexCards--;
+    updateCarouselCards();
+  }
+});
+
+// Opcional: carrusel automático
+setInterval(() => {
+  if (currentIndexCards < cards.length - Math.floor(trackCards.parentElement.offsetWidth / (cards[0].offsetWidth + 14))) {
+    currentIndexCards++;
+  } else {
+    currentIndexCards = 0;
+  }
+  updateCarouselCards();
+}, 6000);
+
+// Carrusel manual sin autoplay
+const trackRec = document.querySelector('.carousel-track-recommendations');
+const cardsRec = Array.from(trackRec.children);
+let currentIndexRec = 0;
+
+const prevBtnRec = document.querySelector('.carousel-btn.prev');
+const nextBtnRec = document.querySelector('.carousel-btn.next');
+
+function updateCarouselRec() {
+  const cardWidth = cardsRec[0].offsetWidth + 14; // ancho + gap
+  trackRec.style.transform = `translateX(-${currentIndexRec * cardWidth}px)`;
+}
+
+nextBtnRec.addEventListener('click', () => {
+  if (currentIndexRec < cardsRec.length - Math.floor(trackRec.parentElement.offsetWidth / (cardsRec[0].offsetWidth + 14))) {
+    currentIndexRec++;
+    updateCarouselRec();
+  }
+});
+
+prevBtnRec.addEventListener('click', () => {
+  if (currentIndexRec > 0) {
+    currentIndexRec--;
+    updateCarouselRec();
+  }
+});
+
+// Tabs interactividad mínima
+    function wireTabs(){
+      const tabs = $$(".tab");
+      tabs.forEach(t=>{
+        t.addEventListener("click", ()=>{
+          tabs.forEach(x=>x.classList.remove("active"));
+          t.classList.add("active");
+        });
       });
-  });
+    }
 
-  // --- LOGIN CON GOOGLE ---
-  function loginConGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({
-      client_id: "377121993034-5meh53d7t9fv03jj07di27ev6636hibb.apps.googleusercontent.com",
-      prompt: "select_account"
+    // simple hamburger interaction (example)
+    hamburger.addEventListener('click', ()=>{
+      alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
     });
 
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => {
-        return auth.signInWithPopup(provider);
-      })
-      .then((result) => {
-        const user = result.user;
-        db.collection("usuarios").doc(user.uid).set({
-          nombre: user.displayName || "",
-          email: user.email,
-          foto: user.photoURL || "",
-          creado: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true })
-        .then(() => {
-          window.location.href = "dashboard.html";
-        });
-      })
-      .catch(error => {
-        const errorMessage = traducirError(error.code);
-        mostrarAlerta(errorMessage);
-      });
-  }
-
-  // --- TRADUCCIÓN DE ERRORES ---
-  function traducirError(codigo) {
-    switch (codigo) {
-      case 'auth/user-not-found': return 'Usuario no encontrado. ¿Estás registrado?';
-      case 'auth/wrong-password': return 'Contraseña incorrecta. Intenta de nuevo.';
-      case 'auth/invalid-email': return 'Correo electrónico inválido.';
-      case 'auth/user-disabled': return 'Este usuario ha sido deshabilitado.';
-      case 'auth/too-many-requests': return 'Demasiados intentos. Espera un momento.';
-      case 'auth/popup-closed-by-user': return 'Ventana de Google cerrada. Inténtalo otra vez.';
-      default: return 'Ocurrió un error al iniciar sesión.';
-    }
-  }
-
-  // --- MOSTRAR ALERTA ---
-  function mostrarAlerta(mensaje) {
-    const alerta = document.getElementById("alerta-error");
-    alerta.textContent = mensaje;
-    alerta.style.display = "block";
-    setTimeout(() => { alerta.style.display = "none"; }, 6000);
-  }
-
-  // --- CAMBIO DE TÍTULO ---
-  document.addEventListener("visibilitychange", () => {
-    document.title = document.hidden ? "¡vuelve te extrañamos 🥹" : "vive la experiencia del anime 🐱🥳";
-  });
-
-  // --- SERVICE WORKER ---
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/anime-offis/sw.js')
-      .then(reg => console.log('Service Worker registrado', reg))
-      .catch(err => console.log('Error en SW', err));
-  }
+// Logout demo
+document.getElementById('logout').addEventListener('click', () => {
+  auth.signOut().then(() => window.location.href="login.html");
+});
 </script>
-
 </body>
 </html>
