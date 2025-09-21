@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil de Usuario</title>
+  <link rel="stylesheet" href="perfil.css"/>
+</head>
+<body>
+<header>
+  <img src="offis.png" alt="Logo">
+  <button class="menu-toggle">&#9776;</button>
+  <div class="sidebar">
+    <a href="dashboard.html">volver al dashboard</a>
+    <a href="https://destiny-oficial.github.io/Nadaxd/dashboard.html">Animes</a>
+    <a href="https://destiny-oficial.github.io/mangas-offis/">Mangas</a>
+    <a href="https://destiny-oficial.github.io/Novel-offis/">Novelas</a>
+    <a href="https://destiny-oficial.github.io/hentai-offis/">Hentai</a>
+    <a href="https://destiny-oficial.github.io/Games/index.html">Juegos</a>
+    <a href="perfil.html">Perfil</a>
+    <a href="logout.html">Cerrar Sesión</a>
+    <a href="mensajeprv.html">mandar mensajes</a>
+    <a href="meli.html">fandubs exclusivos Meli </a>
+    <a href="ajustes.html">ajustes</a>
+  </div>
+  <div class="overlay"></div>
+</header>
+
+<a href="dashboard.html">⬅️ dashboard</a>
+
+<div id="moon-animation" class="animation-overlay">
+  <div class="stars"></div>
+  <div class="moon"></div>
+</div>
+
+<div class="stars-floating">
+  <div class="star" style="top:5%; left:10%; animation-delay: 0s;"></div>
+  <div class="star" style="top:20%; left:50%; animation-delay: 1s;"></div>
+  <div class="star" style="top:40%; left:30%; animation-delay: 2s;"></div>
+  <div class="star" style="top:70%; left:80%; animation-delay: 3s;"></div>
+  <div class="star" style="top:90%; left:60%; animation-delay: 4s;"></div>
+</div>
+
+<div id="profile-photo-container">
+  <img src="https://via.placeholder.com/120" alt="Foto de Usuario" id="profile-photo">
+  <img src="frame1.png" alt="Marco 1" class="frame" id="frame1">
+  <img src="frame2.png" alt="Marco 2" class="frame" id="frame2">
+  <img src="frame3.png" alt="Marco 3" class="frame" id="frame3">
+  <img src="frame4.png" alt="Marco 4" class="frame" id="frame4">
+  <img src="frame5.png" alt="Marco 5" class="frame" id="frame5">
+</div>
+
+<label for="file-input" class="upload-button">Subir Foto de Perfil</label>
+<input type="file" id="file-input" accept="image/*" style="display:none;">
+
+<div class="profile-section">
+  <label for="bio">Acerca de mí</label>
+  <textarea id="bio" placeholder="Escribe algo sobre ti..."></textarea>
+  <button id="save-bio">Guardar biografía</button>
+</div>
+
+<p>
+  <strong>Nombre:</strong> <span id="user-name">Cargando...</span>
+  <span class="insignias"></span>
+</p>
+
+<a href="verificación.html" target="_blank" class="ko-fi-button" id="verify-button">
+  Sube de nivel tu cuenta con una verificación
+</a>
+
+<p id="verified-badge-text">.</p>
+<p><strong>Fecha de Creación:</strong> <span id="user-registration-date">Cargando...</span></p>
+
+<h3>Elige tu marco:</h3>
+<div id="photo-frames-container">
+  <div id="photo-frames">
+    <div class="frame-option">
+      <img src="frame1.png" alt="Marco Gratis" class="photo-frame" data-frame="frame1">
+      <p class="frame-text free">✅ Gratis</p>
+    </div>
+    <div class="frame-option">
+      <img src="frame2.png" alt="Marco Gratis 2" class="photo-frame" data-frame="frame2">
+      <p class="frame-text free">✅ Gratis</p>
+    </div>
+    <div class="frame-option">
+      <img src="frame5.png" alt="Marco Gratis 3" class="photo-frame" data-frame="frame5">
+      <p class="frame-text free">🥳 Exclusivo de temporada</p>
+    </div>
+    <div class="frame-option">
+      <img src="frame3.png" alt="Marco 3" class="photo-frame locked" data-frame="frame3">
+      <p class="frame-text locked">🔒 Exclusivo Beta</p>
+    </div>
+    <div class="frame-option">
+      <img src="frame4.png" alt="Marco 4" class="photo-frame locked" data-frame="frame4">
+      <p class="frame-text locked">🔒 Exclusivo Beta</p>
+    </div>
+  </div>
+</div>
+
+<h3>Elige tu animación:</h3>
+<div id="animation-options-container">
+  <div class="animation-option" data-animation="moon">🌙 <p>Luna</p></div>
+  <div class="animation-option" data-animation="plane">✈️ <p>Avión</p></div>
+<div class="animation-option" data-animation="sakura">🌸 <p>Sakura</p></div>
+<!-- Botón en el selector -->
+<div class="animation-option" data-animation="mexico">🇲🇽 <p>Viva México</p></div>
+
+
+
+<!-- Overlay oscuro con video -->
+<div id="fireworks-animation" class="animation-overlay">
+  <video id="fireworks-video" autoplay muted playsinline></video>
+</div>
+
+<div id="sakura-animation" class="animation-overlay"></div>
+<div id="mexico-animation" class="animation-overlay"></div>
+
+<div class="plane-container">
+  <div class="plane"><img src="avion.png" alt="avion"></div>
+  <div class="cloud" style="top:20%; left:0; width:150px; height:60px;"></div>
+  <div class="cloud" style="top:50%; left:-100px; width:200px; height:80px;"></div>
+</div>
+
+<div id="fireworks-animation" class="animation-overlay"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="perfil.js"></script>
+</body>
+</html>
