@@ -303,6 +303,21 @@ h1{font-size:20px;margin:8px 0 18px}
 </head>
 <body>
 
+  <!-- Alerta Modal -->
+<div id="modalAlerta" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:blue(0,0,0,0.6); z-index:9999;">
+  <div style="background:red; max-width:500px; margin:10% auto; padding:20px; border-radius:8px; box-shadow:0 0 10px #000;">
+    <h2 style="margin-top:0;">⚠️ Aviso importante</h2>
+    <p>
+      Estimado usuario, nuestras 
+      <a href="política.html" target="_blank">políticas de privacidad</a>, 
+      <a href="acerca.html" target="_blank">acerca de nosotros</a> y 
+      <a href="términos.html" target="_blank">términos y condiciones</a> han cambiado.<br>
+      Por favor revíselos para evitar problemas con la página.
+    </p>
+    <button onclick="cerrarModal()" style="margin-top:15px; padding:10px 20px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;">Entendido</button>
+  </div>
+</div>
+
 <header class="topbar">
 <div class="left-group">
   <div class="hamburger" id="hamburger" title="Menu">
@@ -589,7 +604,7 @@ searchInput.addEventListener("input", function () {
                 if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
                     foundUsers = true;
                     let li = document.createElement("li");
-                    li.textContent = userData.username + " - " + userData.email;
+                    li.textContent = userData.username;
                     li.addEventListener("click", function () {
                         window.location.href = `perfil.html?usuario=${doc.id}`;
                     });
@@ -694,6 +709,16 @@ prevBtnRec.addEventListener('click', () => {
       });
     }
 
+// Mostrar el modal al cargar la página
+  window.onload = function() {
+    document.getElementById("modalAlerta").style.display = "block";
+  };
+
+  // Función para cerrar el modal
+  function cerrarModal() {
+    document.getElementById("modalAlerta").style.display = "none";
+  }
+  
     // simple hamburger interaction (example)
     hamburger.addEventListener('click', ()=>{
       alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
