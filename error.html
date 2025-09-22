@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anime Offis - En mantenimiento</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 500px;
+      padding: 20px;
+      position: relative;
+    }
+
+    img {
+      max-width: 250px;
+      margin-bottom: 20px;
+      animation: blink 3s infinite;
+    }
+
+    @keyframes blink {
+      0%, 90%, 100% { opacity: 1; }
+      92%, 98% { opacity: 0.6; }
+    }
+
+    .tools {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2em;
+      animation: float 2s ease-in-out infinite;
+      color: #ff6600;
+    }
+
+    @keyframes float {
+      0% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-10px); }
+      100% { transform: translate(-50%, -50%) translateY(0); }
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e65c00;
+    }
+
+    .error-text {
+      font-weight: bold;
+      font-size: 1.5em;
+      color: #cc0000;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="error-text">ERROR?</div>
+    <div class="tools">🔧🪛</div>
+    <img src="error.jpg" alt="Styceht chibi error" />
+    <h1>¿Qué pasó aquí? ¡Ups!</h1>
+    <p id="message">Estamos trabajando para mejorar tu experiencia. Vuelve pronto.</p>
+    <button onclick="retry()">Reintentar</button>
+  </div>
+
+  <script>
+    function retry() {
+      const msg = document.getElementById("message");
+      msg.textContent = "Intentando reconectar...";
+      setTimeout(() => {
+        msg.textContent = "Todavía estamos en mantenimiento. Gracias por tu paciencia.";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
