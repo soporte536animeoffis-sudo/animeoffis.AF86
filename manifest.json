@@ -1,19 +1,19 @@
 {
   "name": "Anime Offis",
   "short_name": "AnimeOffis",
-  "start_url": "/anime-offis/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#8000FF",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/anime-offis/andro192.png",
+      "src": "andro192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/anime-offis/andro512.png",
+      "src": "andro512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
