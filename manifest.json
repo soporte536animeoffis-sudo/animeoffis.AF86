@@ -2,7 +2,7 @@
   "name": "Anime Offis",
   "short_name": "AnimeOffis",
   "display": "standalone",
-  "background_color": "#000000",
+  "background_color": "blue",
   "theme_color": "white",
   "orientation": "portrait",
   "version": "2.0.0",  // 👈 esto es nuevo
