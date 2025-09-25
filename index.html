@@ -718,6 +718,10 @@ prevBtnRec.addEventListener('click', () => {
   function cerrarModal() {
     document.getElementById("modalAlerta").style.display = "none";
   }
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+    }
   
     // simple hamburger interaction (example)
     hamburger.addEventListener('click', ()=>{
