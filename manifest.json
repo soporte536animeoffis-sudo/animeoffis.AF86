@@ -1,7 +1,6 @@
 {
   "name": "Anime Offis",
   "short_name": "AnimeOffis",
-  "start_url": "/index",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "white",
