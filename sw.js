@@ -1,18 +1,20 @@
-const CACHE_NAME = "animeoffis-v2"; // 🔄 Cambia el nombre para forzar actualización
+const CACHE_NAME = "animeoffis-GDLv2"; // 🔄 Cambia el nombre para forzar actualización
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
         "/",                // Carga la raíz
-        "/index",
+        "/dashboard",
         "/styles",
         "/script.js",
         "/icon-192.png",
         "/icon-512.png",
         "/offis.png",
         "/perfil",
-        "/dashboard",
+        "/perfil.js",
+        "/perfil.css",
+        
         "/mora.jpg",
         "/login.png"
       ]);
