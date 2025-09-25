@@ -694,6 +694,10 @@ prevBtnRec.addEventListener('click', () => {
       });
     }
 
+  if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+  }
+
     // simple hamburger interaction (example)
     hamburger.addEventListener('click', ()=>{
       alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
