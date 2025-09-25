@@ -1,25 +1,41 @@
-self.addEventListener('install', e => {
+const CACHE_NAME = "animeoffis-v2"; // 🔄 Cambia el nombre para forzar actualización
+
+self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open('anime-offis-cache').then(cache => {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
-  '/anime-offis/index.html',
-  '/anime-offis/styles.css',
-  '/anime-offis/script.js',
-  '/anime-offis/icon-192.png',
-  '/anime-offis/icon-512.png',
-  '/anime-offis/offis.png',
-  '/anime-offis/perfil.html',
-  '/anime-offis/dashboard.html',
-  '/anime-offis/mora.jpg',
-  '/anime-offis/login.png'
-]);
+        "/",                // Carga la raíz
+        "/index.html",
+        "/styles.css",
+        "/script.js",
+        "/icon-192.png",
+        "/icon-512.png",
+        "/offis.png",
+        "/perfil.html",
+        "/dashboard.html",
+        "/mora.jpg",
+        "/login.png"
+      ]);
     })
   );
 });
 
-self.addEventListener('fetch', e => {
+// 🔄 Borra versiones viejas de caché al activar
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      );
+    })
+  );
+});
+
+self.addEventListener("fetch", (e) => {
   e.respondWith(
-    caches.match(e.request).then(response => {
+    caches.match(e.request).then((response) => {
       return response || fetch(e.request);
     })
   );
