@@ -5,14 +5,14 @@ self.addEventListener("install", (e) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
         "/",                // Carga la raíz
-        "/index.html",
-        "/styles.css",
+        "/index",
+        "/styles",
         "/script.js",
         "/icon-192.png",
         "/icon-512.png",
         "/offis.png",
-        "/perfil.html",
-        "/dashboard.html",
+        "/perfil",
+        "/dashboard",
         "/mora.jpg",
         "/login.png"
       ]);
