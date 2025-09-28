@@ -258,10 +258,6 @@
 
       <input type="submit" value="Ingresar" />
 
-      <button type="button" class="google-btn" onclick="loginConGoogle()">
-        <i class="fab fa-google"></i> Iniciar sesión con Google
-      </button>
-
       <div class="links">
         <a href="cambiar.html">¿Olvidaste tu contraseña?</a>
         <a href="regis.html">Registrarse</a>
@@ -329,35 +325,7 @@
   });
 
   // --- LOGIN CON GOOGLE ---
-  function loginConGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({
-      client_id: "377121993034-5meh53d7t9fv03jj07di27ev6636hibb.apps.googleusercontent.com",
-      prompt: "select_account"
-    });
-
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => {
-        return auth.signInWithPopup(provider);
-      })
-      .then((result) => {
-        const user = result.user;
-        db.collection("usuarios").doc(user.uid).set({
-          nombre: user.displayName || "",
-          email: user.email,
-          foto: user.photoURL || "",
-          creado: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true })
-        .then(() => {
-          window.location.href = "dashboard.html";
-        });
-      })
-      .catch(error => {
-        const errorMessage = traducirError(error.code);
-        mostrarAlerta(errorMessage);
-      });
-  }
-
+  
   // --- TRADUCCIÓN DE ERRORES ---
   function traducirError(codigo) {
     switch (codigo) {
