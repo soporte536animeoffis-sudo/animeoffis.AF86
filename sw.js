@@ -1,4 +1,4 @@
-const CACHE_NAME = "animeoffis-GDLv3"; // 🔄 Cambia el número cuando hagas cambios importantes
+const CACHE_NAME = "animeoffis-GDLv4"; // 🔄 Cambia el número cuando hagas cambios importantes
 const FILES_TO_CACHE = [
   "/",                // Página principal
   "/dashboard",
