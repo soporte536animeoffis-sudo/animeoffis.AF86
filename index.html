@@ -297,31 +297,96 @@ h1{font-size:20px;margin:8px 0 18px}
             font-size: 14px;
             opacity: 0.7;
         }
+        
+        
+
+/* Sidebar base */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px; /* oculto al inicio */
+  width: 250px;
+  height: 100%;
+  background: #111;
+  color: #fff;
+  z-index: 9999;
+  transition: left 0.3s ease;
+  padding-top: 70px; /* espacio para el header */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar.active { left: 0; }
+
+.sidebar .menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .menu li {
+  border-bottom: 1px solid #333;
+}
+
+.sidebar .menu a {
+  display: block;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.sidebar .menu a:hover {
+  background: #333;
+}
+
+/* Redes Sociales */
+.sidebar .social {
+  margin-top: auto;        /* Siempre al fondo de la sidebar */
+  display: flex;
+  justify-content: space-around; /* Distribuye en fila, espacio uniforme */
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* línea separadora sutil */
+}
+
+.sidebar .social a {
+  font-size: 20px; /* Íconos medianos, como letras */
+  color: #ccc;
+  opacity: 0.8;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.sidebar .social a:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+
+
+/* Overlay para cerrar al tocar fuera */
+body.menu-open::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 9998;
+}
+        
+        
 </style>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="blue">
+<meta name="theme-color" content="#ff6600">
 </head>
 <body>
-
-  <!-- Alerta Modal -->
-<div id="modalAlerta" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:blue(0,0,0,0.6); z-index:9999;">
-  <div style="background:red; max-width:500px; margin:10% auto; padding:20px; border-radius:8px; box-shadow:0 0 10px #000;">
-    <h2 style="margin-top:0;">⚠️ Aviso importante</h2>
-    <p>
-      Estimado usuario, nuestras 
-      <a href="política" target="_blank">políticas de privacidad</a>, 
-      <a href="acerca" target="_blank">acerca de nosotros</a> y 
-      <a href="términos" target="_blank">términos y condiciones</a> han cambiado.<br>
-      Por favor revíselos para evitar problemas con la página.
-    </p>
-    <button onclick="cerrarModal()" style="margin-top:15px; padding:10px 20px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;">Entendido</button>
-  </div>
-</div>
+    
 
 <header class="topbar">
 <div class="left-group">
   <div class="hamburger" id="hamburger" title="Menu">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="flex" stroke="white" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <div class="logo">
     <img src="offis.png" alt="Logo Anime Offis">
@@ -346,6 +411,27 @@ h1{font-size:20px;margin:8px 0 18px}
   </div>
 </div>
 </header>
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <ul class="menu">
+    <li><a href="mangas.html" data-fallback="error.html">📚 Manga</a></li>
+    <li><a href="https://games.animeoffis.com" data-fallback="error.html">🎮 Juegos</a></li>
+    <li><a href="chat.html" data-fallback="error.html">💬 Chat</a></li>
+    <li><a href="novelas.html" data-fallback="error.html">📖 Novelas</a></li>
+    <li><a href="aplicacion.html" data-fallback="error.html">⬇️ Descargar nuestra App</a></li>
+    <li><a href="login.html" data-fallback="error.html">🔑 Iniciar sesión</a></li>
+    <li><a href="regis.html" data-fallback="error.html">📝 Registrarse</a></li>
+  </ul>
+
+  <!-- Redes sociales -->
+   <div class="social">
+      <a href="https://www.tiktok.com/@destiny_3361?_t=ZS-8x9sXYq5Ge0&_r=1" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=100066969176717" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://youtube.com/@destinyyt33621?si=d5cQh4q1ln9KD9AH" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
+</nav>
+
 
 <aside class="profile-panel" id="profilePanel" role="dialog" aria-label="Panel de perfil">
 <div class="profile-header">
@@ -364,7 +450,7 @@ h1{font-size:20px;margin:8px 0 18px}
     </div>
 <div class="section">
   <div class="menu-item">
-    <a href="perfil" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <a href="Perfil.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
         <path d="M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -373,18 +459,18 @@ h1{font-size:20px;margin:8px 0 18px}
   </div>
 
   <div class="menu-item">
-    <a href="error" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <a href="ajuste" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
         <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M1 12h4M19 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <div>Opciones</div>
+      <div>configuración</div>
     </a>
   </div>
 </div>
 
 <div class="section">
   <div class="menu-item">
-    <a href="error" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <a href="notif.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
         <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -393,7 +479,7 @@ h1{font-size:20px;margin:8px 0 18px}
   </div>
 
   <div class="menu-item">
-    <a href="error" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <a href="canjeo.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
         <path d="M3 3h18v14H3zM8 21v-4h8v4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -402,7 +488,7 @@ h1{font-size:20px;margin:8px 0 18px}
   </div>
 
   <div class="menu-item">
-  <a id="logout" href="logout" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+  <a id="logout" href="logout.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round" stroke-linejoin="round"></path>
       <path d="M16 17l5-5-5-5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -419,6 +505,21 @@ h1{font-size:20px;margin:8px 0 18px}
 <p class="muted"> prueba de dasb nuevo, más diseñado de anime offis 
 actualización 20 de septiembre 2025.</p>
 
+
+<!-- Alerta Modal -->
+<div id="modalAlerta" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:blue(0,0,0,0.6); z-index:9999;">
+  <div style="background:red; max-width:500px; margin:10% auto; padding:20px; border-radius:8px; box-shadow:0 0 10px #000;">
+    <h2 style="margin-top:0;">⚠️ Aviso importante</h2>
+    <p>
+      Estimado usuario, nuestras 
+      <a href="política.html" target="_blank">políticas de privacidad</a>, 
+      <a href="acerca.html" target="_blank">acerca de nosotros</a> y 
+      <a href="términos.html" target="_blank">términos y condiciones</a> han cambiado.<br>
+      Por favor revíselos para evitar problemas con la página.
+    </p>
+    <button onclick="cerrarModal()" style="margin-top:15px; padding:10px 20px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;">Entendido</button>
+  </div>
+</div>
 <!-- Carrusel de tarjetas -->
   <div class="carousel-container-cards">
     <button class="carousel-btn prev">&#10094;</button>
@@ -440,7 +541,7 @@ actualización 20 de septiembre 2025.</p>
       <div class="carousel-card">
         <img src="Amanga.jpg" alt="Anime 3">
         <div class="card-buttons">
-          <button onclick="window.location.href='error'">leer manga</button>
+          <button onclick="window.location.href='mangaS.html'">leer manga</button>
           <button onclick="alert('Favoritos Anime 3')">❤</button>
         </div>
       </div>
@@ -454,7 +555,6 @@ actualización 20 de septiembre 2025.</p>
     </div>
     <button class="carousel-btn next">&#10095;</button>
   </div>
-  
   <h1>Nuestra recomendaciónes</h1>
 
  <nav aria-label="Navegación principal">
@@ -474,7 +574,7 @@ actualización 20 de septiembre 2025.</p>
       <div class="carousel-card">
         <img src="Aperfil.jpg" alt="Anime 1">
         <div class="card-buttons">
-          <button onclick="window.location.href='perfil'">Ver perfil</button>
+          <button onclick="window.location.href='perfil.html'">Ver perfil</button>
           <button onclick="alert('Favoritos Anime 1')">❤</button>
         </div>
       </div>
@@ -507,25 +607,25 @@ actualización 20 de septiembre 2025.</p>
       <div class="social-links">
       <a href="https://www.tiktok.com/@destiny_3361?_t=ZS-8x9sXYq5Ge0&_r=1" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
       <a href="https://www.facebook.com/profile.php?id=100066969176717" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
-      <a href="https://www.instagram.com/sergio_yt46?igsh=MWdsaHN3cDRwaXZhag==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.instagram.com/animeoffis?igsh=MWZiNml6OTZ2bjc5NQ==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://youtube.com/@destinyyt33621?si=d5cQh4q1ln9KD9AH" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
     </div>
     
           <h3>Utilidades</h3>
 
-<a href="acerca">acerca</a>
+<a href="acerca.html">acerca</a>
 <br> <Br>
-<a href="aplicación">nuestras aplicaciones</a><Br><Br>
-<a href="help">centro de ayuda</a>
+<a href="aplicación.html">nuestras aplicaciones</a><Br><Br>
+<a href="help.html">centro de ayuda</a>
 <Br><Br>
-<a href="trabajo">únete a AF nacional</a>
+<a href="trabajo.html">únete a AF nacional</a>
 <Br><Br>
 <a href="mailto:promocion86animeoffios@gmail.com">consulta promocionales</a>
       
       </section>
 
 <div class="terms">
-        <a href="términos">Términos y condiciones</a> <br> <a href="política">Política de privacidad</a> | <a href="acerca">Acerca de la página</a> <br> <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial😉❤️</h5>
+        <a href="términos.html">Términos y condiciones</a> <br> <a href="política.html">Política de privacidad</a> | <a href="acerca.html">Acerca de la página</a> <br> <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial😉❤️</h5>
     </div> 
 
 </main>
@@ -535,90 +635,6 @@ actualización 20 de septiembre 2025.</p>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
-  authDomain: "anime-offis.firebaseapp.com",
-  projectId: "anime-offis",
-  storageBucket: "anime-offis.appspot.com",
-  messagingSenderId: "377121993034",
-  appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-auth.onAuthStateChanged(user => {
-  if(user){
-    db.collection('users').doc(user.uid).get().then(doc=>{
-      if(doc.exists){
-        const data=doc.data();
-        document.getElementById('username').textContent=data.username||user.displayName||"Usuario";
-
-        // Avatar topbar
-        const avatarTop = document.getElementById('avatar-topbar');
-        const avatarPanel = document.getElementById('avatar-panel');
-        const photo = data.profilePhoto||user.photoURL||"https://i.ibb.co/k2HCPYqd/1742400066396.jpg";
-        avatarTop.src = photo;
-        avatarPanel.src = photo;
-
-        // Badge
-        const badge = document.getElementById('badge-img');
-        let src="";
-        switch(data.verified){
-          case "creador": src="crea.png"; break;
-          case "colaborador": src="cola.png"; break;
-          case "aportador": src="aportador.png"; break;
-          case "soporte": src="soport.png"; break;
-          case "beta": src="beta.png"; break;
-          case "dora": src="verif.png"; break;
-          case "azul": src="azul.png"; break;
-          case "verde": src="verde.png"; break;
-          default: src="verde.png";
-        }
-        badge.src=src;
-        badge.style.display="inline-block";
-      }
-    });
-  } else window.location.href="login";
-});
-
- // Evento para realizar la búsqueda de usuarios
-    const searchInput = document.getElementById("search-user-input");
-const userResultsList = document.getElementById("user-results-list");
-
-// Escuchar cambios en el input
-searchInput.addEventListener("input", function () {
-    let searchQuery = searchInput.value.toLowerCase();
-    userResultsList.innerHTML = ""; // Limpiar resultados
-
-    if (searchQuery === "") return;
-
-    // Buscar usuarios en Firebase
-    db.collection("users")
-        .get()
-        .then((querySnapshot) => {
-            let foundUsers = false;
-
-            querySnapshot.forEach((doc) => {
-                let userData = doc.data();
-                if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
-                    foundUsers = true;
-                    let li = document.createElement("li");
-                    li.textContent = userData.username;
-                    li.addEventListener("click", function () {
-                        window.location.href = `perfil.html?usuario=${doc.id}`;
-                    });
-                    userResultsList.appendChild(li);
-                }
-            });
-
-            if (!foundUsers) userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
-        })
-        .catch((error) => {
-            console.error("Error al buscar usuarios:", error);
-            userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
-        });
-});
 
 // Abrir/cerrar panel de perfil
 const profileBtn = document.getElementById('profileBtn');
@@ -708,8 +724,8 @@ prevBtnRec.addEventListener('click', () => {
         });
       });
     }
-
-// Mostrar el modal al cargar la página
+    
+    // Mostrar el modal al cargar la página
   window.onload = function() {
     document.getElementById("modalAlerta").style.display = "block";
   };
@@ -719,14 +735,46 @@ prevBtnRec.addEventListener('click', () => {
     document.getElementById("modalAlerta").style.display = "none";
   }
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
+ 
+ const hamburger = document.getElementById('hamburger');
+const sidebar   = document.getElementById('sidebar');
+
+// Abrir / cerrar menú
+hamburger.addEventListener('click', e => {
+  e.stopPropagation();
+  sidebar.classList.toggle('active');
+  document.body.classList.toggle('menu-open');
+});
+
+// Cerrar si se hace clic fuera
+document.addEventListener('click', e => {
+  if (sidebar.classList.contains('active') &&
+      !sidebar.contains(e.target) &&
+      !hamburger.contains(e.target)) {
+    sidebar.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  }
+});
+
+// Verificación de enlaces con fallback a error.html
+document.querySelectorAll('.sidebar a[data-fallback]').forEach(link => {
+  link.addEventListener('click', async e => {
+    e.preventDefault();
+    const url = link.getAttribute('href');
+    const fallback = link.dataset.fallback;
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      if (res.ok) {
+        window.location.href = url;
+      } else {
+        window.location.href = fallback;
+      }
+    } catch {
+      window.location.href = fallback;
     }
-  
-    // simple hamburger interaction (example)
-    hamburger.addEventListener('click', ()=>{
-      alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
-    });
+  });
+});
+ 
 
 // Logout demo
 document.getElementById('logout').addEventListener('click', () => {
@@ -734,4 +782,4 @@ document.getElementById('logout').addEventListener('click', () => {
 });
 </script>
 </body>
-</html>
+  </html>
