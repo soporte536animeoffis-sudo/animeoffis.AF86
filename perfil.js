@@ -183,8 +183,31 @@ if (marcoMexico) {
     }
   }
 }
+const marcoOctubre = document.getElementById("marco-octubre");
+const mesActual = new Date().getMonth(); // 9 = octubre
 
+if (marcoOctubre) {
+  const img = marcoOctubre.querySelector("img");
+  const texto = marcoOctubre.querySelector(".frame-text");
 
+  if (mesActual === 9) {
+    // ✅ Octubre: desbloquear
+    marcoOctubre.classList.remove("locked");
+    img?.classList.remove("locked");
+    texto.textContent = "✅ Disponible en octubre";
+    texto.classList.remove("locked");
+    texto.classList.add("free");
+  } else {
+    // 🔒 Otros meses: mostrar con candado
+    marcoOctubre.classList.add("locked");
+    img?.classList.add("locked");
+    texto.textContent = "🔒 Exclusivo de octubre";
+    texto.classList.remove("free");
+    texto.classList.add("locked");
+  }
+}
+
+    
     // Mostrar marco seleccionado
     if (data.profileFrame) {
       document.querySelectorAll('.frame').forEach(f => f.style.display = 'none');
