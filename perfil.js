@@ -156,7 +156,34 @@ if (animationContainer) {
         if (t.textContent.includes("Exclusivo")) t.textContent = "✅ Desbloqueado";
         t.classList.remove('locked'); t.classList.add('unlocked');
       });
+    }  
+
+    const marcoMexico = document.getElementById("marco-mexico");
+const mesActual = new Date().getMonth(); // 0 = enero, 8 = septiembre
+
+if (marcoMexico) {
+  const img = marcoMexico.querySelector("img");
+  const texto = marcoMexico.querySelector(".frame-text");
+
+  if (mesActual === 8) {
+    marcoMexico.classList.remove("locked");
+    if (img) img.classList.remove("locked");
+    if (texto) {
+      texto.textContent = "✅ Disponible en septiembre";
+      texto.classList.remove("locked");
+      texto.classList.add("free");
     }
+  } else {
+    marcoMexico.classList.add("locked");
+    if (img) img.classList.add("locked");
+    if (texto) {
+      texto.textContent = "🔒 Exclusivo de septiembre";
+      texto.classList.remove("free");
+      texto.classList.add("locked");
+    }
+  }
+}
+
 
     // Mostrar marco seleccionado
     if (data.profileFrame) {
@@ -164,36 +191,6 @@ if (animationContainer) {
       const current = document.getElementById(data.profileFrame);
       if (current) current.style.display = 'block';
     }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const marcoMexico = document.getElementById("marco-mexico");
-  const mesActual = new Date().getMonth(); // 0 = enero, 8 = septiembre
-
-  if (marcoMexico) {
-    const img = marcoMexico.querySelector("img");
-    const texto = marcoMexico.querySelector(".frame-text");
-
-    if (mesActual === 8) {
-      // Es septiembre: desbloquear el marco
-      marcoMexico.classList.remove("locked");
-      if (img) img.classList.remove("locked");
-      if (texto) {
-        texto.textContent = "✅ Disponible en septiembre";
-        texto.classList.remove("locked");
-        texto.classList.add("free");
-      }
-    } else {
-      // No es septiembre: mantenerlo bloqueado
-      marcoMexico.classList.add("locked");
-      if (img) img.classList.add("locked");
-      if (texto) {
-        texto.textContent = "🔒 Exclusivo de septiembre";
-        texto.classList.remove("free");
-        texto.classList.add("locked");
-      }
-    }
-  }
-});
     
     // Animaciones
     const savedAnimation = data.profileAnimation || "moon";
