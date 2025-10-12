@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panel Anime Offis</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #fdfdfd; }
+    input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; }
+    button { padding: 10px 20px; background: #ff4d88; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>panel de publicacion del staff noticias anime offis</h1>
+  <form id="formNoticia">
+    <input name="titulo" placeholder="Título" required>
+    <textarea name="descripcion1" placeholder="Descripción" required></textarea>
+    <input name="trailer" placeholder="Link del trailer (opcional)">
+    <input type="file" id="imagenInput" accept="image/*" required>
+    <button type="submit">Publicar</button>
+  </form>
+
+  <script>
+    const IMGBB_API_KEY = "TU_API_KEY_DE_IMGBB"; // ← reemplaza con tu API key real
+
+    document.getElementById("formNoticia").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const file = document.getElementById("imagenInput").files[0];
+
+      if (!file) return alert("Selecciona una imagen");
+
+      // Convertir imagen a base64
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result.split(",")[1];
+
+        // Subir a ImgBB
+        const formData = new FormData();
+        formData.append("image", base64Image);
+
+        const upload = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+          method: "POST",
+          body: formData
+        });
+        const result = await upload.json();
+        const imageUrl = result.data.url;
+
+        // Enviar noticia a Firebase Function
+        const noticia = {
+          titulo: form.titulo.value,
+          descripcion1: form.descripcion1.value,
+          trailer: form.trailer.value,
+          imagen1: imageUrl,
+          autor: "Panel Web"
+        };
+
+        const res = await fetch("https://us-central1-puntos-50cef.cloudfunctions.net/publicarNoticia", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(noticia)
+        });
+
+        const data = await res.json();
+        alert(data.status === "ok" ? "✅ Noticia publicada con imagen" : "❌ Error: " + data.error);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
