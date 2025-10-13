@@ -297,6 +297,51 @@ h1{font-size:20px;margin:8px 0 18px}
             font-size: 14px;
             opacity: 0.7;
         }
+.emoji-esquina {
+  position: absolute;
+  font-size: 32px;
+  z-index: 20;
+}
+
+.esquina-izq-sup {
+  top: 10px;
+  left: 10px;
+}
+
+.esquina-der-sup {
+  top: 10px;
+  right: 10px;
+}
+
+.esquina-izq-inf {
+  bottom: 10px;
+  left: 10px;
+}
+
+.esquina-der-inf {
+  bottom: 10px;
+  right: 10px;
+}
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.emoji-esquina {
+  animation: parpadeo 2s infinite;
+}
+@keyframes rebote {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+.styceht, .fantasma {
+  animation: rebote 2s infinite ease-in-out;
+  position: absolute;
+  z-index: 10;
+}
+  
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6600">
@@ -312,7 +357,13 @@ h1{font-size:20px;margin:8px 0 18px}
     <img src="offis.png" alt="Logo Anime Offis">
   </div>
 </div>
-
+<img src="stycehtH.png" class="styceht" style="top: 40%; left: 45%; width: 120px;" />
+<img src="fantasma.png" class="fantasma" style="top: 40%; left: 55%; width: 100px;" />
+<div class="emoji-esquina esquina-izq-sup">🎃</div>
+<div class="emoji-esquina esquina-der-sup">👻</div>
+<div class="emoji-esquina esquina-izq-inf">👻</div>
+<div class="emoji-esquina esquina-der-inf">🎃</div>
+  
 <div style="display:flex;align-items:center;gap:12px">
   <div class="search" role="search" aria-label="Buscar">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -681,6 +732,22 @@ prevBtnRec.addEventListener('click', () => {
     currentIndexRec--;
     updateCarouselRec();
   }
+});
+const emojis = [
+  { emoji: "🎃", top: "10px", left: "10px" },
+  { emoji: "👻", top: "10px", right: "10px" },
+  { emoji: "👻", bottom: "10px", left: "10px" },
+  { emoji: "🎃", bottom: "10px", right: "10px" }
+];
+
+emojis.forEach(e => {
+  const el = document.createElement("div");
+  el.textContent = e.emoji;
+  el.style.position = "absolute";
+  el.style.fontSize = "32px";
+  el.style.zIndex = "20";
+  Object.assign(el.style, e);
+  document.body.appendChild(el);
 });
 
 // Tabs interactividad mínima
