@@ -373,7 +373,50 @@ body.menu-open::before {
   background: rgba(0,0,0,0.4);
   z-index: 9998;
 }
-        
+        .emoji-esquina {
+  position: absolute;
+  font-size: 32px;
+  z-index: 20;
+}
+
+.esquina-izq-sup {
+  top: 10px;
+  left: 10px;
+}
+
+.esquina-der-sup {
+  top: 10px;
+  right: 10px;
+}
+
+.esquina-izq-inf {
+  bottom: 10px;
+  left: 10px;
+}
+
+.esquina-der-inf {
+  bottom: 10px;
+  right: 10px;
+}
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.emoji-esquina {
+  animation: parpadeo 2s infinite;
+}
+@keyframes rebote {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+.stycehtH, .fantasma {
+  animation: rebote 2s infinite ease-in-out;
+  position: absolute;
+  z-index: 10;
+}
         
 </style>
 <link rel="manifest" href="manifest.json">
@@ -450,7 +493,7 @@ body.menu-open::before {
     </div>
 <div class="section">
   <div class="menu-item">
-    <a href="Perfil.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <a href="login" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
         <path d="M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -459,7 +502,7 @@ body.menu-open::before {
   </div>
 
   <div class="menu-item">
-    <a href="ajuste" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <a href="login" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
         <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M1 12h4M19 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -505,7 +548,14 @@ body.menu-open::before {
 <p class="muted"> prueba de dasb nuevo, más diseñado de anime offis 
 actualización 20 de septiembre 2025.</p>
 
+<img src="https://i.ibb.co/gMzhRhzT/stycehtH.png" class="styceht" style="top: 40%; left: 45%; width: 120px;" />
+<img src="https://i.ibb.co/gFvjQgMP/fantasma.png" class="fantasma" style="top: 40%; left: 55%; width: 100px;" />
 
+<div class="emoji-esquina esquina-izq-sup">🎃</div>
+<div class="emoji-esquina esquina-der-sup">👻</div>
+<div class="emoji-esquina esquina-izq-inf">👻</div>
+<div class="emoji-esquina esquina-der-inf">🎃</div>
+  
 <!-- Alerta Modal -->
 <div id="modalAlerta" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:blue(0,0,0,0.6); z-index:9999;">
   <div style="background:red; max-width:500px; margin:10% auto; padding:20px; border-radius:8px; box-shadow:0 0 10px #000;">
@@ -774,7 +824,23 @@ document.querySelectorAll('.sidebar a[data-fallback]').forEach(link => {
     }
   });
 });
- 
+
+  const emojis = [
+  { emoji: "🎃", top: "10px", left: "10px" },
+  { emoji: "👻", top: "10px", right: "10px" },
+  { emoji: "👻", bottom: "10px", left: "10px" },
+  { emoji: "🎃", bottom: "10px", right: "10px" }
+];
+
+emojis.forEach(e => {
+  const el = document.createElement("div");
+  el.textContent = e.emoji;
+  el.style.position = "absolute";
+  el.style.fontSize = "32px";
+  el.style.zIndex = "20";
+  Object.assign(el.style, e);
+  document.body.appendChild(el);
+});
 
 // Logout demo
 document.getElementById('logout').addEventListener('click', () => {
