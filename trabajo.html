@@ -106,8 +106,8 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Configuración EmailJS
-  emailjs.init("5JI0EGQvXnWjd1ZY_");
+  // Inicializar EmailJS
+  emailjs.init("5JI0EGQvXnWjd1ZY_"); // ← Tu User ID público
 
   document.getElementById("job-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -120,7 +120,7 @@
       motivo: document.getElementById("motivo").value.trim(),
       habilidades: document.getElementById("habilidades").value.trim(),
       experiencia: document.getElementById("experiencia").value.trim(),
-      fecha: new Date().toISOString()
+      fecha: new Date().toLocaleString()
     };
 
     try {
@@ -128,21 +128,13 @@
       await db.collection("solicitudes_trabajo").add(solicitud);
 
       // Enviar por EmailJS
-      await emailjs.send("service_1ezci2j", "template_513ka4w", {
-        nombre: solicitud.nombre,
-        alias: solicitud.alias,
-        correo: solicitud.correo,
-        telefono: solicitud.telefono,
-        motivo: solicitud.motivo,
-        habilidades: solicitud.habilidades,
-        experiencia: solicitud.experiencia
-      });
+      await emailjs.send("service_1ezci2j", "template_513ka4w", solicitud);
 
-      alert("¡Solicitud enviada con éxito!");
+      alert("✅ ¡Solicitud enviada con éxito!");
       document.getElementById("job-form").reset();
     } catch (error) {
       console.error("Error al enviar:", error);
-      alert("Hubo un problema al enviar tu solicitud.");
+      alert("❌ Hubo un problema al enviar tu solicitud.");
     }
   });
 </script>
