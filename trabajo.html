@@ -52,6 +52,22 @@
     button:hover {
       background-color: #e91e63;
     }
+    #estado {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .cargando::after {
+      content: "⏳ Enviando solicitud...";
+      display: block;
+      color: #ffcc00;
+      font-weight: bold;
+      animation: parpadeo 1s infinite;
+    }
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
   </style>
 </head>
 <body>
@@ -84,16 +100,17 @@
   <textarea id="experiencia" rows="3"></textarea>
 
   <button type="submit">Enviar solicitud</button>
+  <div id="estado"></div>
 </form>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-<!-- EmailJS v3 (moderno) -->
-<script type="module">
-  import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+<!-- EmailJS v3 -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
+<script>
   // Configuración Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
@@ -107,10 +124,15 @@
   const db = firebase.firestore();
 
   // Inicializar EmailJS
-  emailjs.init("5JI0EGQvXnWjd1ZY_"); // Tu user ID público
+  emailjs.init("5JI0EGQvXnWjd1ZY_");
 
-  document.getElementById("job-form").addEventListener("submit", async (e) => {
+  const form = document.getElementById("job-form");
+  const estado = document.getElementById("estado");
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    estado.className = "cargando";
+    estado.textContent = "";
 
     const solicitud = {
       nombre: document.getElementById("nombre").value.trim(),
@@ -124,17 +146,16 @@
     };
 
     try {
-      // Guardar en Firebase
       await db.collection("solicitudes_trabajo").add(solicitud);
-
-      // Enviar por EmailJS
       await emailjs.send("service_1ezci2j", "template_513ka4w", solicitud);
 
-      alert("✅ ¡Solicitud enviada con éxito!");
-      document.getElementById("job-form").reset();
+      estado.className = "";
+      estado.textContent = "✅ ¡Solicitud enviada con éxito!";
+      form.reset();
     } catch (error) {
       console.error("❌ Error al enviar:", error);
-      alert("Hubo un problema al enviar tu solicitud.");
+      estado.className = "";
+      estado.textContent = "❌ Hubo un problema al enviar tu solicitud.";
     }
   });
 </script>
