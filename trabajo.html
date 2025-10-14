@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Trabaja con Anime Offis GDL</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    header img {
+      max-width: 180px;
+      border-radius: 10px;
+    }
+    h1 {
+      font-size: 28px;
+      margin-top: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background-color: #1f1f1f;
+      color: white;
+    }
+    button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e91e63;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="https://anime-offis.firebaseapp.com/assets/styceht-logo.png" alt="Logo Styceht">
+  <h1>Solicitud de Trabajo - Anime Offis GDL</h1>
+</header>
+
+<form id="job-form">
+  <label>Nombre completo:</label>
+  <input type="text" id="nombre" required>
+
+  <label>Alias (opcional):</label>
+  <input type="text" id="alias">
+
+  <label>Correo electrónico:</label>
+  <input type="email" id="correo" required>
+
+  <label>Número de teléfono:</label>
+  <input type="tel" id="telefono" required>
+
+  <label>¿Por qué quieres trabajar con Anime Offis?</label>
+  <textarea id="motivo" rows="4" required></textarea>
+
+  <label>¿Qué habilidades puedes aportar?</label>
+  <textarea id="habilidades" rows="4" required></textarea>
+
+  <label>¿Tienes experiencia previa en proyectos similares?</label>
+  <textarea id="experiencia" rows="3"></textarea>
+
+  <button type="submit">Enviar solicitud</button>
+</form>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+
+<script>
+  // Configuración Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+    authDomain: "anime-offis.firebaseapp.com",
+    projectId: "anime-offis",
+    storageBucket: "anime-offis.appspot.com",
+    messagingSenderId: "377121993034",
+    appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Configuración EmailJS
+  emailjs.init("5JI0EGQvXnWjd1ZY_");
+
+  document.getElementById("job-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const solicitud = {
+      nombre: document.getElementById("nombre").value.trim(),
+      alias: document.getElementById("alias").value.trim(),
+      correo: document.getElementById("correo").value.trim(),
+      telefono: document.getElementById("telefono").value.trim(),
+      motivo: document.getElementById("motivo").value.trim(),
+      habilidades: document.getElementById("habilidades").value.trim(),
+      experiencia: document.getElementById("experiencia").value.trim(),
+      fecha: new Date().toISOString()
+    };
+
+    try {
+      // Guardar en Firebase
+      await db.collection("solicitudes_trabajo").add(solicitud);
+
+      // Enviar por EmailJS
+      await emailjs.send("service_1ezci2j", "template_513ka4w", {
+        nombre: solicitud.nombre,
+        alias: solicitud.alias,
+        correo: solicitud.correo,
+        telefono: solicitud.telefono,
+        motivo: solicitud.motivo,
+        habilidades: solicitud.habilidades,
+        experiencia: solicitud.experiencia
+      });
+
+      alert("¡Solicitud enviada con éxito!");
+      document.getElementById("job-form").reset();
+    } catch (error) {
+      console.error("Error al enviar:", error);
+      alert("Hubo un problema al enviar tu solicitud.");
+    }
+  });
+</script>
+
+</body>
+</html>
