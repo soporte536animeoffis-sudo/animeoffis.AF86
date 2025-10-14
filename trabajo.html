@@ -57,7 +57,7 @@
 <body>
 
 <header>
-  <img src="https://www.animeoffis.com/trabajo.png" alt="Logo Styceht">
+  <img src="https://i.ibb.co/q3QdyK79/fb7ae648419a.png" alt="Logo Styceht">
   <h1>Solicitud de Trabajo - Anime Offis GDL</h1>
 </header>
 
@@ -90,10 +90,10 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+<!-- EmailJS v3 (moderno) -->
+<script type="module">
+  import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
 
-<script>
   // Configuración Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
@@ -107,7 +107,7 @@
   const db = firebase.firestore();
 
   // Inicializar EmailJS
-  emailjs.init("5JI0EGQvXnWjd1ZY_"); // ← Tu User ID público
+  emailjs.init("5JI0EGQvXnWjd1ZY_"); // Tu user ID público
 
   document.getElementById("job-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -133,8 +133,8 @@
       alert("✅ ¡Solicitud enviada con éxito!");
       document.getElementById("job-form").reset();
     } catch (error) {
-      console.error("Error al enviar:", error);
-      alert("❌ Hubo un problema al enviar tu solicitud.");
+      console.error("❌ Error al enviar:", error);
+      alert("Hubo un problema al enviar tu solicitud.");
     }
   });
 </script>
