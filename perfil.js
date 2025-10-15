@@ -33,6 +33,7 @@ const insigniasContainer = document.querySelector('.insignias');
 const moonOverlay = document.getElementById('moon-animation');
 const planeContainer = document.querySelector('.plane-container');
 const planeElement = planeContainer?.querySelector('.plane');
+const mesActual = new Date().getMonth();
 
 /* ===== Helpers ===== */
 function canShowAnimationByVerification(verifiedArray) {
@@ -159,7 +160,6 @@ if (animationContainer) {
     }  
 
     const marcoMexico = document.getElementById("marco-mexico");
-let mesActual = new Date().getMonth(); // 0 = enero, 8 = septiembre
 
 if (marcoMexico) {
   const img = marcoMexico.querySelector("img");
@@ -184,7 +184,6 @@ if (marcoMexico) {
   }
 }
 const marcoOctubre = document.getElementById("marco-octubre");
- mesActual = new Date().getMonth(); // 9 = octubre
 
 if (marcoOctubre) {
   const img = marcoOctubre.querySelector("img");
