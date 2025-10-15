@@ -398,4 +398,3 @@ function startFireworksVideo() {
     setTimeout(() => { overlay.style.display = "none"; }, 2000); // esperar que acaben los videos
   }, 6000);
 }
-consele.log("error:" data);
