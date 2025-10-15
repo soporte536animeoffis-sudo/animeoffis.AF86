@@ -159,7 +159,7 @@ if (animationContainer) {
     }  
 
     const marcoMexico = document.getElementById("marco-mexico");
-const mesActual = new Date().getMonth(); // 0 = enero, 8 = septiembre
+let mesActual = new Date().getMonth(); // 0 = enero, 8 = septiembre
 
 if (marcoMexico) {
   const img = marcoMexico.querySelector("img");
@@ -184,7 +184,7 @@ if (marcoMexico) {
   }
 }
 const marcoOctubre = document.getElementById("marco-octubre");
-const mesActual = new Date().getMonth(); // 9 = octubre
+ mesActual = new Date().getMonth(); // 9 = octubre
 
 if (marcoOctubre) {
   const img = marcoOctubre.querySelector("img");
