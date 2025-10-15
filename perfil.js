@@ -156,9 +156,12 @@ if (animationContainer) {
         if (t.textContent.includes("Exclusivo")) t.textContent = "✅ Desbloqueado";
         t.classList.remove('locked'); t.classList.add('unlocked');
       });
-    }  
-    const mesActual = new Date().getMonth();
-    const marcoMexico = document.getElementById("marco-mexico");
+    }    
+
+    (function() {
+  const mesActual = new Date().getMonth();
+  // lógica de marcoMexico y marcoOctubre aquí
+       const marcoMexico = document.getElementById("marco-mexico");
 
 if (marcoMexico) {
   const img = marcoMexico.querySelector("img");
@@ -203,8 +206,8 @@ if (marcoOctubre) {
     texto.classList.add("locked");
   }
 }
+})();
 
-    
     // Mostrar marco seleccionado
     if (data.profileFrame) {
       document.querySelectorAll('.frame').forEach(f => f.style.display = 'none');
