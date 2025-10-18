@@ -143,6 +143,36 @@
       border: 10px solid transparent;
       border-right-color: #a66cff;
     }
+    .login-box a:hover {
+  text-decoration: underline;
+  color: #a94cff;
+}
+      .casillas-responsive {
+  margin-top: 15px;
+  font-size: 0.35em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  align-items: center;
+  color: white; /* color por defecto para móviles */
+}
+
+.casillas-responsive a {
+  color: #6a0dad;
+  text-decoration: none;
+}
+
+.casillas-responsive a:hover {
+  text-decoration: underline;
+  color: #a94cff;
+}
+
+/* En pantallas grandes (PC) cambia el color del texto a negro */
+@media (min-width: 768px) {
+  .casillas-responsive {
+    color: black;
+  }
+}
   </style>
 </head>
 <body>
@@ -162,7 +192,7 @@
       <div class="speech-bubble">Nya~</div>
     </div>
     <form id="register-form">
-      <input type="text" id="name" placeholder="Nombre Neko" required />
+      <input type="text" id="name" placeholder="Nombre" required />
       <input type="email" id="email" placeholder="Correo Neko" required />
 
       <div class="password-container">
@@ -174,6 +204,22 @@
         />
         <i class="fas fa-eye toggle-password" id="togglePassword"></i>
       </div>
+      <!-- Casillas de verificación en una sola línea -->
+<div class="casillas-responsive">
+  <label style="display: flex; align-items: center; gap: 6px;">
+    <input type="checkbox" id="mayor-edad" required />
+    <span>Soy mayor de edad o tengo permiso legal</span>
+  </label>
+
+  <label style="display: flex; align-items: center; gap: 6px;">
+    <input type="checkbox" id="acepto-terminos" required />
+    <span>
+      Acepto los 
+      <a href="terminos.html" target="_blank">términos y condiciones</a> y 
+      <a href="privacidad.html" target="_blank">políticas de privacidad</a> de anime offis
+    </span>
+  </label>
+</div>
 
       <button type="submit" class="btn-register">Registrarse</button>
     </form>
@@ -182,13 +228,11 @@
 
   <!-- Audios -->
   <audio id="sound-welcome" src="welcome.mp3" preload="auto"></audio>
-  <audio id="sound-miau" src="miau.mp3" preload="auto"></audio>
+  <audio id="sound-miau" src="" preload="auto"></audio>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-  <!-- Todo el HTML es igual, solo actualizamos el <script> final -->
 <script>
   // Configuración Firebase
   const firebaseConfig = {
