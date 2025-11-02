@@ -417,7 +417,55 @@ body.menu-open::before {
   position: absolute;
   z-index: 10;
 }
-        
+         .content {
+  display: none;
+}
+.content.active {
+  display: block;
+}
+.tab.active {
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+}
+    .promo-card p{
+        color:black;
+        front-size: 10px;
+        }
+    .promo-card h3{
+        color:blue;
+        front-size: 10px;
+        text-shadow:  0 0 10px #00aaff, 0 0 20px #00aaff;
+        }
+    .promo-card {
+  background: #f5e9d6;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.promo-card img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.promo-card .btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #00aaff, #ff00cc);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: box-shadow 0.3s ease;
+}
+
+.promo-card .btn:active {
+  box-shadow: 0 0 15px #00aaff;
+}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6600">
@@ -611,16 +659,42 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     <button class="carousel-btn next">&#10095;</button>
   </div>
   <h1>Nuestra recomendaciónes</h1>
+<nav aria-label="Navegación principal">
+  <div class="tabs" id="tabsContainer">
+    <button class="tab active" data-tab="dasb" data-i18n="tab.home">Inicio</button>
+    <button class="tab" data-tab="popular" data-i18n="tab.popular">Lo más popular</button>
+    <button class="tab external" data-url="https://new.animeoffis.com/calendario" data-i18n="tab.calendar">Calendario</button>
+    <button class="tab" data-tab="noticias" data-i18n="tab.news">Noticias</button>
+    <button class="tab external" data-url="https://games.animeoffis.com" data-i18n="tab.games">Juegos</button>
+  </div>
+</nav>
 
- <nav aria-label="Navegación principal">
-    <div class="tabs">
-      <button class="tab active" data-i18n="index">Inicio</button>
-      <button class="tab" data-i18n="tab.popular">Lo más popular</button>
-      <button class="tab" data-i18n="tab.calendar">Calendario</button>
-      <button class="tab" data-i18n="new.animeoffis.com">Noticias</button>
-      <button class="tab" data-i18n="games.animeoffis.com">Juegos</button>
+<div class="tab-content">
+  <section id="dasb" class="content active">
+    <div class="promo-card">
+      <img src="inicio-banner.jpg" alt="Inicio Anime Offis">
+      <h3>Bienvenido a Anime Offis</h3>
+      <p>Explora el universo del oufis con anime offis , originario de guadalajara mexico con una historia interesante.</p>
+      <a href="https://animeoffis.com/acerca" class="btn">SABER MÁS</a>
     </div>
-  </nav>
+  </section>
+   <section id="popular" class="content">
+    <div class="promo-card">
+      <img src="popular-banner.jpg" alt="Lo más popular">
+      <h3>Contenido Popular 🔥</h3>
+      <p>Descubre lo que está marcando tendencia en Anime Offis.</p>
+      <a href="https://animeoffis.com/popular" class="btn">SABER MÁS</a>
+    </div>
+  </section>
+    <section id="noticias" class="content">
+    <div class="promo-card">
+      <img src="aficon.png" alt="Noticias Anime Offis">
+      <h3>📰 Noticias Anime Offis</h3>
+      <p>Entérate de las últimas novedades, lanzamientos y eventos especiales.</p>
+      <a href="https://new.animeoffis.com" class="btn">SABER MÁS</a>
+    </div>
+  </section>
+</div>
 
 <div class="carousel-container-recommendations">
     <button class="carousel-btn prev">&#10094;</button>
@@ -768,17 +842,25 @@ prevBtnRec.addEventListener('click', () => {
     updateCarouselRec();
   }
 });
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.content');
 
-// Tabs interactividad mínima
-    function wireTabs(){
-      const tabs = $$(".tab");
-      tabs.forEach(t=>{
-        t.addEventListener("click", ()=>{
-          tabs.forEach(x=>x.classList.remove("active"));
-          t.classList.add("active");
-        });
-      });
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (tab.classList.contains('external')) {
+      const url = tab.getAttribute('data-url');
+      window.open(url, '_blank');
+      return;
     }
+
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const target = tab.getAttribute('data-tab');
+    contents.forEach(c => c.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
     
     // Mostrar el modal al cargar la página
   window.onload = function() {
