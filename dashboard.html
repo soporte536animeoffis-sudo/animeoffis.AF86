@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dashboard - Navbar con perfil</title>
+<title>ANIME OFFIS PRUEBA</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
@@ -236,7 +236,7 @@ h1{font-size:20px;margin:8px 0 18px}
 }
 
 .offis{display:flex;align-items:center;gap:10px;cursor:default}
-.offis img {height:180px;width:auto;display:block;}
+.offis img {height:57px;width:auto;display:block;}
 
  .social-links {
       margin-top: 20px;
@@ -296,56 +296,90 @@ h1{font-size:20px;margin:8px 0 18px}
             margin-top: 40px;
             font-size: 14px;
             opacity: 0.7;
+            color: white;}
+    .terms a {
+        color: white;
+        text-shadow: 0 0 20px white;
+        font-size: 17px;
+    }
+    .util a {
+        color: white;
+        font-size: 20px;
+        text-shadow:  0 0 10px red, 0 0 20px yellow;
         }
-.emoji-esquina {
-  position: absolute;
-  font-size: 32px;
-  z-index: 20;
+    .content {
+  display: none;
+}
+.content.active {
+  display: block;
+}
+.tab.active {
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+}
+    .promo-card p{
+        color:black;
+        front-size: 10px;
+        }
+    .promo-card h3{
+        color:blue;
+        front-size: 10px;
+        text-shadow:  0 0 10px #00aaff, 0 0 20px #00aaff;
+        }
+    .promo-card {
+  background: #f5e9d6;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.esquina-izq-sup {
-  top: 10px;
-  left: 10px;
+.promo-card img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-.esquina-der-sup {
-  top: 10px;
-  right: 10px;
+.promo-card .btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #00aaff, #ff00cc);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: box-shadow 0.3s ease;
 }
 
-.esquina-izq-inf {
-  bottom: 10px;
-  left: 10px;
+.promo-card .btn:active {
+  box-shadow: 0 0 15px #00aaff;
+}
+    .btn-transparente {
+  background-color: transparent;
+  border: none;
+  color: white; /* o el color que combine con tu fondo */
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
 }
 
-.esquina-der-inf {
-  bottom: 10px;
-  right: 10px;
+.btn-transparente:hover {
+  text-decoration: underline;
+  color: #ff66cc; /* efecto anime-style al pasar el cursor */
 }
-@keyframes parpadeo {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+    .botones {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
 }
-
-.emoji-esquina {
-  animation: parpadeo 2s infinite;
-}
-@keyframes rebote {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-15px); }
-  100% { transform: translateY(0); }
-}
-
-.stycehtH, .fantasma {
-  animation: rebote 2s infinite ease-in-out;
-  position: absolute;
-  z-index: 10;
-}
-  
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6600">
-   <link rel="icon" href="icon.png" type="image/png">
+    <link rel="icon" href="icon.png" type="image/png">
 </head>
 <body>
 
@@ -355,21 +389,22 @@ h1{font-size:20px;margin:8px 0 18px}
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <div class="logo">
-    <img src="offis.png" alt="Logo Anime Offis">
+    <img src="aficon.png" alt="Logo Anime Offis">
   </div>
 </div>
-<img src="https://i.ibb.co/gMzhRhzT/stycehtH.png" class="stycehtH" style="top: 40%; left: 45%; width: 120px;" />
-<img src="https://i.ibb.co/gFvjQgMP/fantasma.png" class="fantasma" style="top: 40%; left: 55%; width: 100px;" />
-<div class="emoji-esquina esquina-izq-sup"></div>
-<div class="emoji-esquina esquina-der-sup">👻</div>
-  
+    <div class="botones">
+  <button class="btn-transparente">Noticias</button>
+  <button class="btn-transparente">Chat</button>
+        <button class="btn-transparente">Juegos</button>
+</div>
+
 <div style="display:flex;align-items:center;gap:12px">
   <div class="search" role="search" aria-label="Buscar">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
       <circle cx="11" cy="11" r="6" stroke-linecap="round" stroke-linejoin="round"></circle>
       <path d="M21 21l-4.35-4.35" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
-    <input id="search-user-input" type="text" placeholder="Buscar...">
+    <input id="search-user-input" type="text" placeholder="Buscar usuarios...">
   </div>
   <ul id="user-results-list"></ul>
 
@@ -450,9 +485,8 @@ h1{font-size:20px;margin:8px 0 18px}
 </aside>
 
 <main>
-<h1>Dashboard demo</h1>
-<p class="muted"> prueba de dasb nuevo, más diseñado de anime offis 
-actualización 20 de septiembre 2025.</p>
+<h1>Inicio anime offis</h1>
+    <p>Vive la experiencia del oufis en anime offis, perfiles interativo con diseños a tu oufis</p>
 
 <!-- Carrusel de tarjetas -->
   <div class="carousel-container-cards">
@@ -461,7 +495,7 @@ actualización 20 de septiembre 2025.</p>
       <div class="carousel-card">
         <img src="Aperfil.jpg" alt="Anime 1">
         <div class="card-buttons">
-          <button onclick="perfil">Ver perfiles</button>
+          <button onclick="perfil.html">Ver perfiles</button>
           <button onclick="alert('Favoritos Anime 1')">❤</button>
         </div>
       </div>
@@ -480,10 +514,10 @@ actualización 20 de septiembre 2025.</p>
         </div>
       </div>
       <div class="carousel-card">
-        <img src="https://i.ibb.co/jzk0WDv/img4.jpg" alt="Anime 4">
+        <img src="pronto.png" alt="Anime 4">
         <div class="card-buttons">
-          <button onclick="alert('Ver Anime 4')">Ver más</button>
-          <button onclick="alert('Favoritos Anime 4')">❤</button>
+          <button onclick="alert('MUY PRONTO')">muy pronto</button>
+          <button onclick="alert('MUY PRONTO')">❤</button>
         </div>
       </div>
     </div>
@@ -491,17 +525,43 @@ actualización 20 de septiembre 2025.</p>
   </div>
   
   <h1>Nuestra recomendaciónes</h1>
+    <nav aria-label="Navegación principal">
+  <div class="tabs" id="tabsContainer">
+    <button class="tab active" data-tab="dasb" data-i18n="tab.home">Inicio</button>
+    <button class="tab" data-tab="popular" data-i18n="tab.popular">Lo más popular</button>
+    <button class="tab external" data-url="https://new.animeoffis.com/calendario" data-i18n="tab.calendar">Calendario</button>
+    <button class="tab" data-tab="noticias" data-i18n="tab.news">Noticias</button>
+    <button class="tab external" data-url="https://games.animeoffis.com" data-i18n="tab.games">Juegos</button>
+  </div>
+</nav>
 
- <nav aria-label="Navegación principal">
-    <div class="tabs">
-      <button class="tab active" data-i18n="tab.home">Inicio</button>
-      <button class="tab" data-i18n="tab.popular">Lo más popular</button>
-      <button class="tab" data-i18n="tab.simulcasts">Transmisiones simultáneas</button>
-      <button class="tab" data-i18n="tab.calendar">Calendario</button>
-      <button class="tab" data-i18n="tab.news">Noticias</button>
-      <button class="tab" data-i18n="tab.games">Juegos</button>
+<div class="tab-content">
+  <section id="dasb" class="content active">
+    <div class="promo-card">
+      <img src="inicio-banner.jpg" alt="Inicio Anime Offis">
+      <h3>Bienvenido a Anime Offis</h3>
+      <p>Explora el universo del oufis con anime offis , originario de guadalajara mexico con una historia interesante.</p>
+      <a href="https://animeoffis.com/acerca" class="btn">SABER MÁS</a>
     </div>
-  </nav>
+  </section>
+
+  <section id="popular" class="content">
+    <div class="promo-card">
+      <img src="popular-banner.jpg" alt="Lo más popular">
+      <h3>Contenido Popular 🔥</h3>
+      <p>Descubre lo que está marcando tendencia en Anime Offis.</p>
+      <a href="https://animeoffis.com/popular" class="btn">SABER MÁS</a>
+    </div>
+  </section>
+    <section id="noticias" class="content">
+    <div class="promo-card">
+      <img src="aficon.png" alt="Noticias Anime Offis">
+      <h3>📰 Noticias Anime Offis</h3>
+      <p>Entérate de las últimas novedades, lanzamientos y eventos especiales.</p>
+      <a href="https://new.animeoffis.com" class="btn">SABER MÁS</a>
+    </div>
+  </section>
+</div>
 
 <div class="carousel-container-recommendations">
     <button class="carousel-btn prev">&#10094;</button>
@@ -514,16 +574,16 @@ actualización 20 de septiembre 2025.</p>
         </div>
       </div>
       <div class="carousel-card">
-        <img src="https://i.ibb.co/hK6W0tz/img2.jpg" alt="Anime 2">
+        <img src="icon76.png" alt="Anime 2">
         <div class="card-buttons">
-          <button onclick="window.location.href">Ver más</button>
+          <button onclick="window.location.href='descargas.'">descarga nuestra app</button>
           <button onclick="alert('Favoritos Anime 2')">❤</button>
         </div>
       </div>
       <div class="carousel-card">
-        <img src="https://i.ibb.co/NWZ0shx/img3.jpg" alt="Anime 3">
+        <img src="iconde.png" alt="Anime 3">
         <div class="card-buttons">
-          <button onclick="alert('Ver Anime 3')">Ver más</button>
+           <button onclick="window.location.href='acerca.'">Conoce de Nosotros</button>
           <button onclick="alert('Favoritos Anime 3')">❤</button>
         </div>
       </div>
@@ -533,7 +593,8 @@ actualización 20 de septiembre 2025.</p>
 
 <section class="hero">
     <div class="hero-card">
-        <div class="offis">
+       <div class="offis">
+            <div class="marca"> <img src="aficon.png" alt="Logo Anime Offis"> </div>
     <h1>AF | Anime Offis </h1>
   </div>
         <p>GDL México | © Anime Offis 2025 </p>
@@ -547,7 +608,7 @@ actualización 20 de septiembre 2025.</p>
     </div>
     
           <h3>Utilidades</h3>
-
+<div class="util">
 <a href="acerca">acerca</a>
 <br> <Br>
 <a href="aplicacion">nuestras aplicaciones</a><Br><Br>
@@ -556,10 +617,8 @@ actualización 20 de septiembre 2025.</p>
 <a href="error">únete a AF nacional</a>
 <Br><Br>
 <a href="mailto:promocion86animeoffios@gmail.com">consulta promocionales</a>
-      
+      </div>
       </section>
-  <div class="emoji-esquina esquina-izq-inf">👻</div>
-<div class="emoji-esquina esquina-der-inf">🎃</div>
 
 <div class="terms">
         <a href="términos">Términos y condiciones</a> <br> <a href="política">Política de privacidad</a> | <a href="acerca">Acerca de la página</a> <br> <h5>Anime siempre contigo ❄️ y con corazón Destiny oficial😉❤️</h5>
@@ -610,7 +669,7 @@ auth.onAuthStateChanged(user => {
           case "dora": src="verif.png"; break;
           case "azul": src="azul.png"; break;
           case "verde": src="verde.png"; break;
-          default: src="verde.png";
+          default: src="imperial.png";
         }
         badge.src=src;
         badge.style.display="inline-block";
@@ -734,33 +793,26 @@ prevBtnRec.addEventListener('click', () => {
     updateCarouselRec();
   }
 });
-const emojis = [
-  { emoji: "🎃", top: "10px", left: "10px" },
-  { emoji: "👻", top: "10px", right: "10px" },
-  { emoji: "👻", bottom: "10px", left: "10px" },
-  { emoji: "🎃", bottom: "10px", right: "10px" }
-];
 
-emojis.forEach(e => {
-  const el = document.createElement("div");
-  el.textContent = e.emoji;
-  el.style.position = "absolute";
-  el.style.fontSize = "32px";
-  el.style.zIndex = "20";
-  Object.assign(el.style, e);
-  document.body.appendChild(el);
-});
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.content');
 
-// Tabs interactividad mínima
-    function wireTabs(){
-      const tabs = $$(".tab");
-      tabs.forEach(t=>{
-        t.addEventListener("click", ()=>{
-          tabs.forEach(x=>x.classList.remove("active"));
-          t.classList.add("active");
-        });
-      });
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (tab.classList.contains('external')) {
+      const url = tab.getAttribute('data-url');
+      window.open(url, '_blank');
+      return;
     }
+
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const target = tab.getAttribute('data-tab');
+    contents.forEach(c => c.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
 
   if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/sw.js");
@@ -770,7 +822,9 @@ emojis.forEach(e => {
     hamburger.addEventListener('click', ()=>{
       alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
     });
-
+    document.querySelector('.offis img').addEventListener('click', () => {
+    window.location.href = 'https://animeoffis.com';
+  });
 // Logout demo
 document.getElementById('logout').addEventListener('click', () => {
   auth.signOut().then(() => window.location.href="login.html");
