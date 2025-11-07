@@ -270,11 +270,11 @@
           return user.sendEmailVerification().then(() => {
             // Guardar en Firestore
             return db.collection("users").doc(user.uid).set({
-              username: name,
-              email: email,
-              registrationDate: new Date().toISOString(),
-              profilePhoto: "https://0756.animeoffis.com/icon.png",
-              verified: beta,
+  username: name,
+  email: email,
+  registrationDate: new Date().toISOString(),
+  profilePhoto: "https://0756.animeoffis.com/icon.png",
+  verified: ["beta"],
             }).then(() => {
               soundWelcome.play();
               alert(
