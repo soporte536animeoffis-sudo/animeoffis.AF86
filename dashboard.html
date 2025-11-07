@@ -700,7 +700,7 @@ searchInput.addEventListener("input", function () {
                 if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
                     foundUsers = true;
                     let li = document.createElement("li");
-                    li.textContent = userData.username + " - " + userData.email;
+                    li.textContent = userData.username;
                     li.addEventListener("click", function () {
                         window.location.href = `perfil?usuario=${doc.id}`;
                     });
