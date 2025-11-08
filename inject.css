@@ -1,0 +1,69 @@
+/* Fondo general del chat */
+#bp-web-widget {
+  --bp-background-color: #fff0f6;
+  --bp-font-family: 'Nunito', 'Segoe UI', sans-serif;
+  --bp-font-size: 16px;
+  --bp-text-color: #4a4a4a;
+  --bp-border-radius: 16px;
+  --bp-primary-color: #ff80c0;
+  --bp-secondary-color: #a0e0ff;
+  --bp-accent-color: #ffd6e8;
+}
+
+/* Burbujas del bot */
+.bp-chat-bubble.bot {
+  background-color: #ffe0f0;
+  color: #4a4a4a;
+  border-radius: 16px 16px 16px 0;
+  box-shadow: 0 2px 6px rgba(255, 128, 192, 0.2);
+}
+
+/* Burbujas del usuario */
+.bp-chat-bubble.user {
+  background-color: #d0f0ff;
+  color: #333;
+  border-radius: 16px 16px 0 16px;
+  box-shadow: 0 2px 6px rgba(160, 224, 255, 0.2);
+}
+
+/* Encabezado del chat */
+.bp-header {
+  background: linear-gradient(90deg, #ff80c0, #a0e0ff);
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 12px;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Input del usuario */
+.bp-composer {
+  background-color: #fff;
+  border-top: 2px solid #ffd6e8;
+  padding: 10px;
+}
+
+.bp-composer input {
+  border-radius: 12px;
+  border: 1px solid #ff80c0;
+  padding: 8px 12px;
+  font-size: 15px;
+}
+
+/* Botón de enviar */
+.bp-send-button {
+  background-color: #ff80c0;
+  color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(255, 128, 192, 0.3);
+}
+
+/* Animación suave al abrir */
+#bp-web-widget {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
