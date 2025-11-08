@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Administrar Verificaciones</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #111; color: #fff; text-align: center; }
+    h2 { margin-top: 30px; }
+    .form-container {
+      margin: 30px auto;
+      padding: 20px;
+      background: #222;
+      border-radius: 10px;
+      max-width: 400px;
+    }
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 90%;
+      border: none;
+      border-radius: 6px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+    .assign { background: #28a745; }
+    .remove { background: #dc3545; }
+    .badges-container { margin-top: 20px; }
+    .badge { display: inline-block; background: gold; color: #000; padding: 5px 10px; margin: 5px; border-radius: 5px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>✅ Panel de Verificaciones</h2>
+
+  <div class="form-container">
+    <input type="text" id="userInput" placeholder="Correo o nombre del usuario">
+    <input type="text" id="verifiedInput" placeholder="Nombre de la verificación">
+    <button class="assign" onclick="addVerified()">Agregar Verificación</button>
+    <button class="remove" onclick="removeVerified()">Quitar Verificación</button>
+
+    <div class="badges-container" id="verifiedContainer">
+      <!-- Verificaciones del usuario aparecerán aquí -->
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+      authDomain: "anime-offis.firebaseapp.com",
+      projectId: "anime-offis",
+      storageBucket: "anime-offis.appspot.com",
+      messagingSenderId: "377121993034",
+      appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let currentUserDocId = null;
+
+    async function findUser(userInput) {
+      let query = await db.collection("users").where("email", "==", userInput).get();
+      if (query.empty) {
+        query = await db.collection("users").where("username", "==", userInput).get();
+      }
+      return query;
+    }
+
+    async function loadUserVerified() {
+      const userInput = document.getElementById("userInput").value.trim().toLowerCase();
+      const verifiedContainer = document.getElementById("verifiedContainer");
+      verifiedContainer.innerHTML = "";
+
+      if (!userInput) return;
+
+      const query = await findUser(userInput);
+      if (query.empty) {
+        verifiedContainer.innerHTML = "<p>❌ Usuario no encontrado</p>";
+        currentUserDocId = null;
+        return;
+      }
+
+      query.forEach(doc => {
+        currentUserDocId = doc.id;
+        const data = doc.data();
+        const verified = data.verified || [];
+        if (verified.length === 0) {
+          verifiedContainer.innerHTML = "<p>Este usuario no tiene verificaciones.</p>";
+        } else {
+          verified.forEach(v => {
+            const span = document.createElement("span");
+            span.textContent = v;
+            span.classList.add("badge");
+            verifiedContainer.appendChild(span);
+          });
+        }
+      });
+    }
+
+    async function addVerified() {
+      const verifiedInput = document.getElementById("verifiedInput").value.trim();
+      if (!currentUserDocId || !verifiedInput) {
+        alert("⚠️ Busca un usuario y escribe el nombre de la verificación");
+        return;
+      }
+
+      try {
+        const userRef = db.collection("users").doc(currentUserDocId);
+        await userRef.update({
+          verified: firebase.firestore.FieldValue.arrayUnion(verifiedInput)
+        });
+        alert("✅ Verificación agregada correctamente");
+        loadUserVerified();
+      } catch (e) {
+        console.error(e);
+        alert("❌ Error al agregar verificación");
+      }
+    }
+
+    async function removeVerified() {
+      const verifiedInput = document.getElementById("verifiedInput").value.trim();
+      if (!currentUserDocId || !verifiedInput) {
+        alert("⚠️ Busca un usuario y escribe el nombre de la verificación");
+        return;
+      }
+
+      try {
+        const userRef = db.collection("users").doc(currentUserDocId);
+        await userRef.update({
+          verified: firebase.firestore.FieldValue.arrayRemove(verifiedInput)
+        });
+        alert("✅ Verificación eliminada correctamente");
+        loadUserVerified();
+      } catch (e) {
+        console.error(e);
+        alert("❌ Error al quitar verificación");
+      }
+    }
+
+    document.getElementById("userInput").addEventListener("blur", loadUserVerified);
+    document.getElementById("userInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") loadUserVerified();
+    });
+  </script>
+</body>
+</html>
