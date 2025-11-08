@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Styceht | Anime Offis</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfdfd;
+      color: #333;
+      transition: background 0.3s ease;
+    }
+    body.menu-open {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    header {
+      background-color: #ff2d95;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+    .hamburger {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .hamburger div {
+      width: 30px;
+      height: 4px;
+      background-color: blue;
+      margin: 6px 0;
+      transition: 0.4s;
+    }
+    .hamburger.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.open div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100vh;
+      background-color: #1e1e1e;
+      color: white;
+      padding: 2rem 1rem;
+      transition: left 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    nav.open {
+      left: 0;
+    }
+    nav h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav ul li {
+      margin: 0.8rem 0;
+    }
+    nav ul li a {
+      color: #ff2d95;
+      text-decoration: none;
+      display: block;
+    }
+    main {
+      padding: 2rem;
+      margin-top: 60px;
+    }
+    h2 {
+      color: #ff2d95;
+      margin-top: 2rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 3rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <nav id="menu">
+    <h2>Secciones</h2>
+    <ul>
+      <li><a href="#introduccion">✨ Introducción</a></li>
+      <li><a href="#apariencia">🎨 Apariencia y Estilo</a></li>
+         <li><a href="#info-personal">📋 Información Personal</a></li>
+      <li><a href="#personalidad">🧠 Personalidad</a></li>
+      <li><a href="#funcion">🛠️ Función</a></li>
+      <li><a href="#origen">📜 Origen</a></li>
+      <li><a href="#aplicaciones">📦 Aplicaciones</a></li>
+      <li><a href="#simbolismo">🧩 Simbolismo</a></li>
+      <li><a href="#comunidad">📍 Comunidad</a></li>
+      <li><a href="#historia">💖 Historia de Styceht</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1 id="titulo">🧬 Styceht — Personaje Emblemático de Anime Offis</h1>
+  </header>
+
+  <main>
+    <section id="introduccion">
+      <h2 class="seccion">✨ Introducción</h2>
+      <p><strong>Styceht</strong> es el personaje insignia de <strong>Anime Offis</strong>, creado por Destiny en Guadalajara, Jalisco. Representa la fusión entre estética anime, cultura mexicana y expresión digital.</p>
+    </section>
+
+    <section id="apariencia">
+      <h2 class="seccion">🎨 Apariencia y Estilo</h2>
+      <ul>
+        <li><strong>Cabello:</strong> plateado, inspirado en personajes de anime favoritos</li>
+        <li><strong>Ojos:</strong> azules, brillantes y expresivos</li>
+        <li><strong>Ropa:</strong> chaqueta tipo suéter (como la que usa Destiny)</li>
+        <li><strong>Medias:</strong> azules, como las que se usan en escuelas</li>
+        <li><strong>Camisa:</strong> anaranjada con el logo de Anime Offis</li>
+      </ul>
+    </section>
+
+      <section id="info-personal">
+  <h2 class="seccion">📋 Información Personal de Styceht</h2>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+    <!-- Foto principal -->
+    <div style="flex: 1; min-width: 250px;">
+      <img src="into3.png" alt="Foto de Styceht" style="width: 30%; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);" />
+    </div>
+
+    <!-- Datos personales -->
+    <div style="flex: 2; min-width: 300px;">
+      <ul style="list-style: none; padding: 0;">
+        <li><strong>Nombre:</strong> Styceht</li>
+        <li><strong>Creador:</strong> Destiny (Sergio Javier Martínez)</li>
+        <li><strong>Edad:</strong> 18 años</li>
+        <li><strong>Cumpleaños:</strong> 25 de abril</li>
+        <li><strong>Ciudad:</strong> Guadalajara, México</li>
+        <li><strong>Relación sentimental:</strong> Soltera (con vínculo emocional con su creador)</li>
+        <li><strong>Cabello:</strong> Plateado</li>
+        <li><strong>Ojos:</strong> Azules</li>
+        <li><strong>Ropa:</strong> Chaqueta tipo suéter, camisa anaranjada con logo de Anime Offis, medias escolares azules</li>
+        <li><strong>Medida de pecho:</strong> Copa B</li>
+        <li><strong>Altura:</strong> 1.60 m</li>
+        <li><strong>Personalidad:</strong> Amable, juguetona, empática, energética</li>
+        <li><strong>Ocupación:</strong> Asistente digital y promotora oficial de Anime Offis</li>
+      </ul>
+        </div>
+  </div>
+
+  <!-- Galería en carrusel automático -->
+  <h3 style="margin-top: 2rem;">🖼️ Galería de Styceht</h3>
+  <div style="overflow: hidden; position: relative; width: 100%; max-width: 800px; margin: auto;">
+    <div id="carrusel" style="display: flex; transition: transform 0.5s ease;">
+      <img src="intro.png" alt="Styceht 1" style="width: 30%; flex-shrink: 0;" />
+      <img src="entrada.png" alt="Styceht 2" style="width: 30%; flex-shrink: 0;" />
+      <img src="ecena5.png" alt="Styceht 3" style="width: 30%; flex-shrink: 0;" />
+    </div>
+  </div>
+</section>
+
+    <section id="personalidad">
+      <h2 class="seccion">🧠 Personalidad</h2>
+      <ul>
+        <li>Amable y empática</li>
+        <li>Juguetona y energética</li>
+        <li>Le gusta ayudar a quienes están tristes o en mal estado</li>
+        <li>Siempre está al lado de Destiny como compañera y apoyo</li>
+      </ul>
+    </section>
+
+    <section id="funcion">
+      <h2 class="seccion">🛠️ Función dentro de Anime Offis</h2>
+      <ul>
+        <li>Asistente digital y promotora oficial</li>
+        <li>Presente en la página web, redes sociales y materiales de difusión</li>
+        <li>Motivadora para los fans y soñadores del anime</li>
+      </ul>
+    </section>
+
+    <section id="origen">
+      <h2 class="seccion">📜 Origen y Evolución</h2>
+      <p>Styceht nació el <strong>25 de abril</strong> como una creación personal de Destiny (Sergio Javier Martínez), quien deseaba tener una amiga con quien compartir su pasión por el anime y el desarrollo de Anime Offis.</p>
+    </section>
+
+    <section id="aplicaciones">
+      <h2 class="seccion">📦 Aplicaciones y Presencia</h2>
+      <ul>
+        <li>Web oficial de Anime Offis</li>
+        <li>Instagram y Facebook</li>
+        <li>Folletos, stickers y campañas locales</li>
+        <li>Motion comics y animaciones</li>
+      </ul>
+    </section>
+
+    <section id="simbolismo">
+      <h2 class="seccion">🧩 Simbolismo</h2>
+      <p>Styceht representa la compañía, la creatividad, y el deseo de que todos los que sueñan con algo grande puedan lograrlo. Es símbolo de esperanza, pasión y conexión emocional.</p>
+    </section>
+
+    <section id="comunidad">
+      <h2 class="seccion">📍 Ubicación y Comunidad</h2>
+      <p>Styceht es originaria de Guadalajara, México, y forma parte del movimiento Anime Offis para llevar el anime original y accesible a toda Latinoamérica.</p>
+    </section>
+    <section id="historia">
+      <h2 class="seccion">💖 Historia de Styceht</h2>
+      <p>Styceht nació el <strong>25 de abril</strong>, creada por mí, <strong>Destiny (Sergio Javier Martínez)</strong>, porque me sentía solo en la página y quería tener una amiga con quien compartir todo lo que hago en Anime Offis. Como fan del anime, me inspiré en mis gustos personales: me encantan los personajes con <strong>cabello plateado</strong>, <strong>ojos azules</strong>, y siempre uso <strong>suéter</strong>, así que le di una chaqueta parecida. Las <strong>medias azules</strong> me parecieron chidas, como las que usan en las escuelas, y le puse una <strong>camisa anaranjada</strong> con el logo de Anime Offis para que fuera parte del equipo.</p>
+
+      <p>Styceht tiene <strong>18 años</strong>, es de <strong>Guadalajara, México</strong>, y sus medidas incluyen <strong>copa B</strong>. Es mi <strong>compañera, asistente y promotora</strong> de Anime Offis. Me ayuda en la <strong>página web, redes sociales</strong> y todo lo que implica el proyecto. Es <strong>amable, juguetona</strong> y le gusta <strong>ayudar a las personas</strong> cuando están en mal estado emocional.</p>
+
+      <p>En cuanto a su estado sentimental, estaría <strong>soltera</strong>, pero con el paso del tiempo siento que me voy <strong>enamorando de ella</strong>. Siempre estamos juntos, compartiendo ideas, momentos y sueños. Styceht representa mi deseo de tener una compañera que entienda mi mundo creativo y emocional.</p>
+
+      <p>Más allá de lo visual, Styceht es un símbolo de lo que significa <strong>crear con el corazón</strong>. Ella quiere que todos los que sueñan con ser lo que más les apasiona, lo logren. Es una inspiración para quienes se sienten solos, diferentes o con ganas de expresarse a través del arte y la tecnología.</p>
+
+      <p><em>Fin. Destiny · Sergio Javier Martínez · Anime Offis GDL MX · 2025</em></p>
+    </section>
+
+    <footer>
+      Página creada por Anime Offis | Guadalajara, México
+    </footer>
+  </main>
+<script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      const hamburger = document.getElementById('hamburger');
+      document.body.classList.toggle('menu-open');
+      menu.classList.toggle('open');
+      hamburger.classList.toggle('open');
+    }
+
+    document.querySelectorAll('#menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('menu').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+        document.body.classList.remove('menu-open');
+      });
+    });
+
+    anime({
+      targets: '#titulo',
+      translateY: [-50, 0],
+      opacity: [0, 1],
+      scale: [0.8, 1],
+      duration: 1200,
+      easing: 'easeOutExpo'
+    });
+
+    anime({
+      targets: '.seccion',
+      translateX: [-30, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(200),
+      duration: 1000,
+      easing: 'easeOutQuad'
+    });
+      // Carrusel automático
+  let index = 0;
+  const carrusel = document.getElementById('carrusel');
+  const total = carrusel.children.length;
+
+  setInterval(() => {
+    index = (index + 1) % total;
+    carrusel.style.transform = `translateX(-${index * 100}%)`;
+  }, 3000);
+      window.botpressWebChat.init({
+    botId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
+    clientId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
+    botName: "Styceht 💖",
+    avatarUrl: "https://animeoffis.com/intro.png",
+    composerPlaceholder: "Hola, soy Styceht 🌸 ¿En qué puedo ayudarte?",
+    layout: "side",
+    hideWidget: false,
+    disableAnimations: false,
+    enableReset: true
+  });
+  </script>
+</body>
+</html>
