@@ -2,20 +2,27 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Anime Offis - Reproductor Seguro</title>
-  <script src="https://cdn.bunny.net/bunnyplayer/bunny.player.js"></script>
+  <title>Anime Offis - Episodio 1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #0d0d0d;
-      color: white;
+      color: #ffffff;
       font-family: 'Segoe UI', sans-serif;
-      text-align: center;
+      margin: 0;
       padding: 40px;
+      text-align: center;
     }
-    #bunny-player {
+    h1 {
+      color: #ff0055;
+      margin-bottom: 30px;
+    }
+    iframe {
+      border: none;
       width: 100%;
       max-width: 800px;
-      margin: auto;
+      height: 450px;
+      box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
     }
   </style>
 </head>
@@ -23,31 +30,11 @@
 
   <h1>🎬 Episodio 1 - Anime Offis</h1>
 
-  <div id="bunny-player"></div>
-
-  <script>
-    const player = new BunnyPlayer('#bunny-player', {
-      video: {
-        library: '534489',
-        videoId: '73750718-9fac-4eb6-a65f-75eece3c57e5', // Reemplaza con el ID real del video
-        drm: true
-      },
-      vast: {
-        tag: 'https://animeoffis.b-cdn.net/vast/anuncio01.xml'
-      },
-      autoplay: false,
-      controls: true,
-      muted: false,
-      preload: 'auto',
-      theme: {
-        accent: '#ff0055',
-        logo: {
-          image: 'https://animeoffis.b-cdn.net/logo.png',
-          url: 'https://animeoffis.com'
-        }
-      }
-    });
-  </script>
+  <iframe
+    src="https://vz-688e7ad8-5d0.b-cdn.net/embed/73750718-9fac-4eb6-a65f-75eece3c57e5?autoplay=false"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
 
 </body>
 </html>
