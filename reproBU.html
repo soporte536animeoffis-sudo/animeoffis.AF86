@@ -17,12 +17,26 @@
       color: #ff0055;
       margin-bottom: 30px;
     }
-    iframe {
-      border: none;
-      width: 100%;
+    .video-container {
+      position: relative;
+      padding-top: 56.25%;
       max-width: 800px;
-      height: 450px;
+      margin: auto;
       box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+    }
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .thumbnail {
+      margin-top: 20px;
+      max-width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -30,11 +44,16 @@
 
   <h1>🎬 Episodio 1 - Anime Offis</h1>
 
-  <iframe
-    src="https://vz-688e7ad8-5d0.b-cdn.net/embed/c47b4f1e-4a93-4432-9c6e-896466f31669?autoplay=false"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+  <div class="video-container">
+    <iframe
+      src="https://player.mediadelivery.net/embed/534489/c47b4f1e-4a93-4432-9c6e-896466f31669?token=651571512b070a1ed086e5278f2f69b9bf4bbecf109e356c174a202af4f95ba8&expires=1762758579&autoplay=true&loop=false&muted=false&preload=true&responsive=true"
+      loading="lazy"
+      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen="true">
+    </iframe>
+  </div>
+
+  <img class="thumbnail" src="https://vz-688e7ad8-5d0.b-cdn.net/c47b4f1e-4a93-4432-9c6e-896466f31669/thumbnail.jpg" alt="Miniatura del episodio">
 
 </body>
 </html>
