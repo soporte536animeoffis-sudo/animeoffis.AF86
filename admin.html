@@ -49,6 +49,9 @@
       <!-- Verificaciones del usuario aparecerán aquí -->
     </div>
   </div>
+  <button class="play-button" onclick="document.getElementById('animePlayer').contentWindow.postMessage({ event: 'play' }, '*')">
+    ▶ Reproducir Episodio
+  </button>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
