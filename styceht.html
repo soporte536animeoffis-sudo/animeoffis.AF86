@@ -194,6 +194,10 @@
       <img src="navdt.png" alt="Styceht 6" style="width: 30%; flex-shrink: 0;" />
     </div>
   </div>
+        <div style="text-align: center; margin-top: 1rem;">
+  <button onclick="moverCarrusel(-1)">⬅️</button>
+  <button onclick="moverCarrusel(1)">➡️</button>
+</div>
 </section>
 
     <section id="personalidad">
@@ -290,15 +294,15 @@
       duration: 1000,
       easing: 'easeOutQuad'
     });
-      // Carrusel automático
-  let index = 0;
-  const carrusel = document.getElementById('carrusel');
-  const total = carrusel.children.length;
-
-  setInterval(() => {
-    index = (index + 1) % total;
-    carrusel.style.transform = `translateX(-${index * 100}%)`;
-  }, 3000);
+     // Carrusel manual (sin movimiento automático)
+let index = 0;
+const carrusel = document.getElementById('carrusel');
+const total = carrusel.children.length;
+// Aquí podrías agregar botones para avanzar o retroceder si lo deseas
+    function moverCarrusel(direccion) {
+  index = (index + direccion + total) % total;
+  carrusel.style.transform = `translateX(-${index * 100}%)`;
+}
   </script>
 </body>
 </html>
