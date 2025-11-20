@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Styceht Drift – Juego Principal</title>
+  <style>
+    body { margin: 0; background: #111; color: #fff; font-family: sans-serif; text-align: center; }
+    canvas { background: #222; display: block; margin: 20px auto; border: 2px solid #f0f; }
+    h1 { color: #f0f; }
+  </style>
+</head>
+<body>
+  <h1>Styceht Drift</h1>
+  <p>Escanea el QR con tu celular para usarlo como control:</p>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://TU_USUARIO.github.io/styceht-drift-web/control.html&size=150x150" alt="QR para control">
+  <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let x = 100, y = 200, speed = 0;
+
+    const socket = new WebSocket('wss://game-drift-production.up.railway.app');
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.action === 'accelerate') speed += 2;
+      if (data.action === 'brake') speed -= 2;
+      if (data.action === 'turbo') speed += 5;
+    };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#f0f';
+      ctx.fillRect(x, y, 50, 30);
+      x += speed * 0.1;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>
