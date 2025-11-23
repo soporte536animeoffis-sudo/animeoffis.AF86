@@ -304,25 +304,23 @@ const total = carrusel.children.length;
   index = (index + direccion + total) % total;
   carrusel.style.transform = `translateX(-${index * 100}%)`;
 }
-  </script>
-  <script>
     window.addEventListener("load", function () {
-         if (window.botpressWebChat) {
-        window.botpressWebChat.init({
-          botId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
-          clientId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
-          botName: "Styceht 💖",
-          avatarUrl: "https://i.ibb.co/JV0YLnP/28be4b8badcb.png",
-          composerPlaceholder: "Hola, soy Styceht 🌸 ¿En qué puedo ayudarte?",
-          layout: "side",
-          hideWidget: false,
-          disableAnimations: false,
-          enableReset: true
-        });
-      } else {
-        console.error("Botpress WebChat no está disponible.");
-      }
+  if (window.botpressWebChat) {
+    window.botpressWebChat.init({
+      botId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
+      clientId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
+      botName: "Styceht 💖",
+      avatarUrl: "https://animeoffis.com/intro.png",
+      composerPlaceholder: "Hola, soy Styceht 🌸 ¿En qué puedo ayudarte?",
+      layout: "side",
+      hideWidget: false,
+      disableAnimations: false,
+      enableReset: true
     });
+  } else {
+    console.error("Botpress WebChat no está disponible.");
+  }
+});
   </script>
 </body>
 </html>
