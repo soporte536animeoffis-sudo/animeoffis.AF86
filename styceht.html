@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Styceht | Anime Offis</title>
  <script src="https://cdn.botpress.cloud/webchat/v3.4/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2025/11/06/15/20251106155056-DROZUBCG.js" defer></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -107,6 +106,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/11/06/15/20251106155056-DROZUBCG.js" defer></script>
 </head>
 <body>
 
@@ -303,6 +304,25 @@ const total = carrusel.children.length;
   index = (index + direccion + total) % total;
   carrusel.style.transform = `translateX(-${index * 100}%)`;
 }
+  </script>
+  <script>
+    window.addEventListener("load", function () {
+         if (window.botpressWebChat) {
+        window.botpressWebChat.init({
+          botId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
+          clientId: "1b8aad88-dbfd-4306-8d0e-f16f76f38b3b",
+          botName: "Styceht 💖",
+          avatarUrl: "https://animeoffis.com/intro.png",
+          composerPlaceholder: "Hola, soy Styceht 🌸 ¿En qué puedo ayudarte?",
+          layout: "side",
+          hideWidget: false,
+          disableAnimations: false,
+          enableReset: true
+        });
+      } else {
+        console.error("Botpress WebChat no está disponible.");
+      }
+    });
   </script>
 </body>
 </html>
