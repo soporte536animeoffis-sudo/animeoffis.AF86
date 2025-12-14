@@ -848,23 +848,6 @@ document.querySelectorAll('.sidebar a[data-fallback]').forEach(link => {
   });
 });
 
-  const emojis = [
-  { emoji: "🎃", top: "10px", left: "10px" },
-  { emoji: "👻", top: "10px", right: "10px" },
-  { emoji: "👻", bottom: "10px", left: "10px" },
-  { emoji: "🎃", bottom: "10px", right: "10px" }
-];
-
-emojis.forEach(e => {
-  const el = document.createElement("div");
-  el.textContent = e.emoji;
-  el.style.position = "absolute";
-  el.style.fontSize = "32px";
-  el.style.zIndex = "20";
-  Object.assign(el.style, e);
-  document.body.appendChild(el);
-});
-
 // Logout demo
 document.getElementById('logout').addEventListener('click', () => {
   auth.signOut().then(() => window.location.href="login.html");
