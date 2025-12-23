@@ -12,7 +12,9 @@ const FILES_TO_CACHE = [
   "/perfil.css",
   "/mora.jpg",
   "/login.png",
-  "/acerca.html"
+  "/acerca.html",
+  "/offis512.png",
+  "/offis192.png
 ];
 
 // Instalar y guardar los archivos en caché (primera vez o si cambias el CACHE_NAME)
