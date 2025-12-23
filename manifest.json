@@ -5,7 +5,7 @@
   "background_color": "blue",
   "theme_color": "white",
   "orientation": "portrait",
-  "version": "4.0.0",  // 👈 esto es nuevo
+  "version": "3.1.0",  // 👈 esto es nuevo
   "icons": [
     {
       "src": "/offis192.png",
