@@ -5,15 +5,15 @@
   "background_color": "blue",
   "theme_color": "white",
   "orientation": "portrait",
-  "version": "2.0.0",  // 👈 esto es nuevo
+  "version": "4.0.0",  // 👈 esto es nuevo
   "icons": [
     {
-      "src": "/andro192.png",
+      "src": "/offis192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/andro512.png",
+      "src": "/offis512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
