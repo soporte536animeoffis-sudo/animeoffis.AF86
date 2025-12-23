@@ -1,4 +1,4 @@
-const CACHE_NAME = "animeoffis-GDLv5"; // 🔄 Cambia el número cuando hagas cambios importantes
+const CACHE_NAME = "animeoffis-GDLv6"; // 🔄 Cambia el número cuando hagas cambios importantes
 const FILES_TO_CACHE = [
   "/",                // Página principal
   "/dashboard",
@@ -11,7 +11,8 @@ const FILES_TO_CACHE = [
   "/perfil.js",
   "/perfil.css",
   "/mora.jpg",
-  "/login.png"
+  "/login.png",
+  "/acerca.html"
 ];
 
 // Instalar y guardar los archivos en caché (primera vez o si cambias el CACHE_NAME)
