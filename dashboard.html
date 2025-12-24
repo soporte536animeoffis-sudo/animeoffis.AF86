@@ -11,6 +11,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <style>
+  * {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 :root{
   --bg:#0b0b0c;
   --panel:#141415;
@@ -172,7 +180,7 @@ h1{font-size:20px;margin:8px 0 18px}
 }
 
 .carousel-card {
-  min-width: 180px;
+  width: clamp(120px, 40vw, 180px);
   background: #141415;
   border-radius: 12px;
   position: relative;
@@ -231,8 +239,10 @@ h1{font-size:20px;margin:8px 0 18px}
 .carousel-btn.prev { left: 10px; }
 .carousel-btn.next { right: 10px; }
 
-@media (max-width: 150px) {
-  .carousel-card { min-width: 25px; }
+@media (max-width: 600px) {
+  .carousel-card {
+    width: 70vw;
+  }
 }
 
 .offis{display:flex;align-items:center;gap:10px;cursor:default}
@@ -289,6 +299,16 @@ h1{font-size:20px;margin:8px 0 18px}
     .hero-icons{
       display:grid; grid-template-columns:repeat(7, 42px); gap:10px; margin-top:14px;
     }
+  @media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .hero-card {
+    width: 100%;
+  }
+  }
     .icon{
       width:42px; height:42px; border-radius:12px; display:grid; place-items:center; background:#1f2126; border:1px solid var(--border); color:var(--accent); font-size:18px;
     }
@@ -376,6 +396,34 @@ h1{font-size:20px;margin:8px 0 18px}
   gap: 3px;
   margin: 3px 0;
 }
+  img {
+  max-width: 100%;
+  height: auto;
+  }
+  @media (max-width: 768px) {
+
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 10px;
+  }
+
+  .botones {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .left-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6600">
