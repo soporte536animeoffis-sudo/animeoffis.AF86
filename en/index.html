@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ANIME OFFIS GDL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+  <!-- Íconos Font Awesome desde CDNJS (sin CORS) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+  * {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+:root{
+  --bg:#0b0b0c;
+  --panel:#141415;
+  --muted:#9aa0a6;
+  --accent:#ff6a00;
+  --glass: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.04);
+  font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial;
+}
+html,body{height:100%;margin:0;background:var(--bg);color:#fff}
+/* Top bar */
+.topbar{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--border);backdrop-filter:blur(6px);position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));}
+.left-group{display:flex;align-items:center;gap:14px}
+.hamburger{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;background:var(--panel);cursor:pointer}
+.hamburger svg{opacity:0.9}
+.logo{display:flex;align-items:center;gap:10px;cursor:default}
+.logo img {height:40px;width:auto;display:block;}
+.search {
+  display: flex;
+  align-items: center;
+  background: var(--panel, #141415);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: text;
+  width: 160px; /* Ajusta este valor a tu gusto */
+  gap: 6px;
+} 12px;border-radius:10px;color:var(--muted);display:flex;align-items:center;gap:8px;cursor:text;width:250px;}
+.search svg{flex-shrink:0;color:var(--muted)}
+.search input{flex:1;border:none;outline:none;background:transparent;color:white;font-size:14px}
+#user-results-list{margin-top:4px;padding:0;list-style:none;background:var(--panel);border-radius:6px;max-height:200px;overflow-y:auto}
+#user-results-list li{padding:6px 10px;cursor:pointer;color:white}
+#user-results-list li:hover{background:rgba(255,255,255,0.1)}
+.profile-btn{display:flex;align-items:center;gap:8px;cursor:pointer}
+.avatar{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.04);background:linear-gradient(180deg,#222,#111)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+main{padding:18px}
+h1{font-size:20px;margin:8px 0 18px}
+.profile-panel {
+  position: fixed;
+  right: 12px;
+  top: 76px;
+  width: 320px;
+  max-width: 92vw;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 180ms ease-in-out;
+  backdrop-filter: blur(8px);
+  z-index: 999; /* 👈 AÑADE ESTA LÍNEA */
+}
+.profile-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.profile-header{display:flex;gap:12px;align-items:center;padding:8px 4px}
+.profile-name{font-size:18px;font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);padding:6px 8px;border-radius:999px;font-size:13px;color:var(--accent);font-weight:700}
+.section{margin-top:8px;border-top:1px solid var(--border);padding-top:10px}
+.menu-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:8px;cursor:pointer}
+.menu-item:hover{background:var(--glass)}
+.menu-item svg{width:20px;height:20px;opacity:0.9}
+.muted{color:var(--muted);font-size:14px}
+@media (max-width:520px){.profile-panel{right:8px;left:8px;top:64px;width:auto;border-radius:10px}}
+.icon-small{width:18px;height:18px;display:inline-block}
+.carousel-container-cards {
+  position: relative;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.carousel-track-cards {
+  display: flex;
+  transition: transform 0.5s ease;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+.carousel-card {
+  min-width: 120px;  /* ancho de la tarjeta */
+  max-width: 140px;  /* opcional, para no expandirse demasiado */
+  height: 180px;     /* alto de la tarjeta */
+  background: #141415;
+  border-radius: 12px;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.carousel-card img {
+  width: 100%;       /* que la imagen ocupe toda la tarjeta */
+  height: 100%;      /* que llene verticalmente */
+  object-fit: cover; /* recorta si es necesario */
+}
+
+.card-buttons {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.card-buttons button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  transition: background 0.3s;
+}
+
+.card-buttons button:hover {
+  background: rgba(255,106,0,0.8);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+@media (max-width: 600px) {
+  .carousel-card { min-width: 140px; }
+}
+/* sin movimiento */
+.carousel-container-recommendations {
+  position: relative;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.carousel-track-recommendations {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  transition: transform 0.5s ease;
+}
+
+.carousel-card {
+  width: clamp(120px, 40vw, 180px);
+  background: #141415;
+  border-radius: 12px;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.carousel-card img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.card-buttons {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.card-buttons button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  transition: background 0.3s;
+}
+
+.card-buttons button:hover {
+  background: rgba(255,106,0,0.8);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+@media (max-width: 600px) {
+  .carousel-card {
+    width: 70vw;
+  }
+}
+
+.offis{display:flex;align-items:center;gap:10px;cursor:default}
+.offis img {height:57px;width:auto;display:block;}
+
+ .social-links {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .social-links a {
+      font-size: 26px;
+      color: #00f0ff;
+      transition: transform 0.3s, color 0.3s;
+      text-shadow: 0 0 10px #00f0ff;
+    }
+
+    .social-links a:hover {
+      color: #ff00ff;
+      transform: scale(1.3);
+      text-shadow: 0 0 20px #ff00ff;
+    }
+
+/* Nav */
+    nav{
+      max-width:1100px; margin:10px auto 0; padding:0 16px 12px;
+    }
+    .tabs{
+      display:flex; gap:8px; overflow:auto; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{
+      background:var(--panel); border:1px solid var(--border); color:var(--text);
+      padding:10px 14px; border-radius:999px; font-weight:700; white-space:nowrap; cursor:pointer;
+      transition:.2s background;
+    }
+    .tab:hover{background:#202226}
+    .tab.active{background:var(--brand); border-color:var(--brand); color:#111; box-shadow:0 8px 20px rgba(255,106,0,.35)}
+    
+  /* Hero */
+    .hero{
+      max-width:1100px; margin:20px auto 0; padding:18px 16px 6px;
+      display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    }
+    .hero-card{
+      flex:1 1 520px; background:linear-gradient(160deg, #1d1f23, #161719 60%);
+      border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+    }
+    .hero-title{font-size:0.85rem; font-weight:800; margin:0 0 5px}
+    .hero-sub{color:var(--muted); margin:0}
+    .hero-icons{
+      display:grid; grid-template-columns:repeat(7, 42px); gap:10px; margin-top:14px;
+    }
+  @media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .hero-card {
+    width: 100%;
+  }
+  }
+    .icon{
+      width:42px; height:42px; border-radius:12px; display:grid; place-items:center; background:#1f2126; border:1px solid var(--border); color:var(--accent); font-size:18px;
+    }
+ .terms {
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: white;}
+    .terms a {
+        color: white;
+        text-shadow: 0 0 20px white;
+        font-size: 17px;
+    }
+    .util a {
+        color: white;
+        font-size: 20px;
+        text-shadow:  0 0 10px red, 0 0 20px yellow;
+        }
+    .content {
+  display: none;
+}
+.content.active {
+  display: block;
+}
+.tab.active {
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+}
+    .promo-card p{
+        color:black;
+        front-size: 10px;
+        }
+    .promo-card h3{
+        color:blue;
+        front-size: 10px;
+        text-shadow:  0 0 10px #00aaff, 0 0 20px #00aaff;
+        }
+    .promo-card {
+  background: #f5e9d6;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.promo-card img {
+  max-width: 40%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.promo-card .btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #00aaff, #ff00cc);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: box-shadow 0.3s ease;
+}
+
+.promo-card .btn:active {
+  box-shadow: 0 0 15px #00aaff;
+}
+    .btn-transparente {
+  background-color: transparent;
+  border: none;
+  color: white; /* o el color que combine con tu fondo */
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-transparente:hover {
+  text-decoration: underline;
+  color: #ff66cc; /* efecto anime-style al pasar el cursor */
+}
+    .botones {
+  display: flex;
+  gap: 3px;
+  margin: 3px 0;
+}
+  img {
+  max-width: 100%;
+  height: auto;
+  }
+  @media (max-width: 768px) {
+
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 10px;
+  }
+
+  .botones {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .left-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  }
+  /* aqui después lo borramos */
+  #contador {
+    font-size: 2em;
+    background: #ffcc00;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    animation: fall 3s linear forwards;
+    opacity: 0.8;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff6600">
+    <link rel="icon" href="icon.png" type="image/png">
+</head>
+<body>
+
+<header class="topbar">
+<div class="left-group">
+  <div class="hamburger" id="hamburger" title="Menu">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="logo">
+    <img src="aficon.png" alt="Logo Anime Offis">
+  </div>
+</div>
+    <div class="botones">
+  <button class="btn-transparente">News</button>
+        <button class="btn-transparente">Games</button>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px">
+  <div class="search" role="search" aria-label="Buscar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="11" cy="11" r="6" stroke-linecap="round" stroke-linejoin="round"></circle>
+      <path d="M21 21l-4.35-4.35" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <input id="search-user-input" type="text" placeholder="Search for users...">
+  </div>
+  <ul id="user-results-list"></ul>
+
+  <div class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+    <div class="avatar">
+      <img id="avatar-topbar" src="icon.png" alt="Avatar"
+      onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\' viewBox=\'0 0 120 120\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23111\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'46\' fill=\'%23fff\'>D</text></svg>'"/>
+    </div>
+  </div>
+</div>
+</header>
+
+<aside class="profile-panel" id="profilePanel" role="dialog" aria-label="Panel de perfil">
+<div class="profile-header">
+  <div class="avatar" style="width:64px;height:64px;border-radius:12px;overflow:hidden">
+    <img id="avatar-panel" src="avatar.jpg" alt="Avatar"
+    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'220\' height=\'220\' viewBox=\'0 0 220 220\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23111\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'90\' fill=\'%23fff\'>DO</text></svg>'"/>
+  </div>
+  <div class="username" style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+    <span id="username">Cargando...</span>
+    <img class="verificacion-img" id="badge-img" src="" alt="Verificado" style="width:18px; height:18px;" />
+    <div class="badge">&#x1F451; Premium Member</div>
+  </div>
+  <button style="margin-left:auto;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px">✎</button>
+        </div>        
+      </div>
+    </div>
+<div class="section">
+  <div class="menu-item">
+    <a href="perfil" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Edit profile</div>
+    </a>
+  </div>
+
+  <div class="menu-item">
+    <a href="ajustes" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M1 12h4M19 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Configuration</div>
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="menu-item">
+    <a href="error" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Notifications</div>
+    </a>
+  </div>
+
+  <div class="menu-item">
+    <a href="error" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 3h18v14H3zM8 21v-4h8v4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Gift card</div>
+    </a>
+  </div>
+
+  <div class="menu-item">
+  <a id="logout" href="logout" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M16 17l5-5-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 12H9" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>Disconnect</div>
+  </a>
+</div>
+</div>  
+</aside>
+
+<main>
+<h1>Home anime office</h1>
+    <p>Experience the world of anime-style outfits, interactive profiles with designs tailored to your outfit</p>
+  <!-- aqui va el id para la animación de elimina el 30 de diciembre -->
+<h1 id="mensaje">Merry Christmas Eve 🎄</h1>
+
+  
+<!-- Carrusel de tarjetas -->
+  <div class="carousel-container-cards">
+    <button class="carousel-btn prev">&#10094;</button>
+    <div class="carousel-track-cards">
+      <div class="carousel-card">
+        <img src="Aperfil.jpg" alt="Anime 1">
+        <div class="card-buttons">
+          <button onclick="perfil.html">View profiles</button>
+          <button onclick="alert('Favoritos Anime 1')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="Anovela.jpg" alt="Anime 2">
+        <div class="card-buttons">
+          <button onclick="alert('Ver Anime 2')">Watch soap operas</button>
+          <button onclick="alert('Favoritos Anime 2')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="Amanga.jpg" alt="Anime 3">
+        <div class="card-buttons">
+          <button onclick="window.location.href='mangaS.html'">read manga</button>
+          <button onclick="alert('Favoritos Anime 3')">❤</button>
+        </div>
+      </div>
+    </div>
+  
+  <h1>Our recommendations</h1>
+    <nav aria-label="Navegación principal">
+  <div class="tabs" id="tabsContainer">
+    <button class="tab active" data-tab="dasb" data-i18n="tab.home">Start</button>
+    <button class="tab" data-tab="popular" data-i18n="tab.popular">Most popular</button>
+    <button class="tab external" data-url="https://new.animeoffis.com/calendario" data-i18n="tab.calendar">Calendar</button>
+    <button class="tab" data-tab="noticias" data-i18n="tab.news">News</button>
+    <button class="tab external" data-url="https://games.animeoffis.com" data-i18n="tab.games">Games</button>
+  </div>
+</nav>
+
+<div class="tab-content">
+  <section id="dasb" class="content active">
+    <div class="promo-card">
+      <img src="icon,png" alt="Inicio Anime Offis">
+      <h3>Welcome to Anime Office</h3>
+      <p>Explore the universe of oufis with anime offis, originally from Guadalajara, Mexico, with an interesting history.</p>
+      <a href="https://animeoffis.com/acerca" class="btn">LEARN MORE</a>
+    </div>
+  </section>
+
+  <section id="popular" class="content">
+    <div class="promo-card">
+      <img src="stycehtH.png" alt="Lo más popular">
+      <h3>Popular Content 🔥</h3>
+<p>Discover what's trending in Anime Office.</p>
+      <a href="https://animeoffis.com/popular" class="btn">LEARN MORE</a>
+    </div>
+  </section>
+    <section id="noticias" class="content">
+    <div class="promo-card">
+      <img src="aficon.png" alt="Noticias Anime Offis">
+      <h3>📰 Anime News Office</h3>
+Stay up-to-date on the latest news, releases, and special events.</p>
+      <a href="https://new.animeoffis.com" class="btn">LEARN MORE</a>
+    </div>
+  </section>
+</div>
+
+<div class="carousel-container-recommendations">
+    <button class="carousel-btn prev">&#10094;</button>
+    <div class="carousel-track-recommendations">
+      <div class="carousel-card">
+        <img src="Aperfil.jpg" alt="Anime 1">
+        <div class="card-buttons">
+          <button onclick="window.location.href='perfil'">Ver perfil</button>
+          <button onclick="alert('Favoritos Anime 1')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="icon76.png" alt="Anime 2">
+        <div class="card-buttons">
+          <button onclick="window.location.href='aplicacion'">Download our app</button>
+          <button onclick="alert('Favoritos Anime 2')">❤</button>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="iconde.png" alt="Anime 3">
+        <div class="card-buttons">
+           <button onclick="window.location.href='acerca'">Get to know us</button>
+          <button onclick="alert('Favoritos Anime 3')">❤</button>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+
+<section class="hero">
+    <div class="hero-card">
+       <div class="offis">
+            <div class="marca"> <img src="aficon.png" alt="Logo Anime Offis"> </div>
+    <h1>AF | Anime Offis </h1>
+  </div>
+        <p>GDL Mexico | © Anime Offis 2025 </p>
+      <p class="hero-title" data-i18n="welcome">Welcome to Anime Office, your all-day outfits.</p>
+      
+      <div class="social-links">
+      <a href="https://www.tiktok.com/@animeoffis_oficia" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/@animeoffis" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/@animeoffis" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://youtube.com/@animeoffis" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
+    
+          <h3>Utilities</h3>
+<div class="util">
+<a href="acerca">about</a>
+<br> <Br>
+<a href="aplicacion">our applications</a><Br><Br>
+<a href="help">help center</a>
+<Br><Br>
+<a href="error">Join AF Mexico</a>
+<Br><Br>
+<a href="mailto:promocion86animeoffios@gmail.com">Check out our promotional offers</a>
+      </div>
+      </section>
+
+<div class="terms">
+        <a href="términos">Terms and conditions</a> <br> <a href="política">Privacy Policy</a> | <a href="acerca">About the page</a> <br> <h5>Anime always with you ❄️ and with heart Official Destiny😉❤️</h5>
+    </div> 
+
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAu0WbdAi8_yA2S6qKMUCLfty5w0PxgKVE",
+  authDomain: "anime-offis.firebaseapp.com",
+  projectId: "anime-offis",
+  storageBucket: "anime-offis.appspot.com",
+  messagingSenderId: "377121993034",
+  appId: "1:377121993034:web:a4ba7995e827bcbea411b3"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+auth.onAuthStateChanged(user => {
+  if(user){
+    db.collection('users').doc(user.uid).get().then(doc=>{
+      if(doc.exists){
+        const data=doc.data();
+        document.getElementById('username').textContent=data.username||user.displayName||"Usuario";
+
+        // Avatar topbar
+        const avatarTop = document.getElementById('avatar-topbar');
+        const avatarPanel = document.getElementById('avatar-panel');
+        const photo = data.profilePhoto||user.photoURL||"https://i.ibb.co/k2HCPYqd/1742400066396.jpg";
+        avatarTop.src = photo;
+        avatarPanel.src = photo;
+
+        // Badge
+        const badge = document.getElementById('badge-img');
+        let src="";
+        switch(data.verified){
+          case "creador": src="crea.png"; break;
+          case "colaborador": src="cola.png"; break;
+          case "aportador": src="aportador.png"; break;
+          case "soporte": src="soport.png"; break;
+          case "beta": src="beta.png"; break;
+          case "dora": src="verif.png"; break;
+          case "azul": src="azul.png"; break;
+          case "verde": src="verde.png"; break;
+          default: src="imperial.png";
+        }
+        badge.src=src;
+        badge.style.display="inline-block";
+      }
+    });
+  } else window.location.href="login";
+});
+
+ // Evento para realizar la búsqueda de usuarios
+    const searchInput = document.getElementById("search-user-input");
+const userResultsList = document.getElementById("user-results-list");
+
+// Escuchar cambios en el input
+searchInput.addEventListener("input", function () {
+    let searchQuery = searchInput.value.toLowerCase();
+    userResultsList.innerHTML = ""; // Limpiar resultados
+
+    if (searchQuery === "") return;
+
+    // Buscar usuarios en Firebase
+    db.collection("users")
+        .get()
+        .then((querySnapshot) => {
+            let foundUsers = false;
+
+            querySnapshot.forEach((doc) => {
+                let userData = doc.data();
+                if (userData.username && userData.username.toLowerCase().includes(searchQuery)) {
+                    foundUsers = true;
+                    let li = document.createElement("li");
+                    li.textContent = userData.username;
+                    li.addEventListener("click", function () {
+                        window.location.href = `perfil?usuario=${doc.id}`;
+                    });
+                    userResultsList.appendChild(li);
+                }
+            });
+
+            if (!foundUsers) userResultsList.innerHTML = "<li>No se encontraron usuarios.</li>";
+        })
+        .catch((error) => {
+            console.error("Error al buscar usuarios:", error);
+            userResultsList.innerHTML = "<li>Error al buscar usuarios.</li>";
+        });
+});
+
+// Abrir/cerrar panel de perfil
+const profileBtn = document.getElementById('profileBtn');
+const profilePanel = document.getElementById('profilePanel');
+
+profileBtn.addEventListener('click', () => {
+  profilePanel.classList.toggle('open');
+});
+
+// Cerrar al hacer clic afuera
+document.addEventListener('click', e => {
+  if(!profilePanel.contains(e.target) && !profileBtn.contains(e.target)){
+    profilePanel.classList.remove('open');
+  }
+});
+
+const trackCards = document.querySelector('.carousel-track-cards');
+const cards = Array.from(trackCards.children);
+let currentIndexCards = 0;
+
+const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
+
+function updateCarouselCards() {
+  const cardWidth = cards[0].offsetWidth + 14; // ancho + gap
+  trackCards.style.transform = `translateX(-${currentIndexCards * cardWidth}px)`;
+}
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndexCards < cards.length - Math.floor(trackCards.parentElement.offsetWidth / (cards[0].offsetWidth + 14))) {
+    currentIndexCards++;
+    updateCarouselCards();
+  }
+});
+
+prevBtn.addEventListener('click', () => {
+  if (currentIndexCards > 0) {
+    currentIndexCards--;
+    updateCarouselCards();
+  }
+});
+
+// Opcional: carrusel automático
+setInterval(() => {
+  if (currentIndexCards < cards.length - Math.floor(trackCards.parentElement.offsetWidth / (cards[0].offsetWidth + 14))) {
+    currentIndexCards++;
+  } else {
+    currentIndexCards = 0;
+  }
+  updateCarouselCards();
+}, 6000);
+
+// Carrusel manual sin autoplay
+const trackRec = document.querySelector('.carousel-track-recommendations');
+const cardsRec = Array.from(trackRec.children);
+let currentIndexRec = 0;
+
+const prevBtnRec = document.querySelector('.carousel-btn.prev');
+const nextBtnRec = document.querySelector('.carousel-btn.next');
+
+function updateCarouselRec() {
+  const cardWidth = cardsRec[0].offsetWidth + 14; // ancho + gap
+  trackRec.style.transform = `translateX(-${currentIndexRec * cardWidth}px)`;
+}
+
+nextBtnRec.addEventListener('click', () => {
+  if (currentIndexRec < cardsRec.length - Math.floor(trackRec.parentElement.offsetWidth / (cardsRec[0].offsetWidth + 14))) {
+    currentIndexRec++;
+    updateCarouselRec();
+  }
+});
+
+prevBtnRec.addEventListener('click', () => {
+  if (currentIndexRec > 0) {
+    currentIndexRec--;
+    updateCarouselRec();
+  }
+});
+
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (tab.classList.contains('external')) {
+      const url = tab.getAttribute('data-url');
+      window.open(url, '_blank');
+      return;
+    }
+
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const target = tab.getAttribute('data-tab');
+    contents.forEach(c => c.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+  if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+  }
+
+    // simple hamburger interaction (example)
+    hamburger.addEventListener('click', ()=>{
+      alert('Abrir menú lateral (implementa tu propio sidebar aquí)');
+    });
+    document.querySelector('.offis img').addEventListener('click', () => {
+  });
+// Logout demo
+document.getElementById('logout').addEventListener('click', () => {
+  auth.signOut().then(() => window.location.href="login.html");
+});
+  // aqui va la animación se elimina el 39 de diciembre 
+  function lanzarConfeti() {
+    for (let i = 0; i < 100; i++) {
+      const confeti = document.createElement("div");
+      confeti.className = "confetti";
+      confeti.style.left = Math.random() * window.innerWidth + "px";
+      confeti.style.backgroundColor = ["#ffcc00", "#00f5ff", "#ff4ecd", "#ffd166"][Math.floor(Math.random()*4)];
+      confeti.style.animationDuration = (2 + Math.random() * 3) + "s";
+      document.body.appendChild(confeti);
+      confeti.addEventListener("animationend", () => confeti.remove());
+    }
+  }
+
+  function actualizarContador() {
+    const ahora = new Date();
+    const navidad = new Date(ahora.getFullYear(), 11, 25, 0, 0, 0);
+    const diferencia = navidad - ahora;
+
+    if (diferencia <= 0) {
+      document.getElementById("mensaje").textContent = "¡Merry christmas 🎅✨!";
+      document.getElementById("contador").textContent = "";
+      lanzarConfeti();
+      return;
+    }
+
+    const horas = Math.floor(diferencia / (1000 * 60 * 60));
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+    document.getElementById("contador").textContent =
+  `${horas}h ${minutos}m ${segundos}s`;
+  }
+
+  actualizarContador();
+  setInterval(actualizarContador, 1000);
+</script>
+</body>
+</html>
