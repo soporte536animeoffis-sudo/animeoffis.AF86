@@ -1,0 +1,591 @@
+/* ===== Encabezado / Menú ===== */
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#333;color:#fff;padding:10px 20px;
+}
+header img{height:40px;}
+.menu{list-style:none;margin:0;padding:0;display:flex;}
+.menu li{margin:0 10px;}
+.menu li a{color:#fff;text-decoration:none;}
+
+.sidebar{
+  position:fixed;right:-250px;top:0;width:250px;height:100%;
+  background:#222;transition:right .3s ease;padding-top:60px;
+  text-align:left;box-shadow:-5px 0 10px rgba(0,0,0,.5);z-index:1000;
+}
+.home-icon {
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+.home-icon:hover {
+  color: #ffd700; /* cambia color al pasar el mouse */
+}
+.sidebar a{display:block;padding:15px;color:#fff;text-decoration:none;border-bottom:1px solid #444;}
+.sidebar a:hover{background:#333;}
+.sidebar.show{right:0;}
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.5);z-index:998;}
+.overlay.show{display:block;}
+
+/* ===== Foto de perfil y marcos ===== */
+#profile-photo-container{
+  position:relative;width:150px;height:150px;border-radius:50%;overflow:hidden;
+  display:flex;justify-content:center;align-items:center;margin-top:20px;
+  background:#f0f0f0;
+}
+#profile-photo{width:100%;height:100%;object-fit:cover;display:block;}
+.frame{
+  position:absolute;top:-5px;left:-5px;width:calc(100% + 10px);height:calc(100% + 10px);
+  border-radius:50%;border:5px solid gold;pointer-events:none;display:none;
+}
+
+/* Borde glow animado alrededor del contenedor (como traías) */
+#profile-photo-container::before{
+  content:"";position:absolute;top:-10px;left:-10px;right:-10px;bottom:-10px;
+  border-radius:50%;border:4px solid transparent;
+  background:linear-gradient(45deg,#ff00ff,#00ffff,#ffff00,#ff0000);
+  background-size:300% 300%;animation:glow 6s linear infinite;z-index:-1;
+}
+@keyframes glow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Marcos bloqueados + texto */
+.photo-frame{width:40px;height:40px;border:2px solid #ccc;cursor:pointer;transition:transform .3s;}
+.photo-frame.locked{opacity:.5;cursor:not-allowed;position:relative;}
+.photo-frame.locked::after{content:"🔒";position:absolute;top:8px;left:12px;font-size:18px;color:red;}
+.frame-option{display:inline-block;text-align:center;margin:10px;}
+.frame-text{font-size:14px;margin-top:5px;font-weight:bold;}
+.frame-text.free{color:green;}
+.frame-text.locked{color:red;}
+.frame-text.unlocked{color:limegreen;}
+
+/* ===== Botones / etiquetas ===== */
+#verified-badge{margin-left:10px;width:25px;height:25px;}
+.ko-fi-button{
+  display:inline-block;padding:10px 20px;background:#ff5f5f;color:#fff;
+  font-size:16px;text-decoration:none;border-radius:5px;font-weight:bold;transition:.3s;
+}
+.ko-fi-button:hover{background:#e04848;}
+.message-button{
+  display:inline-block;padding:10px 20px;background:green;color:#fff;text-decoration:none;
+  font-size:16px;border-radius:5px;transition:background-color .3s;
+}
+.message-button:hover{background:blue;}
+.upload-button{
+  display:inline-block;padding:8px 16px;background:#ccc;color:#333;text-decoration:none;
+  font-size:14px;border-radius:4px;border:1px solid #aaa;
+}
+.upload-button:hover{background:#bbb;}
+
+/* ===== Sección Bio ===== */
+.profile-section{
+  margin:20px 0;padding:10px;background:#f9f9f9;border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+.profile-section label{font-size:16px;font-weight:bold;}
+.profile-section textarea{
+  width:100%;height:100px;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:14px;
+}
+.profile-section button{
+  background:#4CAF50;color:#fff;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;
+}
+.profile-section button:hover{background:#45a049;}
+
+/* ===== Animación LUNA (overlay) ===== */
+.animation-overlay{
+  /* Oculta por defecto; se muestra vía JS si corresponde */
+  display:none;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:9999;pointer-events:none;
+  background:rgba(0,0,0,.6);
+  justify-content:center;align-items:center;
+  animation:fadeOut 6s forwards;
+}
+.stars{
+  position:absolute;width:100%;height:100%;background:transparent;
+  animation:sparkle 2s infinite;pointer-events:none;
+}
+@keyframes sparkle{
+  0%{box-shadow:0 0 5px #fff inset,0 0 15px #ffd700 inset,0 0 30px #ff69b4 inset;}
+  50%{box-shadow:0 0 10px #87ceeb inset,0 0 20px #00ffff inset,0 0 40px #ff69b4 inset;}
+  100%{box-shadow:0 0 5px #fff inset,0 0 15px #ffd700 inset,0 0 30px #ff69b4 inset;}
+}
+.moon{
+  width:150px;height:150px;border-radius:50%;
+  background-image:url('luna.png');background-size:cover;background-position:center;
+  opacity:0;animation:moonFade 6s ease-in-out forwards;
+}
+@keyframes moonFade{
+  0%{opacity:0;transform:scale(.5);}
+  20%{opacity:1;transform:scale(1);}
+  80%{opacity:1;transform:scale(1.1);}
+  100%{opacity:0;transform:scale(.5);}
+}
+@keyframes fadeOut{
+  0%{opacity:1;}80%{opacity:1;}100%{opacity:0;visibility:hidden;}
+}
+
+/* Estrellas sueltas que ya tenías */
+.stars-floating{position:relative;width:100%;height:0;}
+.star{
+  position:absolute;width:20px;height:20px;
+  background-image:url('estrellas.png');background-size:contain;background-repeat:no-repeat;
+  background-position:center;opacity:0;animation:twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5);}50%{opacity:1;transform:scale(1.2);}}
+
+/* Animación de desplazamiento */
+@keyframes moveClouds {
+  from { transform: translateX(-200px); }
+  to   { transform: translateX(120vw); }
+}
+
+/* ===== Selector de animaciones (como marcos) ===== */
+.animation-option{
+  display:inline-block;width:100px;padding:10px;margin:10px;text-align:center;
+  border:2px solid #ccc;border-radius:10px;cursor:pointer;transition:transform .3s,border-color .3s;
+}
+.animation-option:hover{transform:scale(1.1);border-color:gold;}
+.animation-option.selected{border-color:limegreen;box-shadow:0 0 10px limegreen;}
+/* ✈️ Contenedor del avión con fondo transparente como la luna */
+.plane-container {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: rgba(0,0,0,0.6);
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🌥️ Nubes semitransparentes */
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  opacity: 0.7;
+  filter: blur(2px);
+  animation: moveClouds 15s linear forwards; /* velocidad coordinada */
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+}
+
+.cloud::before { width: 80%; height: 80%; top: -20%; left: -40%; }
+.cloud::after { width: 70%; height: 70%; top: -30%; left: 60%; }
+
+/* Movimiento único de las nubes */
+@keyframes moveClouds {
+  from { transform: translateX(-200px); }
+  to   { transform: translateX(120vw); }
+}
+
+/* ✈️ Avión */
+.plane {
+  position: absolute;
+  width: 80px; /* tamaño final */
+  top: -50px;
+  left: -150px;
+  animation: flyPlane 17s linear forwards; /* duración ajustada */
+}
+
+.plane img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Animación de vuelo */
+@keyframes flyPlane {
+  0%   { top: 10%; left: -150px; transform: rotate(10deg); opacity: 1; }
+  50%  { top: 40%; left: 50%; transform: rotate(0deg); opacity: 1; }
+  100% { top: 70%; left: 110%; transform: rotate(-15deg); opacity: 0; }
+}
+/* ==== Todo tu CSS anterior ==== */
+
+/* ===== Insignias múltiples ===== */
+.insignias {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 6px;
+  vertical-align: middle;
+  flex-wrap: wrap;
+}
+
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  background: #222;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  transition: transform .2s ease;
+}
+
+.insignia:hover { transform: scale(1.1); }
+
+.insignia img { width: 14px; height: 14px; margin-right: 3px; }
+/* rosas */
+/* 🌸 Sakura */
+.petal {
+  position: absolute;
+  font-size: 18px;
+  color: pink;
+  opacity: 0.9;
+  pointer-events: none;
+  animation: fallPetal linear forwards;
+}
+
+@keyframes fallPetal {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+
+
+/* fuegos artificiales */
+/* Overlay oscuro */
+#fireworks-animation {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Video de fuego artificial */
+.firework-video {
+  position: absolute;
+  width: 200px; /* tamaño del estallido */
+  height: auto;
+  border-radius: 10px;
+  pointer-events: none;
+}
+/* 🎉 Overlay para animación mexicana */
+#mexico-animation {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 🎊 Confeti */
+.confetti {
+  position: absolute;
+  width: 10px; height: 10px;
+  background-color: red;
+  animation: fallConfetti linear forwards;
+  opacity: 0.9;
+}
+
+@keyframes fallConfetti {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* 🎌 Bandera */
+.flag {
+  position: absolute;
+  font-size: 40px;
+  animation: flagDrop linear forwards;
+}
+
+@keyframes flagDrop {
+  0% { transform: translateY(-50px) scale(0.5); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(90vh) scale(1); opacity: 0; }
+}
+/* 🎆 Animación Año Nuevo */
+#newyear-animation {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 🎇 Explosión */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: gold;
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px gold,
+    0 0 20px gold,
+    0 0 40px #ffcc00;
+  animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+  from { transform: scale(0); opacity: 1; }
+  to   { transform: scale(25); opacity: 0; }
+}
+
+/* 🎊 Confeti dorado */
+.newyear-confetti {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  background: linear-gradient(gold, #ffea70);
+  animation: fallNewYear linear forwards;
+}
+
+@keyframes fallNewYear {
+  from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* 🥂 Texto */
+.newyear-text {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: gold;
+  text-shadow: 0 0 20px #ffcc00;
+  animation: zoomText 3s ease-out forwards;
+}
+
+@keyframes zoomText {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1.2); opacity: 1; }
+}
+/* 🎄 NAVIDAD ULTRA 3D */
+#christmas-ultra {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #0a1a2a, #000);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ✨ Luces */
+.christmas-lights {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.light {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  animation: blink 1s infinite alternate;
+}
+.light.red { background: red; }
+.light.green { background: lime; }
+.light.yellow { background: gold; }
+.light.blue { background: deepskyblue; }
+
+@keyframes blink {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+/* ❄️ NIEVE 3D */
+.snow-3d {
+  position: absolute;
+  color: white;
+  opacity: 0.8;
+  animation: snow3d linear forwards;
+}
+
+@keyframes snow3d {
+  from {
+    transform: translateY(-20px) scale(var(--scale));
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(110vh) scale(var(--scale));
+    opacity: 0;
+  }
+}
+
+/* 🔔 Campanas */
+.bell {
+  position: absolute;
+  font-size: 34px;
+  animation: bellFall linear forwards;
+}
+@keyframes bellFall {
+  from { transform: translateY(-20px) rotate(-20deg); }
+  to { transform: translateY(110vh) rotate(20deg); }
+}
+
+/* 🎁 Regalos */
+.gift {
+  position: absolute;
+  font-size: 32px;
+  animation: giftFall linear forwards;
+}
+@keyframes giftFall {
+  from { transform: translateY(-20px) rotate(0deg); }
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* 🎉 Texto */
+.christmas-ultra-text {
+  position: absolute;
+  top: 38%;
+  width: 100%;
+  text-align: center;
+  font-size: 52px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow:
+    0 0 10px red,
+    0 0 20px green,
+    0 0 40px gold;
+  animation: ultraZoom 3s ease-out forwards;
+}
+
+@keyframes ultraZoom {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1.25); opacity: 1; }
+}
+/* ================================
+   💙 ANIME OFFIS – CREATOR MODE
+================================ */
+
+#animeoffis-creator {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #061a33, #000);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 🌊 Aura azul */
+.creator-aura {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(0,180,255,.35), transparent 60%),
+    radial-gradient(circle, rgba(0,90,255,.25), transparent 70%);
+  animation: auraPulse 2.5s infinite alternate;
+}
+
+@keyframes auraPulse {
+  from { opacity: 0.4; }
+  to   { opacity: 0.9; }
+}
+
+/* 🖼️ Logo con rotación 3D */
+.offis-logo {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  width: 190px;
+  transform-style: preserve-3d;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 30px #00ccff);
+  animation: logo3D 6s ease-in-out infinite;
+}
+
+@keyframes logo3D {
+  0%   { transform: translateX(-50%) rotateY(0deg) rotateX(0deg) scale(1); }
+  25%  { transform: translateX(-50%) rotateY(15deg) rotateX(6deg) scale(1.05); }
+  50%  { transform: translateX(-50%) rotateY(0deg) rotateX(0deg) scale(1.12); }
+  75%  { transform: translateX(-50%) rotateY(-15deg) rotateX(-6deg) scale(1.05); }
+  100% { transform: translateX(-50%) rotateY(0deg) rotateX(0deg) scale(1); }
+}
+
+/* 🧿 Texto CREATOR MODE */
+.creator-mode-text {
+  position: absolute;
+  top: 58%;
+  width: 100%;
+  text-align: center;
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: #00ccff;
+  text-shadow:
+    0 0 10px #00ccff,
+    0 0 25px #0066ff,
+    0 0 45px #00ffff;
+  animation: creatorPulse 2.5s infinite alternate;
+}
+
+@keyframes creatorPulse {
+  from { opacity: 0.6; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1.05); }
+}
+
+/* 🌟 Estrellas */
+.star-particle {
+  position: absolute;
+  font-size: 18px;
+  animation: starRise linear forwards;
+}
+
+@keyframes starRise {
+  from { transform: translateY(110vh) scale(0.5); opacity: 0; }
+  to   { transform: translateY(-10vh) scale(1.3); opacity: 1; }
+}
+
+/* 🎊 Confeti azul */
+.energy-confetti {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  background: linear-gradient(#00ccff, #0066ff);
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* 💫 Barrido de luz */
+.creator-sweep {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.35),
+    transparent
+  );
+  animation: sweep 2.5s ease-in-out forwards;
+}
