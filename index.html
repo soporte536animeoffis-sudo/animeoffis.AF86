@@ -424,35 +424,6 @@ h1{font-size:20px;margin:8px 0 18px}
     justify-content: space-between;
   }
   }
-  /* aqui después lo borramos */
-  #contador {
-    font-size: 2em;
-    background: #ffcc00;
-    color: #000;
-    padding: 15px 25px;
-    border-radius: 10px;
-    font-weight: bold;
-    animation: pulse 1.5s infinite;
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  .confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    animation: fall 3s linear forwards;
-    opacity: 0.8;
-  }
-  @keyframes fall {
-    to {
-      transform: translateY(100vh) rotate(720deg);
-      opacity: 0;
-    }
-  }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6600">
@@ -563,12 +534,7 @@ h1{font-size:20px;margin:8px 0 18px}
 <main>
 <h1>Inicio anime offis</h1>
     <p>Vive la experiencia del oufis en anime offis, perfiles interativo con diseños a tu oufis</p>
-  <!-- aqui va el id para la animación de elimina el 30 de diciembre -->
-<h1 id="mensaje">Feliz Nochebuena 🎄</h1>
-<div id="contador"></div>
-  <h2> contador para navidad 🎄 🥳</h2>
 
-  
 <!-- Carrusel de tarjetas -->
   <div class="carousel-container-cards">
     <button class="carousel-btn prev">&#10094;</button>
@@ -910,41 +876,6 @@ tabs.forEach(tab => {
 document.getElementById('logout').addEventListener('click', () => {
   auth.signOut().then(() => window.location.href="login.html");
 });
-  // aqui va la animación se elimina el 39 de diciembre 
-  function lanzarConfeti() {
-    for (let i = 0; i < 100; i++) {
-      const confeti = document.createElement("div");
-      confeti.className = "confetti";
-      confeti.style.left = Math.random() * window.innerWidth + "px";
-      confeti.style.backgroundColor = ["#ffcc00", "#00f5ff", "#ff4ecd", "#ffd166"][Math.floor(Math.random()*4)];
-      confeti.style.animationDuration = (2 + Math.random() * 3) + "s";
-      document.body.appendChild(confeti);
-      confeti.addEventListener("animationend", () => confeti.remove());
-    }
-  }
-
-  function actualizarContador() {
-    const ahora = new Date();
-    const navidad = new Date(ahora.getFullYear(), 11, 25, 0, 0, 0);
-    const diferencia = navidad - ahora;
-
-    if (diferencia <= 0) {
-      document.getElementById("mensaje").textContent = "¡Feliz Navidad 🎅✨!";
-      document.getElementById("contador").textContent = "";
-      lanzarConfeti();
-      return;
-    }
-
-    const horas = Math.floor(diferencia / (1000 * 60 * 60));
-    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-    document.getElementById("contador").textContent =
-  `${horas}h ${minutos}m ${segundos}s`;
-  }
-
-  actualizarContador();
-  setInterval(actualizarContador, 1000);
 </script>
 </body>
 </html>
