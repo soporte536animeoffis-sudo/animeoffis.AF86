@@ -74,7 +74,6 @@
       display: none;
     }
 
-    /* Lista de recomendaciones */
     .list {
       margin-top: 30px;
     }
@@ -101,6 +100,14 @@
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("5JI0EGQvXnWjd1ZY_"); // 👈 tu clave pública
+    })();
+  </script>
 </head>
 <body>
 
@@ -116,9 +123,9 @@
         <option value="Perfiles">Perfiles</option>
         <option value="Dashboard">Dashboard</option>
         <option value="Juegos">Juegos</option>
-        <option value="Mensajes">Mensajes</option>
         <option value="Tiendas">Tiendas</option>
         <option value="Eventos">Eventos</option>
+        <option value="Marcos/Animación Perfil">Marcos/Animación Perfil</option>
       </select>
 
       <label>Texto de la sugerencia:</label>
@@ -128,7 +135,6 @@
     </form>
     <p id="msg">✅ Recomendación enviada con éxito</p>
 
-    <!-- Lista de recomendaciones -->
     <div class="list" id="listado"></div>
   </div>
 
@@ -149,7 +155,6 @@
     const msg = document.getElementById("msg");
     const listado = document.getElementById("listado");
 
-    // Enviar recomendación
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const nombre = document.getElementById("nombre").value.trim();
@@ -158,12 +163,27 @@
 
       if(nombre && tipo && texto){
         try {
+          // Guardar en Firebase
           await db.collection("recomendaciones").add({
             nombre,
             tipo,
             texto,
             fecha: firebase.firestore.FieldValue.serverTimestamp()
           });
+
+          // Enviar correo con EmailJS usando tu plantilla
+          emailjs.send("service_r44d6s4", "template_6a6v22u", {
+            nombre: nombre,
+            tipo: tipo,
+            texto: texto,
+            fecha: new Date().toLocaleString(),
+            to_email: "destiny58336@gmail.com, support@animeoffis.com, soporte536animeoffis@gmail.com"
+          }).then(() => {
+            console.log("✅ Correo enviado con éxito");
+          }).catch(error => {
+            console.error("❌ Error al enviar correo:", error);
+          });
+
           form.reset();
           msg.style.display = "block";
           setTimeout(() => msg.style.display = "none", 3000);
